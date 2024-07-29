@@ -3,20 +3,26 @@ buildscript {
     ext.maps_version = '18.1.0'
 
     repositories {
-        google()
-        mavenCentral()
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        /* When bumping, also update ndkVersion above. */
+        classpath 'com.android.tools.build:gradle:4.2.2'// 更新到4.2.2或更高版本
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" // 添加这一行
     }
+
 }
 
 allprojects {
     repositories {
         google()
-        mavenCentral()
+//        mavenCentral()
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
     }
 }
 

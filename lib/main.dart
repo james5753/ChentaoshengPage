@@ -12,6 +12,7 @@ import 'package:wonders/logic/unsplash_logic.dart';
 import 'package:wonders/logic/wonders_logic.dart';
 import 'package:wonders/ui/common/app_shortcuts.dart';
 
+
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // Keep native splash screen up until app is finished bootstrapping
@@ -91,3 +92,4 @@ LocaleLogic get localeLogic => GetIt.I.get<LocaleLogic>();
 /// Global helpers for readability
 AppLocalizations get $strings => localeLogic.strings;
 AppStyle get $styles => WondersAppScaffold.style;
+
