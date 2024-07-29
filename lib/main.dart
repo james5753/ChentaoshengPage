@@ -12,7 +12,6 @@ import 'package:wonders/logic/unsplash_logic.dart';
 import 'package:wonders/logic/wonders_logic.dart';
 import 'package:wonders/ui/common/app_shortcuts.dart';
 
-
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // Keep native splash screen up until app is finished bootstrapping

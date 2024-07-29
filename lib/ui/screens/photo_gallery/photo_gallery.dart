@@ -253,10 +253,15 @@ class _PhotoGalleryState extends State<PhotoGallery> {
               curve: Curves.easeOut,
               tween: Tween(begin: 1, end: isSelected ? 1.15 : 1),
               builder: (_, value, child) => Transform.scale(scale: value, child: child),
-              child: UnsplashPhoto(
-                imgUrl,
-                fit: BoxFit.cover,
-                size: UnsplashPhotoSize.large,
+          /* 这里修改了图片路径 **************************************************************************** */
+              // child: UnsplashPhoto(
+              //   imgUrl,    //图片****************************
+              //   fit: BoxFit.cover,
+              //   size: UnsplashPhotoSize.large,
+              // ).animate().fade(),
+              child:Image.asset(
+                'assets/images/_common/intro-statue.jpg',
+                fit:BoxFit.cover,
               ).animate().fade(),
             );
 

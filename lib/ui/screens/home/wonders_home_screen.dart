@@ -23,6 +23,23 @@ class HomeScreen extends StatefulWidget with GetItStatefulWidgetMixin {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Home')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/chat');
+          },
+          child: Text('Go to Chat'),
+        ),
+      ),
+    );
+  }
+}
+
 /// Shows a horizontally scrollable list PageView sandwiched between Foreground and Background layers
 /// arranged in a parallax style.
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {

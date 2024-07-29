@@ -1,5 +1,6 @@
 import 'package:wonders/common_libs.dart';
-
+import 'package:wonders/ui/common/chat_page.dart';//新增chatpage
+//这个文件可以修改tabbar
 class WonderDetailsTabMenu extends StatelessWidget {
   static const double buttonInset = 12;
   static const double homeBtnSize = 74;
@@ -137,6 +138,22 @@ class WonderDetailsTabMenu extends StatelessWidget {
                               axis: axis,
                               mainAxisSize: tabBtnSize,
                               onTap: onTap,
+                            ),
+              /* *********************增加chatbox的tabbar******************** */ 
+                            _TabBtn(
+                              4,
+                              tabController,
+                              iconImg: 'ai-chat',
+                              label:'ChatBox',
+                              color: iconColor,
+                              axis: axis,
+                              mainAxisSize: tabBtnSize,
+                              onTap: (index) {//定义按钮方法
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ChatPage()),
+                                );
+                              },
                             ),
                           ]),
                     ),

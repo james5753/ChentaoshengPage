@@ -9,6 +9,11 @@ import 'package:wonders/ui/common/static_text_scale.dart';
 import 'package:wonders/ui/common/themed_text.dart';
 import 'package:wonders/ui/common/utils/app_haptics.dart';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:uuid/uuid.dart';
+
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
 
@@ -66,9 +71,12 @@ class _IntroScreenState extends State<IntroScreen> {
   Widget build(BuildContext context) {
     // Set the page data, as strings may have changed based on locale
     pageData = [
-      _PageData($strings.introTitleJourney, $strings.introDescriptionNavigate, 'camel', '1'),
-      _PageData($strings.introTitleExplore, $strings.introDescriptionUncover, 'petra', '2'),
-      _PageData($strings.introTitleDiscover, $strings.introDescriptionLearn, 'statue', '3'),
+      // _PageData($strings.introTitleJourney, $strings.introDescriptionNavigate, 'camel', '1'),
+      // _PageData($strings.introTitleExplore, $strings.introDescriptionUncover, 'petra', '2'),
+      // _PageData($strings.introTitleDiscover, $strings.introDescriptionLearn, 'statue', '3'),
+      _PageData("比利时斯帕F1大奖赛", "北京时间7月28日晚，F1大奖赛比利时站在斯帕赛道拉开序幕。", 'camel', '1'),
+      _PageData("冠军！传奇！", "排名第二的汉密尔顿由于队友拉塞尔原本第一名的成绩取消后因此成为最终的冠军", 'petra', '2'),
+      _PageData("勒克莱尔父子", "迈凯伦车手皮亚斯特里和法拉利车手勒克莱尔获得二、三名。", 'statue', '3'),
     ];
 
     // This view uses a full screen PageView to enable swipe navigation.
@@ -304,7 +312,8 @@ class _WonderousLogo extends StatelessWidget {
         Gap($styles.insets.xs),
         StaticTextScale(
           child: Text(
-            $strings.introSemanticWonderous,
+            //$strings.introSemanticWonderous,  标题内容
+            "陈騊声事迹",
             style: $styles.text.wonderTitle.copyWith(fontSize: 32 * $styles.scale, color: $styles.colors.offWhite),
           ),
         )
@@ -335,6 +344,57 @@ class _PageImage extends StatelessWidget {
           fit: BoxFit.fill,
         )),
       ],
+    );
+  }
+}
+
+
+/*以下添加chatui*/ 
+class ChatPage extends StatefulWidget {
+  @override
+  _ChatPageState createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  final List<types.Message> _messages = [];
+  final types.User _user = types.User(id: 'user-id');
+
+  void _handleSendPressed(types.PartialText message) {
+    final textMessage = types.TextMessage(
+      author: _user,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      id: Uuid().v4(),
+      text: message.text,
+    );
+
+    setState(() {
+      _messages.insert(0, textMessage);
+    });
+
+    // 模拟 AI 回复
+    Future.delayed(Duration(seconds: 1), () {
+      final aiMessage = types.TextMessage(
+        author: types.User(id: 'ai-id', firstName: 'AI'),
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        id: Uuid().v4(),
+        text: '这是 AI 的回复: ${message.text}',
+      );
+
+      setState(() {
+        _messages.insert(0, aiMessage);
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('AI Chat')),
+      body: Chat(
+        messages: _messages,
+        onSendPressed: _handleSendPressed,
+        user: _user,
+      ),
     );
   }
 }
