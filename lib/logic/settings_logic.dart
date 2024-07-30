@@ -16,7 +16,7 @@ class SettingsLogic with ThrottledSaveLoadMixin {
 
   Future<void> changeLocale(Locale value) async {
     currentLocale.value = value.languageCode;
-    await localeLogic.loadIfChanged(value);
+    //await localeLogic.loadIfChanged(value);
     // Re-init controllers that have some cached data that is localized
     wondersLogic.init();
     timelineLogic.init();
@@ -26,7 +26,7 @@ class SettingsLogic with ThrottledSaveLoadMixin {
   void copyFromJson(Map<String, dynamic> value) {
     hasCompletedOnboarding.value = value['hasCompletedOnboarding'] ?? false;
     hasDismissedSearchMessage.value = value['hasDismissedSearchMessage'] ?? false;
-    currentLocale.value = value['currentLocale'];
+    currentLocale.value = 'zh';
     isSearchPanelOpen.value = value['isSearchPanelOpen'] ?? false;
     prevWonderIndex.value = value['lastWonderIndex'];
   }
@@ -36,7 +36,7 @@ class SettingsLogic with ThrottledSaveLoadMixin {
     return {
       'hasCompletedOnboarding': hasCompletedOnboarding.value,
       'hasDismissedSearchMessage': hasDismissedSearchMessage.value,
-      'currentLocale': currentLocale.value,
+      'currentLocale': 'zh',
       'isSearchPanelOpen': isSearchPanelOpen.value,
       'lastWonderIndex': prevWonderIndex.value,
     };
