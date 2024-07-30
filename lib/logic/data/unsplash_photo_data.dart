@@ -1,6 +1,6 @@
 import 'package:wonders/_tools/unsplash_download_service.dart';
 import 'package:wonders/logic/common/platform_info.dart';
-
+//这个文件是gallery的图片的url数据源***********************************//
 enum UnsplashPhotoSize { med, large, xl }
 
 class UnsplashPhotoData {

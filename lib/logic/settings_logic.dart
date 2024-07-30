@@ -9,7 +9,7 @@ class SettingsLogic with ThrottledSaveLoadMixin {
   late final hasCompletedOnboarding = ValueNotifier<bool>(false)..addListener(scheduleSave);
   late final hasDismissedSearchMessage = ValueNotifier<bool>(false)..addListener(scheduleSave);
   late final isSearchPanelOpen = ValueNotifier<bool>(true)..addListener(scheduleSave);
-  late final currentLocale = ValueNotifier<String?>(null)..addListener(scheduleSave);
+  late final currentLocale = ValueNotifier<String?>('zh')..addListener(scheduleSave);
   late final prevWonderIndex = ValueNotifier<int?>(null)..addListener(scheduleSave);
 
   final bool useBlurs = !PlatformInfo.isAndroid;

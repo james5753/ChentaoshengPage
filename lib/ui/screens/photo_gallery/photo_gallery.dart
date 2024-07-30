@@ -36,7 +36,6 @@ class _PhotoGalleryState extends State<PhotoGallery> {
 
   late final List<FocusNode> _focusNodes = List.generate(_imgCount, (index) => FocusNode());
 
-  //TODO: Remove this field (and associated workarounds) once web properly supports ClipPath (https://github.com/flutter/flutter/issues/124675)
   final bool useClipPathWorkAroundForWeb = kIsWeb;
 
   @override
