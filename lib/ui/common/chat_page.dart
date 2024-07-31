@@ -43,7 +43,11 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('AI Chat'),
+        title: Padding(
+          padding: const EdgeInsets.only(left: 160.0), // 增加标题左边的间隔
+          child: Text('AI聊天'),
+        ),
+        automaticallyImplyLeading: false, // 取消按钮回退的功能
         backgroundColor: Color.fromARGB(255, 221, 160, 160), // 设置AppBar的背景颜色
         titleTextStyle: TextStyle(
           color: Color.fromARGB(168, 0, 0, 0), // 设置标题文字颜色
