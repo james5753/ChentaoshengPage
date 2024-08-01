@@ -146,10 +146,10 @@ class _EventMarker extends StatelessWidget {
                 duration: $styles.times.med,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(99),
-                  color: $styles.colors.accent1,
+                  color: event.color,
                   boxShadow: [
                     BoxShadow(
-                        color: $styles.colors.accent1.withOpacity(isSelected ? .5 : 0), spreadRadius: 3, blurRadius: 3),
+                        color: event.color.withOpacity(isSelected ? .5 : 0), spreadRadius: 3, blurRadius: 3),
                   ],
                 ),
               ),

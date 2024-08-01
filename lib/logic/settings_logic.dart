@@ -14,19 +14,12 @@ class SettingsLogic with ThrottledSaveLoadMixin {
 
   final bool useBlurs = !PlatformInfo.isAndroid;
 
-  Future<void> changeLocale(Locale value) async {
-    currentLocale.value = value.languageCode;
-    //await localeLogic.loadIfChanged(value);
-    // Re-init controllers that have some cached data that is localized
-    wondersLogic.init();
-    timelineLogic.init();
-  }
 
   @override
   void copyFromJson(Map<String, dynamic> value) {
     hasCompletedOnboarding.value = value['hasCompletedOnboarding'] ?? false;
     hasDismissedSearchMessage.value = value['hasDismissedSearchMessage'] ?? false;
-    currentLocale.value = 'zh';
+    currentLocale.value = value['zh'];
     isSearchPanelOpen.value = value['isSearchPanelOpen'] ?? false;
     prevWonderIndex.value = value['lastWonderIndex'];
   }
@@ -36,7 +29,7 @@ class SettingsLogic with ThrottledSaveLoadMixin {
     return {
       'hasCompletedOnboarding': hasCompletedOnboarding.value,
       'hasDismissedSearchMessage': hasDismissedSearchMessage.value,
-      'currentLocale': 'zh',
+      'currentLocale': currentLocale.value,
       'isSearchPanelOpen': isSearchPanelOpen.value,
       'lastWonderIndex': prevWonderIndex.value,
     };

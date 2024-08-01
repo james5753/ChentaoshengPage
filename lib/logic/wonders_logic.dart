@@ -12,8 +12,8 @@ import 'package:wonders/logic/data/wonders_data/taj_mahal_data.dart';
 class WondersLogic {
   List<WonderData> all = [];
 
-  final int timelineStartYear = -3000;
-  final int timelineEndYear = 2200;
+  final int timelineStartYear = 1899;
+  final int timelineEndYear = 2020;
 
   WonderData getData(WonderType value) {
     WonderData? result = all.firstWhereOrNull((w) => w.type == value);
