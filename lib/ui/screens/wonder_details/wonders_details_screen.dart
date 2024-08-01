@@ -6,6 +6,7 @@ import 'package:wonders/ui/screens/editorial/editorial_screen.dart';
 import 'package:wonders/ui/screens/photo_gallery/photo_gallery.dart';
 import 'package:wonders/ui/screens/wonder_details/wonder_details_tab_menu.dart';
 import 'package:wonders/ui/screens/wonder_events/wonder_events.dart';
+import 'package:wonders/ui/common/chat_page.dart';
 
 class WonderDetailsScreen extends StatefulWidget with GetItStatefulWidgetMixin {
   WonderDetailsScreen({super.key, required this.type, this.tabIndex = 0});
@@ -19,7 +20,7 @@ class WonderDetailsScreen extends StatefulWidget with GetItStatefulWidgetMixin {
 class _WonderDetailsScreenState extends State<WonderDetailsScreen>
     with GetItStateMixin, SingleTickerProviderStateMixin {
   late final _tabController = TabController(
-    length: 4,
+    length: 5,
     vsync: this,
     initialIndex: _clampIndex(widget.tabIndex),
   )..addListener(_handleTabChanged);
@@ -42,7 +43,7 @@ class _WonderDetailsScreenState extends State<WonderDetailsScreen>
     super.dispose();
   }
 
-  int _clampIndex(int index) => index.clamp(0, 3);
+  int _clampIndex(int index) => index.clamp(0, 4);
 
   void _handleTabChanged() {
     _fade?.forward(from: 0);
@@ -81,6 +82,7 @@ class _WonderDetailsScreenState extends State<WonderDetailsScreen>
               PhotoGallery(collectionId: wonder.unsplashCollectionId, wonderType: wonder.type),
               ArtifactCarouselScreen(type: wonder.type, contentPadding: menuPadding),
               WonderEvents(type: widget.type, contentPadding: menuPadding),
+              ChatPage()
             ],
           ),
 

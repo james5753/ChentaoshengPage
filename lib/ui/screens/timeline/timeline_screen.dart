@@ -61,7 +61,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
               Expanded(
                 child: _ScrollingViewport(
                   scroller: _scroller,
-                  minSize: minSize,
+                  minSize: maxSize,
                   maxSize: maxSize,
                   selectedWonder: widget.type,
                   onYearChanged: _handleViewportYearChanged,

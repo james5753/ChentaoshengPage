@@ -42,8 +42,7 @@ class AppLogic {
     if (kIsWeb) {
       // SB: This is intentionally not a debugPrint, as it's a message for users who open the console on web.
       print(
-        '''Thanks for checking out Wonderous on the web!
-        If you encounter any issues please report them at https://github.com/gskinnerTeam/flutter-wonderous-app/issues.''',
+        '''感谢查看此项目！如果有问题请提出 https://github.com/james5753/ChentaoshengPage/issues''',
       );
       // Required on web to automatically enable accessibility features
       WidgetsFlutterBinding.ensureInitialized().ensureSemantics();

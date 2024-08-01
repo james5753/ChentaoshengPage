@@ -31,40 +31,59 @@ class _EventPopupsState extends State<_EventPopups> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final evt = _eventToShow;
+Widget build(BuildContext context) {
+  final evt = _eventToShow;
+  if (evt == null) {
     return TopCenter(
-      child: ClipRect(
-        child: IgnorePointer(
-          ignoringSemantics: false,
-          child: AnimatedSwitcher(
-            duration: $styles.times.fast,
-            child: evt == null
-                ? SizedBox.shrink()
-                : Semantics(
-                    liveRegion: true,
-                    child: Animate(
-                      effects: const [
-                        SlideEffect(begin: Offset(0, -.1)),
-                      ],
-                      key: ValueKey(_eventToShow?.year),
-                      child: IntrinsicHeight(
-                        child: SizedBox(
-                          width: $styles.sizes.maxContentWidth3,
-                          child: Padding(
-                            padding: EdgeInsets.all($styles.insets.md),
-                            child: TimelineEventCard(
-                              text: evt.description,
-                              year: evt.year,
-                            ),
-                          ),
-                        ),
-                      ),
+      child: SizedBox.shrink(),
+    );
+  }
+
+  // 使用 TextPainter 测量文本尺寸
+  final textPainter = TextPainter(
+    text: TextSpan(
+      text: evt.description,
+      style: DefaultTextStyle.of(context).style,
+    ),
+    textDirection: TextDirection.ltr,
+    maxLines: null,
+  )..layout(maxWidth: $styles.sizes.maxContentWidth1);
+
+  // 根据文本尺寸设置宽度和高度
+  final width = $styles.sizes.maxContentWidth1;
+  final height = 50 +textPainter.size.height*2 + $styles.insets.md * 3;
+
+  return TopCenter(
+    child: ClipRect(
+      child: IgnorePointer(
+        ignoringSemantics: false,
+        child: AnimatedSwitcher(
+          duration: $styles.times.fast,
+          child: Semantics(
+            liveRegion: true,
+            child: Animate(
+              effects: const [
+                SlideEffect(begin: Offset(0, -.1)),
+              ],
+              key: ValueKey(_eventToShow?.year),
+              child: IntrinsicHeight(
+                child: SizedBox(
+                  width: width,
+                  height: height,
+                  child: Padding(
+                    padding: EdgeInsets.all($styles.insets.md),
+                    child: TimelineEventCard(
+                      text: evt.description,
+                      year: evt.year,
                     ),
                   ),
+                ),
+              ),
+            ),
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }
