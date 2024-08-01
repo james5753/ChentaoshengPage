@@ -8,6 +8,28 @@ class _EventPopups extends StatefulWidget {
   State<_EventPopups> createState() => _EventPopupsState();
 }
 
+class DynamicCharsPerLineCalculator {
+  final TextStyle textStyle;
+  final double maxWidth;
+
+  DynamicCharsPerLineCalculator({required this.textStyle, required this.maxWidth});
+
+  int calculateCharsPerLine() {
+    // 假设一个字符的宽度
+    const String sampleText = '你';
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: sampleText, style: textStyle),
+      textDirection: TextDirection.ltr,
+    )..layout();
+
+    // 获取一个字符的宽度
+    final double charWidth = textPainter.size.width;
+
+    // 计算每行可以容纳的字符数
+    return (maxWidth / charWidth).floor();
+  }
+}
+
 class _EventPopupsState extends State<_EventPopups> {
   final _debouncer = Debouncer(500.ms);
   TimelineEvent? _eventToShow;
@@ -50,8 +72,16 @@ Widget build(BuildContext context) {
   )..layout(maxWidth: $styles.sizes.maxContentWidth1);
 
   // 根据文本尺寸设置宽度和高度
+  //const int charsPerLine = 34;
+  final textStyle = TextStyle(fontSize: 16.0);
+  final double maxWidth = MediaQuery.of(context).size.width<800? MediaQuery.of(context).size.width*0.8: 560; 
+
+  final calculator = DynamicCharsPerLineCalculator(textStyle: textStyle, maxWidth: maxWidth);
+  final charsPerLine = calculator.calculateCharsPerLine()>34? 34: calculator.calculateCharsPerLine();
+  final int lineCount = (evt.description.length / charsPerLine).ceil();
   final width = $styles.sizes.maxContentWidth1;
-  final height = 50 +textPainter.size.height*2 + $styles.insets.md * 3;
+  //final height = 50 + textPainter.size.height.ceil()*2.8 + $styles.insets.md * 2.5;
+  final height = 110.0 + lineCount *  32 ;
 
   return TopCenter(
     child: ClipRect(
