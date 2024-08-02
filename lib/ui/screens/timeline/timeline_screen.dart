@@ -67,13 +67,13 @@ class _TimelineScreenState extends State<TimelineScreen> {
                   onYearChanged: _handleViewportYearChanged,
                 ),
               ),
-
-              /// Era Text (classical, modern etc)
-              ValueListenableBuilder<int>(
-                valueListenable: _year,
-                builder: (_, value, __) => _AnimatedEraText(value),
-              ),
-              Gap($styles.insets.xs),
+              ///目前不需要年代信息
+              // /// Era Text (classical, modern etc)
+              // ValueListenableBuilder<int>(
+              //   valueListenable: _year,
+              //   builder: (_, value, __) => _AnimatedEraText(value),
+              // ),
+              // Gap($styles.insets.xs),
 
               /// Mini Horizontal timeline, reacts to the state of the larger scrolling timeline,
               /// and changes the timelines scroll position on Hz drag

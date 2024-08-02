@@ -12,7 +12,7 @@ import 'package:wonders/logic/data/wonders_data/taj_mahal_data.dart';
 class WondersLogic {
   List<WonderData> all = [];
 
-  final int timelineStartYear = 1899;
+  final int timelineStartYear = 1890;
   final int timelineEndYear = 2020;
 
   WonderData getData(WonderType value) {

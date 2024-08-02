@@ -16,11 +16,11 @@ class _YearMarkers extends StatelessWidget {
     return IgnorePointer(
       ignoringSemantics: false,
       child: LayoutBuilder(builder: (_, constraints) {
-        int interval = 100;
+        int interval = 10;
         if (constraints.maxHeight < 800) {
-          interval = 500;
+          interval = 50;
         } else if (constraints.maxHeight < 1500) {
-          interval = 250;
+          interval = 25;
         }
 
         // If interval is 100 and time is 0 - 1000 yrs, make a list of 11 items:
