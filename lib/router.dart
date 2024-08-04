@@ -56,7 +56,7 @@ AppRoute get _timelineRoute {
 AppRoute get _collectionRoute {
   return AppRoute(
     'collection',
-    (s) => CollectionScreen(fromId: s.uri.queryParameters['id'] ?? ''),
+    (s) => CollectionScreen(),
     routes: [_artifactRoute],
   );
 }
