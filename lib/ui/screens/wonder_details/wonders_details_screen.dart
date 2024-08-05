@@ -84,7 +84,7 @@ class _WonderDetailsScreenState extends State<WonderDetailsScreen>
               ArtifactCarouselScreen(type: wonder.type, contentPadding: menuPadding),              
               WonderEvents(type: widget.type, contentPadding: menuPadding),
               ChatPage(),
-              CollectionScreen(),
+              MapScreen(),
             ],
           ),
 
