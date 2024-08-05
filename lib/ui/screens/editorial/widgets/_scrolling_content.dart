@@ -61,23 +61,23 @@ class _ScrollingContent extends StatelessWidget {
       );
     }
 
-    Widget buildHiddenCollectible({required int slot}) {
-      List<WonderType> getTypesForSlot(slot) {
-        return switch (slot) {
-          0 => [WonderType.chichenItza, WonderType.colosseum],
-          1 => [WonderType.pyramidsGiza, WonderType.petra],
-          2 => [WonderType.machuPicchu, WonderType.christRedeemer],
-          _ => [WonderType.tajMahal, WonderType.greatWall]
-        };
-      }
+    // Widget buildHiddenCollectible({required int slot}) {
+    //   List<WonderType> getTypesForSlot(slot) {
+    //     return switch (slot) {
+    //       0 => [WonderType.chichenItza, WonderType.colosseum],
+    //       1 => [WonderType.pyramidsGiza, WonderType.petra],
+    //       2 => [WonderType.machuPicchu, WonderType.christRedeemer],
+    //       _ => [WonderType.tajMahal, WonderType.greatWall]
+    //     };
+    //   }
 
-      return HiddenCollectible(
-        data.type,
-        index: 0,
-        matches: getTypesForSlot(slot),
-        size: 128,
-      );
-    }
+    //   return HiddenCollectible(
+    //     data.type,
+    //     index: 0,
+    //     matches: getTypesForSlot(slot),
+    //     size: 128,
+    //   );
+    // }
 
     return SliverBackgroundColor(
       color: $styles.colors.offWhite,
@@ -90,14 +90,14 @@ class _ScrollingContent extends StatelessWidget {
                 width: $styles.sizes.maxContentWidth1,
                 child: Column(children: [
                   ..._contentSection([
-                    Center(child: buildHiddenCollectible(slot: 0)),
+                    //Center(child: buildHiddenCollectible(slot: 0)),
 
                     /// History 1
                     buildDropCapText(data.historyInfo1),
 
                     /// Quote1
                     _CollapsingPullQuoteImage(data: data, scrollPos: scrollPos),
-                    Center(child: buildHiddenCollectible(slot: 1)),
+                    //Center(child: buildHiddenCollectible(slot: 1)),
 
                     /// Callout1
                     _Callout(text: data.callout1),
@@ -108,10 +108,10 @@ class _ScrollingContent extends StatelessWidget {
 
                     /// Construction 1
                     buildDropCapText(data.constructionInfo1),
-                    Center(child: buildHiddenCollectible(slot: 2)),
+                    //Center(child: buildHiddenCollectible(slot: 2)),
                   ]),
                   Gap($styles.insets.md),
-                  _YouTubeThumbnail(id: data.videoId, caption: data.videoCaption),
+                  //_YouTubeThumbnail(id: data.videoId, caption: data.videoCaption),
                   Gap($styles.insets.md),
                   ..._contentSection([
                     /// Callout2
@@ -131,7 +131,7 @@ class _ScrollingContent extends StatelessWidget {
                   Gap($styles.insets.md),
                   _MapsThumbnail(data),
                   Gap($styles.insets.md),
-                  ..._contentSection([Center(child: buildHiddenCollectible(slot: 3))]),
+                  //..._contentSection([Center(child: buildHiddenCollectible(slot: 3))]),
                   Gap(150),
                 ]),
               ),

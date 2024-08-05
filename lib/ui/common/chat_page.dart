@@ -135,6 +135,7 @@ class _ChatPageState extends State<ChatPage> {
             padding: const EdgeInsets.all(26.0),
             child: Column(
               children: [
+                SizedBox(height: 20.0),
                 Expanded(
                   child: Chat(
                     messages: _messages,
