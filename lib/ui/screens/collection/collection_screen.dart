@@ -7,11 +7,9 @@ class CollectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.only(left: 160.0), // 增加标题左边的间隔
-          child: Text('GIS地图'),
-        ),
-        automaticallyImplyLeading: false, // 取消按钮回退的功能
+        title: Text('GIS地图'),
+        centerTitle: true,
+        //automaticallyImplyLeading: false, // 按钮回退的功能
         backgroundColor: Color.fromARGB(255, 221, 160, 160), // 设置AppBar的背景颜色
         titleTextStyle: TextStyle(
           color: Color.fromARGB(168, 0, 0, 0), // 设置标题文字颜色

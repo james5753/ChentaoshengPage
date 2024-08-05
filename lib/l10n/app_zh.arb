@@ -60,7 +60,7 @@
 	"expandingTimeSelectorSemanticSelector": "日期范围选择器",
 	"fullscreenImageViewerSemanticFull": "全屏图像，没有描述信息",
 	"homeMenuButtonExplore": "探索历史年表",
-	"homeMenuButtonView": "观看您的收藏",
+	"homeMenuButtonView": "观看GIS地图",
 	"homeMenuButtonAbout": "关于这个应用程序",
 	"homeMenuAboutWonderous": "Wonderous是世界八大奇迹的视觉展示。",
 	"homeMenuAboutBuilt": "由 {gskinnerUrl} 团队使用 {flutterUrl} 构建。",
