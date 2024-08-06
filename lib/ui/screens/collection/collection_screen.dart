@@ -1,85 +1,99 @@
-import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
-import 'package:flutter/foundation.dart';
-import 'package:wonders/common_libs.dart';
-import 'package:wonders/logic/collectibles_logic.dart';
-import 'package:wonders/logic/data/collectible_data.dart';
-import 'package:wonders/logic/data/wonder_data.dart';
-import 'package:wonders/ui/common/centered_box.dart';
-import 'package:wonders/ui/common/controls/app_header.dart';
-import 'package:wonders/ui/common/modals/app_modals.dart';
-
-part 'widgets/_collectible_image.dart';
-part 'widgets/_collection_footer.dart';
-part 'widgets/_collection_list.dart';
-part 'widgets/_collection_list_card.dart';
-part 'widgets/_newly_discovered_items_btn.dart';
-
-class CollectionScreen extends StatefulWidget with GetItStatefulWidgetMixin {
-  CollectionScreen({required this.fromId, super.key});
-
-  final String fromId;
-
-  @override
-  State<CollectionScreen> createState() => _CollectionScreenState();
-}
-
-class _CollectionScreenState extends State<CollectionScreen> with GetItStateMixin {
-  final GlobalKey _scrollKey = GlobalKey();
-
-  @override
-  void initState() {
-    super.initState();
-    final states = collectiblesLogic.statesById.value;
-    if (widget.fromId.isNotEmpty && states[widget.fromId] == CollectibleState.discovered) {
-      scheduleMicrotask(() => _scrollToTarget(false));
-    }
-  }
-
-  void _scrollToTarget([bool animate = true]) {
-    if (_scrollKey.currentContext != null) {
-      Scrollable.ensureVisible(_scrollKey.currentContext!, alignment: 0.15, duration: animate ? 300.ms : 0.ms);
-    }
-  }
-
-  void _handleReset() async {
-    String msg = $strings.collectionPopupResetConfirm;
-    final result = await showModal(context, child: OkCancelModal(msg: msg));
-    if (result == true) {
-      collectiblesLogic.reset();
-    }
-  }
-
+class MapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Rebuild when collectible states change
-    watchX((CollectiblesLogic o) => o.statesById);
-    int discovered = collectiblesLogic.discoveredCount;
-    int explored = collectiblesLogic.exploredCount;
-    int total = collectiblesLogic.all.length;
-
-    return ColoredBox(
-      color: $styles.colors.greyStrong,
-      child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('GIS地图'),
+        centerTitle: true,
+        //automaticallyImplyLeading: false, // 按钮回退的功能
+        backgroundColor: Color.fromARGB(255, 221, 160, 160), // 设置AppBar的背景颜色
+        titleTextStyle: TextStyle(
+          color: Color.fromARGB(168, 0, 0, 0), // 设置标题文字颜色
+          fontSize: 20.0, // 设置标题文字大小
+          fontWeight: FontWeight.bold, // 设置标题文字粗细
+          ),
+      ),
+      body: FlutterMap(
+        options: MapOptions(
+          center: LatLng(35.8617, 104.1954), // 中国的地理中心
+          zoom: 4.0,
+        ),
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                AppHeader(title: $strings.collectionTitleCollection, isTransparent: true),
-                _NewlyDiscoveredItemsBtn(count: discovered, onPressed: _scrollToTarget),
-                Flexible(
-                  child: _CollectionList(
-                    fromId: widget.fromId,
-                    scrollKey: _scrollKey,
-                    onReset: discovered + explored > 0 ? _handleReset : null,
+          TileLayer(
+            urlTemplate: 'https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}',
+            subdomains: ['1', '2', '3', '4'],
+          ),
+          MarkerLayer(
+            markers: [
+              Marker(
+                width: 80.0,
+                height: 80.0,
+                point: LatLng(39.9042, 116.4074), // 北京
+                builder: (ctx) => GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => BeijingScreen()),
+                    );
+                  },
+                  child: Container(
+                    child: Icon(Icons.location_on, color: Colors.red, size: 40),
                   ),
                 ),
-              ],
-            ),
+              ),
+              Marker(
+                width: 80.0,
+                height: 80.0,
+                point: LatLng(31.2304, 121.4737), // 上海
+                builder: (ctx) => GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ShanghaiScreen()),
+                    );
+                  },
+                  child: Container(
+                    child: Icon(Icons.location_on, color: Colors.blue, size: 40),
+                  ),
+                ),
+              ),
+              // 其他标记...
+            ],
           ),
-          _CollectionFooter(count: discovered + explored, total: total),
         ],
+      ),
+    );
+  }
+}
+
+// 示例目标界面
+class BeijingScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('北京'),
+      ),
+      body: Center(
+        child: Text('欢迎来到北京！'),
+      ),
+    );
+  }
+}
+
+class ShanghaiScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('上海'),
+      ),
+      body: Center(
+        child: Text('欢迎来到上海！'),
       ),
     );
   }

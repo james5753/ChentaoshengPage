@@ -71,12 +71,10 @@ class _IntroScreenState extends State<IntroScreen> {
   Widget build(BuildContext context) {
     // Set the page data, as strings may have changed based on locale
     pageData = [
-      // _PageData($strings.introTitleJourney, $strings.introDescriptionNavigate, 'camel', '1'),
-      // _PageData($strings.introTitleExplore, $strings.introDescriptionUncover, 'petra', '2'),
-      // _PageData($strings.introTitleDiscover, $strings.introDescriptionLearn, 'statue', '3'),
-      _PageData("比利时斯帕F1大奖赛", "北京时间7月28日晚，F1大奖赛比利时站在斯帕赛道拉开序幕。", 'camel', '1'),
-      _PageData("冠军！传奇！", "排名第二的汉密尔顿由于队友拉塞尔原本第一名的成绩取消后因此成为最终的冠军", 'petra', '2'),
-      _PageData("勒克莱尔父子", "迈凯伦车手皮亚斯特里和法拉利车手勒克莱尔获得二、三名。", 'statue', '3'),
+      _PageData($strings.introTitleJourney, $strings.introDescriptionNavigate, 'camel', '1'),
+      _PageData($strings.introTitleExplore, $strings.introDescriptionUncover, 'petra', '2'),
+      _PageData($strings.introTitleDiscover, $strings.introDescriptionLearn, 'statue', '3'),
+      
     ];
 
     // This view uses a full screen PageView to enable swipe navigation.
@@ -312,8 +310,7 @@ class _WonderousLogo extends StatelessWidget {
         Gap($styles.insets.xs),
         StaticTextScale(
           child: Text(
-            //$strings.introSemanticWonderous,  标题内容
-            "陈騊声事迹",
+            $strings.introSemanticWonderous,  
             style: $styles.text.wonderTitle.copyWith(fontSize: 32 * $styles.scale, color: $styles.colors.offWhite),
           ),
         )

@@ -2,6 +2,7 @@ import 'package:wonders/common_libs.dart';
 import 'package:wonders/ui/common/lazy_indexed_stack.dart';
 import 'package:wonders/ui/common/measurable_widget.dart';
 import 'package:wonders/ui/screens/artifact/artifact_carousel/artifact_carousel_screen.dart';
+import 'package:wonders/ui/screens/collection/collection_screen.dart';
 import 'package:wonders/ui/screens/editorial/editorial_screen.dart';
 import 'package:wonders/ui/screens/photo_gallery/photo_gallery.dart';
 import 'package:wonders/ui/screens/wonder_details/wonder_details_tab_menu.dart';
@@ -20,7 +21,7 @@ class WonderDetailsScreen extends StatefulWidget with GetItStatefulWidgetMixin {
 class _WonderDetailsScreenState extends State<WonderDetailsScreen>
     with GetItStateMixin, SingleTickerProviderStateMixin {
   late final _tabController = TabController(
-    length: 5,
+    length: 6,
     vsync: this,
     initialIndex: _clampIndex(widget.tabIndex),
   )..addListener(_handleTabChanged);
@@ -43,7 +44,7 @@ class _WonderDetailsScreenState extends State<WonderDetailsScreen>
     super.dispose();
   }
 
-  int _clampIndex(int index) => index.clamp(0, 4);
+  int _clampIndex(int index) => index.clamp(0, 5);
 
   void _handleTabChanged() {
     _fade?.forward(from: 0);
@@ -77,12 +78,13 @@ class _WonderDetailsScreenState extends State<WonderDetailsScreen>
           /// Fullscreen tab views
           LazyIndexedStack(
             index: _tabController.index,
-            children: [
+            children: [   //在这里绑定onTap
               WonderEditorialScreen(wonder, contentPadding: menuPadding),
               PhotoGallery(collectionId: wonder.unsplashCollectionId, wonderType: wonder.type),
-              ArtifactCarouselScreen(type: wonder.type, contentPadding: menuPadding),
+              ArtifactCarouselScreen(type: wonder.type, contentPadding: menuPadding),              
               WonderEvents(type: widget.type, contentPadding: menuPadding),
-              ChatPage()
+              ChatPage(),
+              MapScreen(),
             ],
           ),
 

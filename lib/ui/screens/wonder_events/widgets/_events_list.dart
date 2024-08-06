@@ -78,7 +78,7 @@ class _EventsListState extends State<_EventsList> {
                     Gap($styles.insets.sm),
                     ...listItems,
                     Gap($styles.insets.xl),
-                    HiddenCollectible(widget.data.type, index: 2, size: 150),
+                    //HiddenCollectible(widget.data.type, index: 2, size: 150),
                     Gap(150),
                   ],
                 ),

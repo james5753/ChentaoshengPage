@@ -6,7 +6,7 @@ import 'package:wonders/logic/data/unsplash_photo_data.dart';
 import 'package:wonders/ui/common/controls/app_loading_indicator.dart';
 import 'package:wonders/ui/common/controls/eight_way_swipe_detector.dart';
 import 'package:wonders/ui/common/fullscreen_keyboard_listener.dart';
-import 'package:wonders/ui/common/hidden_collectible.dart';
+//import 'package:wonders/ui/common/hidden_collectible.dart';
 import 'package:wonders/ui/common/modals/fullscreen_url_img_viewer.dart';
 import 'package:wonders/ui/common/unsplash_photo.dart';
 import 'package:wonders/ui/common/utils/app_haptics.dart';
@@ -253,16 +253,16 @@ class _PhotoGalleryState extends State<PhotoGallery> {
               curve: Curves.easeOut,
               tween: Tween(begin: 1, end: isSelected ? 1.15 : 1),
               builder: (_, value, child) => Transform.scale(scale: value, child: child),
-          /* 这里修改了图片路径 **************************************************************************** */
-              // child: UnsplashPhoto(
-              //   imgUrl,    //图片****************************
-              //   fit: BoxFit.cover,
-              //   size: UnsplashPhotoSize.large,
-              // ).animate().fade(),
-              child:Image.asset(
-                'assets/images/_common/intro-statue.jpg',
-                fit:BoxFit.cover,
+          
+              child: UnsplashPhoto(
+                imgUrl,    //图片****************************
+                fit: BoxFit.cover,
+                size: UnsplashPhotoSize.large,
               ).animate().fade(),
+              // child:Image.asset(
+              //   'assets/images/_common/intro-statue.jpg',
+              //   fit:BoxFit.cover,
+              // ).animate().fade(),
             );
 
             return MergeSemantics(
@@ -274,9 +274,10 @@ class _PhotoGalleryState extends State<PhotoGallery> {
                 onDecrease: () => _handleImageTapped(_index - 1, false),
                 child: _checkCollectibleIndex(index)
                     ? Center(
-                        child: HiddenCollectible(widget.wonderType, index: 1, size: 100, focus: _focusNodes[index]),
+                        //child: HiddenCollectible(widget.wonderType, index: 1, size: 100, focus: _focusNodes[index]),
                       )
-                    : AppBtn.basic(
+                    : 
+                    AppBtn.basic(
                         semanticLabel: semanticLbl,
                         focusNode: _focusNodes[index],
                         onFocusChanged: (isFocused) => _handleImageFocusChanged(index, isFocused),
