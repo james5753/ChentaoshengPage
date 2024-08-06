@@ -29,7 +29,7 @@ class TimelineSection extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(99),
             child: BlendMask(
-              blendModes: isSelected ? [] : const [BlendMode.luminosity],
+              blendModes: isSelected ? [] : /*const [BlendMode.luminosity]*/[],
               opacity: .6,
               child: _buildWonderImage(),
             ),

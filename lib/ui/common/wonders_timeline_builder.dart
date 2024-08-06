@@ -22,7 +22,8 @@ class WondersTimelineBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final gap = crossAxisGap ?? $styles.insets.xs;
+    //final gap = crossAxisGap ?? $styles.insets.xs;
+    final gap = 4.0;
     // Depending on axis, we put all the wonders in a hz row, or vt column
     Widget wrapFlex(List<Widget> c) {
       c = c.map<Widget>((w) => Expanded(child: w)).toList();
@@ -54,7 +55,7 @@ class WondersTimelineBuilder extends StatelessWidget {
               }
               final isSelected = selectedWonders.contains(data.type);
               final child =
-                  timelineBuilder?.call(context, data, isSelected) ?? _DefaultTrackEntry(isSelected: isSelected);
+                  timelineBuilder?.call(context, data, true) ?? _DefaultTrackEntry(isSelected: isSelected);
               return isHz
                   ? Positioned(left: startPx, width: sizePx, top: 0, bottom: 0, child: child)
                   : Positioned(top: startPx, height: sizePx, left: 0, right: 0, child: child);
@@ -69,16 +70,14 @@ class WondersTimelineBuilder extends StatelessWidget {
           context,
           [
             WonderType.greatWall,
-            WonderType.pyramidsGiza,
-            WonderType.christRedeemer,
+
           ],
         ),
         // Track 2
         buildSingleTimelineTrack(
           context,
           [
-            WonderType.petra,
-            WonderType.machuPicchu,
+            WonderType.christRedeemer,
           ],
         ),
         // Track 3
@@ -86,7 +85,11 @@ class WondersTimelineBuilder extends StatelessWidget {
           context,
           [
             WonderType.chichenItza,
-            WonderType.tajMahal,
+          ],
+        ),
+        buildSingleTimelineTrack(
+          context,
+          [
             WonderType.colosseum,
           ],
         ),
@@ -103,7 +106,7 @@ class _DefaultTrackEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: isSelected ? $styles.colors.accent2 : Colors.transparent,
+        color: isSelected ? $styles.colors.accent2 : $styles.colors.accent2,
         borderRadius: BorderRadius.circular(99),
         border: Border.all(color: $styles.colors.accent2),
       ),
