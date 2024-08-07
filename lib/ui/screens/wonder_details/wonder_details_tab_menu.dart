@@ -100,7 +100,7 @@ class WonderDetailsTabMenu extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             /// Tabs
-                            //ToDo：修改顺序
+                            //ToDo：修改顺序&外观
                             /// (返回首页，检索、六类资源IIIF展示、年表、Chat功能、知识图谱可视化、GIS、团队介绍)顺序待修改
                             _TabBtn(
                               0,

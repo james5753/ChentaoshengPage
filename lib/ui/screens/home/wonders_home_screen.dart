@@ -36,7 +36,7 @@ class HomeScreen extends StatefulWidget with GetItStatefulWidgetMixin {
 
 class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTickerProviderStateMixin {
   late final TabController _tabController = TabController(
-    length: 6,
+    length: 8,
     vsync: this,
     initialIndex: _clampIndex(widget.tabIndex),
   )..addListener(_handleTabChanged);
@@ -99,7 +99,7 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
             LazyIndexedStack(
               index: _tabController.index,
               children: [
-                Center(child: Text('返回主页')),
+                Center(child: Text('')),
                 Center(child: Text('检索')),
                 Center(child: Text('资源IIIF')),
                 Center(child: Text('年表')),

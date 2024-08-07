@@ -43,7 +43,7 @@ class _WonderEventsState extends State<WonderEvents> {
 
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
-        color: $styles.colors.black,
+        color: $styles.colors.white,
         child: SafeArea(
           bottom: false,
           child: Stack(
