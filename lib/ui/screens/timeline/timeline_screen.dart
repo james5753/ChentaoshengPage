@@ -27,9 +27,9 @@ part 'widgets/_timeline_section.dart';
 part 'widgets/_year_markers.dart';
 
 class TimelineScreen extends StatefulWidget {
-  final WonderType? type;
+  //final WonderType? type;
 
-  const TimelineScreen({super.key, required this.type});
+  const TimelineScreen({super.key/*, required this.type*/});
 
   @override
   State<TimelineScreen> createState() => _TimelineScreenState();
@@ -63,7 +63,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                   scroller: _scroller,
                   minSize: maxSize,
                   maxSize: maxSize,
-                  selectedWonder: widget.type,
+//                  selectedWonder: widget.type,
                   onYearChanged: _handleViewportYearChanged,
                 ),
               ),
@@ -85,7 +85,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                     _scroller,
                     size: scrubberSize,
                     timelineMinSize: minSize,
-                    selectedWonder: widget.type,
+//                    selectedWonder: widget.type,
                   ),
                 ),
               ),

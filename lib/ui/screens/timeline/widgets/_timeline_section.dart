@@ -1,14 +1,14 @@
 part of '../timeline_screen.dart';
 
 class TimelineSection extends StatelessWidget {
-  const TimelineSection(this.data, this.selectedYr, {super.key, required this.selectedWonder});
+  const TimelineSection(this.data, this.selectedYr, {super.key}/* required this.selectedWonder}*/);
   final WonderData data;
   final int selectedYr;
-  final WonderType? selectedWonder;
+//  final WonderType? selectedWonder;
 
   @override
   Widget build(BuildContext context) {
-    bool isSelected = selectedWonder == data.type;
+    bool isSelected = false;
     // get a fraction from 0 - 1 based on selected yr and start/end yr of the wonder
     // 500, 250, 750
     int startYr = data.startYr, endYr = data.endYr;

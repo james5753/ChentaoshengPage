@@ -1,4 +1,15 @@
 import 'package:wonders/common_libs.dart';
+import 'package:wonders/common_libs.dart';
+import 'package:wonders/ui/common/lazy_indexed_stack.dart';
+import 'package:wonders/ui/common/measurable_widget.dart';
+import 'package:wonders/ui/screens/artifact/artifact_carousel/artifact_carousel_screen.dart';
+import 'package:wonders/ui/screens/collection/collection_screen.dart';
+import 'package:wonders/ui/screens/editorial/editorial_screen.dart';
+import 'package:wonders/ui/screens/photo_gallery/photo_gallery.dart';
+import 'package:wonders/ui/screens/wonder_details/wonder_details_tab_menu.dart';
+import 'package:wonders/ui/screens/wonder_events/wonder_events.dart';
+import 'package:wonders/ui/screens/timeline/timeline_screen.dart';
+import 'package:wonders/ui/common/chat_page.dart';
 import 'package:wonders/logic/data/wonder_data.dart';
 import 'package:wonders/ui/common/app_icons.dart';
 import 'package:wonders/ui/common/controls/app_header.dart';
@@ -12,10 +23,111 @@ import 'package:wonders/ui/wonder_illustrations/common/animated_clouds.dart';
 import 'package:wonders/ui/wonder_illustrations/common/wonder_illustration.dart';
 import 'package:wonders/ui/wonder_illustrations/common/wonder_illustration_config.dart';
 import 'package:wonders/ui/wonder_illustrations/common/wonder_title_text.dart';
-
+import 'package:wonders/ui/screens/wonder_details/wonder_details_tab_menu.dart';
 part '_vertical_swipe_controller.dart';
 part 'widgets/_animated_arrow_button.dart';
+class HomeScreen extends StatefulWidget with GetItStatefulWidgetMixin {
+  HomeScreen({super.key, this.tabIndex = 0});
+  final int tabIndex;
 
+  @override
+  State<HomeScreen> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTickerProviderStateMixin {
+  late final TabController _tabController = TabController(
+    length: 6,
+    vsync: this,
+    initialIndex: _clampIndex(widget.tabIndex),
+  )..addListener(_handleTabChanged);
+
+  double? _tabBarSize;
+  bool _useNavRail = false;
+
+  @override
+  void didUpdateWidget(covariant HomeScreen oldWidget) {
+    if (oldWidget.tabIndex != widget.tabIndex) {
+      _tabController.index = _clampIndex(widget.tabIndex);
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  int _clampIndex(int index) => index.clamp(0, 5);
+
+  void _handleTabChanged() {
+    setState(() {});
+  }
+
+  void _handleTabTapped(int index) {
+    setState(() {
+      _tabController.index = index;
+    });
+  }
+
+  void _handleTabMenuSized(Size size) {
+    setState(() {
+      _tabBarSize = (_useNavRail ? size.width : size.height) - WonderDetailsTabMenu.buttonInset;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _useNavRail = true; // 设置为false以使用水平导航栏
+
+    final tabBarSize = _tabBarSize ?? 0;
+    final menuPadding = _useNavRail ? EdgeInsets.only(left: tabBarSize) : EdgeInsets.only(bottom: tabBarSize);
+    return Scaffold(
+      body: ColoredBox(
+        color: Colors.white,
+        child: Stack(
+          children: [
+            /// Background image
+            Positioned.fill(
+              child: Image.asset(
+                'assets/images/christ_the_redeemer/3.0x/photo-4.jpg', // 添加你的图片路径
+                fit: BoxFit.none,
+              ),
+            ),
+
+            /// Fullscreen tab views
+            LazyIndexedStack(
+              index: _tabController.index,
+              children: [
+                Center(child: Text('Information Page')),
+                Center(child: Text('Images Page')),
+                Center(child: Text('Artifacts Page')),
+                TimelineScreen(),
+                ChatPage(),
+                MapScreen(),
+              ],
+            ),
+
+            /// Tab menu
+            Align(
+              alignment: _useNavRail ? Alignment.centerLeft : Alignment.bottomCenter,
+              child: MeasurableWidget(
+                onChange: _handleTabMenuSized,
+                child: WonderDetailsTabMenu(
+                  tabController: _tabController,
+                  onTap: _handleTabTapped,
+                  showBg: true,
+                  axis: _useNavRail ? Axis.vertical : Axis.horizontal,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+/*
 class HomeScreen extends StatefulWidget with GetItStatefulWidgetMixin {
   HomeScreen({super.key});
 
@@ -383,3 +495,4 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     ]);
   }
 }
+*/

@@ -12,14 +12,14 @@ class WonderDetailsTabMenu extends StatelessWidget {
     super.key,
     required this.tabController,
     this.showBg = false,
-    required this.wonderType,
+//    required this.wonderType,
     this.axis = Axis.horizontal,
     required this.onTap,
   });
 
   final TabController tabController;
   final bool showBg;
-  final WonderType wonderType;
+//  final WonderType wonderType;
   final Axis axis;
   bool get isVertical => axis == Axis.vertical;
 
@@ -81,11 +81,11 @@ class WonderDetailsTabMenu extends StatelessWidget {
                       padding: isVertical
                           ? EdgeInsets.only(left: $styles.insets.xs)
                           : EdgeInsets.only(bottom: $styles.insets.xs),
-                      child: _WonderHomeBtn(
-                        size: homeBtnSize,
-                        wonderType: wonderType,
-                        borderSize: showBg ? 6 : 2,
-                      ),
+//                      child: _WonderHomeBtn(
+//                        size: homeBtnSize,
+//                        wonderType: wonderType,
+//                        borderSize: showBg ? 6 : 2,
+//                      ),
                     ),
                     Gap(gapAmt),
 

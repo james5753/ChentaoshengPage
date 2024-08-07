@@ -96,7 +96,7 @@ class _WonderDetailsScreenState extends State<WonderDetailsScreen>
               child: WonderDetailsTabMenu(
                   tabController: _tabController,
                   onTap: _handleTabTapped,
-                  wonderType: wonder.type,
+//                  wonderType: wonder.type,
                   showBg: showTabBarBg,
                   axis: _useNavRail ? Axis.vertical : Axis.horizontal),
             ),

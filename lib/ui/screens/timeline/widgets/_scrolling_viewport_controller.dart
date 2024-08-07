@@ -20,14 +20,14 @@ class _ScrollingViewportController extends ChangeNotifier {
   void init() {
     scheduleMicrotask(() {
       setZoom(.5);
-      final w = widget.selectedWonder;
-      if (w != null) {
-        final data = wondersLogic.getData(w);
-        final pos = calculateScrollPosFromYear(data.startYr);
+      // final w = widget.selectedWonder;
+       if (true) {
+//        final data = wondersLogic.getData(w);
+        final pos = calculateScrollPosFromYear(1900);
         scroller.jumpTo(pos - 200);
         scroller.animateTo(pos, duration: 1.35.seconds, curve: Curves.easeOutCubic);
         scroller.addListener(_updateCurrentYear);
-      }
+      };
     });
   }
 

@@ -8,13 +8,13 @@ class _ScrollingViewport extends StatefulWidget {
     required this.scroller,
     required this.minSize,
     required this.maxSize,
-    required this.selectedWonder,
+//    required this.selectedWonder,
     this.onYearChanged,
   });
   final double minSize;
   final double maxSize;
   final ScrollController scroller;
-  final WonderType? selectedWonder;
+//  final WonderType? selectedWonder;
   final void Function(int year)? onYearChanged;
   final void Function(_ScrollingViewportController controller)? onInit;
 
@@ -94,7 +94,7 @@ class _ScalingViewportState extends State<_ScrollingViewport> {
           builder: (_, __) => TimelineSection(
             data,
             controller.calculateYearFromScrollPos(),
-            selectedWonder: widget.selectedWonder,
+//            selectedWonder: widget.selectedWonder,
           ),
         ),
       );
