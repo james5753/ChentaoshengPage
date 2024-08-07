@@ -24,7 +24,7 @@ class _ScrollingViewportController extends ChangeNotifier {
        if (true) {
 //        final data = wondersLogic.getData(w);
         final pos = calculateScrollPosFromYear(1900);
-        scroller.jumpTo(pos - 200);
+        scroller.jumpTo(pos);
         scroller.animateTo(pos, duration: 1.35.seconds, curve: Curves.easeOutCubic);
         scroller.addListener(_updateCurrentYear);
       };

@@ -91,7 +91,7 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
             Positioned.fill(
               child: Image.asset(
                 'assets/images/christ_the_redeemer/3.0x/photo-4.jpg', // 添加你的图片路径
-                fit: BoxFit.none,
+                fit: BoxFit.none,//更改适配
               ),
             ),
 
@@ -99,12 +99,14 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
             LazyIndexedStack(
               index: _tabController.index,
               children: [
-                Center(child: Text('Information Page')),
-                Center(child: Text('Images Page')),
-                Center(child: Text('Artifacts Page')),
-                TimelineScreen(),
-                ChatPage(),
-                MapScreen(),
+                Center(child: Text('返回主页')),
+                Center(child: Text('检索')),
+                Center(child: Text('资源IIIF')),
+                Center(child: Text('年表')),
+                Center(child: Text('chat')),
+                TimelineScreen(),//图谱
+                ChatPage(),//gis
+                MapScreen(),//团队介绍
               ],
             ),
 
