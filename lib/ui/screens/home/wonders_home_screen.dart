@@ -1,5 +1,5 @@
 import 'package:wonders/common_libs.dart';
-import 'package:wonders/common_libs.dart';
+import 'package:wonders/ui/common/search_page.dart';
 import 'package:wonders/ui/common/lazy_indexed_stack.dart';
 import 'package:wonders/ui/common/measurable_widget.dart';
 import 'package:wonders/ui/screens/artifact/artifact_carousel/artifact_carousel_screen.dart';
@@ -100,7 +100,8 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
               index: _tabController.index,
               children: [
                 Center(child: Text('')),
-                Center(child: Text('检索')),
+                // Center(child: Text('检索')),
+                MyHomePage(),
                 Center(child: Text('资源IIIF')),
                 Center(child: Text('年表')),
                 Center(child: Text('chat')),

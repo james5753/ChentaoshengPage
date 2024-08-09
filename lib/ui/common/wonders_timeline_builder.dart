@@ -23,7 +23,7 @@ class WondersTimelineBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final gap = crossAxisGap ?? $styles.insets.xs;
-    final gap = 10.0;
+    final gap = 4.0;
     // Depending on axis, we put all the wonders in a hz row, or vt column
     Widget wrapFlex(List<Widget> c) {
       c = c.map<Widget>((w) => Expanded(child: w)).toList();
