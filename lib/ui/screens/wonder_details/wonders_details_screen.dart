@@ -21,7 +21,7 @@ class WonderDetailsScreen extends StatefulWidget with GetItStatefulWidgetMixin {
 class _WonderDetailsScreenState extends State<WonderDetailsScreen>
     with GetItStateMixin, SingleTickerProviderStateMixin {
   late final _tabController = TabController(
-    length: 6,
+    length: 8,
     vsync: this,
     initialIndex: _clampIndex(widget.tabIndex),
   )..addListener(_handleTabChanged);

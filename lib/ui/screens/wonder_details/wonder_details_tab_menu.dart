@@ -31,7 +31,7 @@ class WonderDetailsTabMenu extends StatelessWidget {
     // Measure available size after subtracting the home button size and insets
     final availableSize = ((isVertical ? context.heightPx : context.widthPx) - homeBtnSize - $styles.insets.md);
     // Calculate tabBtnSize based on availableSize
-    final double tabBtnSize = (availableSize / 4).clamp(minTabSize, maxTabSize);
+    final double tabBtnSize = (availableSize / 8).clamp(minTabSize, maxTabSize);
     // Figure out some extra gap, in the case that the tabBtns are wider than the homeBtn
     final double gapAmt = max(0, tabBtnSize - homeBtnSize);
     // Store off safe areas which we will need to respect in the layout below

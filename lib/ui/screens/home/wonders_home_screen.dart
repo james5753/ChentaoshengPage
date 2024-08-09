@@ -58,7 +58,7 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
     super.dispose();
   }
 
-  int _clampIndex(int index) => index.clamp(0, 5);
+  int _clampIndex(int index) => index.clamp(0, 7);
 
   void _handleTabChanged() {
     setState(() {});
@@ -100,14 +100,13 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
               index: _tabController.index,
               children: [
                 Center(child: Text('')),
-                // Center(child: Text('检索')),
-                MyHomePage(),
+                MyHomePage(),//检索
                 Center(child: Text('资源IIIF')),
-                Center(child: Text('年表')),
-                Center(child: Text('chat')),
                 TimelineScreen(),//图谱
-                ChatPage(),//gis
-                MapScreen(),//团队介绍
+                ChatPage(),//chat
+                MapScreen(),//gis
+                Center(child: Text('年表')),
+                Center(child: Text('介绍')),//团队介绍
               ],
             ),
 

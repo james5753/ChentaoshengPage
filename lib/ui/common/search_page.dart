@@ -203,7 +203,15 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('API Query App'),
+        title: Text('API查询应用'),
+        centerTitle: true,
+        automaticallyImplyLeading: false, // 取消按钮回退的功能
+        backgroundColor: Color.fromARGB(255, 221, 160, 160), // 设置AppBar的背景颜色
+        titleTextStyle: TextStyle(
+          color: Color.fromARGB(168, 0, 0, 0), // 设置标题文字颜色
+          fontSize: 20.0, // 设置标题文字大小
+          fontWeight: FontWeight.bold, // 设置标题文字粗细
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -234,6 +242,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       controller: _controller,
                       decoration: InputDecoration(
                         labelText: 'Enter query',
+                        labelStyle: TextStyle(color: Colors.black),
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -262,8 +271,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              GestureDetector(
-                                onTap: () => _launchURL(item['cover_url']),
+                              ElevatedButton(
+                                onPressed: () => _launchURL(item['cover_url']),
                                 child: Text(
                                   '查看图片',
                                   style: TextStyle(color: Colors.blue),
@@ -336,7 +345,9 @@ class JsonDisplayPage extends StatelessWidget {
   Future<Map<String, dynamic>> _fetchJson() async {
     final response = await http.get(Uri.parse(manifestUrl));
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      // 使用 utf8.decode 确保正确解析中文字符
+      final decodedResponse = utf8.decode(response.bodyBytes);
+      return json.decode(decodedResponse);
     } else {
       throw Exception('Failed to load JSON');
     }
@@ -346,7 +357,9 @@ class JsonDisplayPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('JSON Viewer'),
+        title: Text('JSON Viewer', style: TextStyle(color: Colors.black)),
+        //backgroundColor: Colors.white, // 如果需要更改 AppBar 的背景颜色
+        //iconTheme: IconThemeData(color: Colors.black), // 如果需要更改 AppBar 图标的颜色
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: _fetchJson(),
@@ -354,9 +367,9 @@ class JsonDisplayPage extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: Text('Error: ${snapshot.error}', style: TextStyle(color: Colors.black)));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No data found'));
+            return Center(child: Text('No data found', style: TextStyle(color: Colors.black)));
           } else {
             final jsonData = snapshot.data!;
             return Padding(
@@ -364,8 +377,8 @@ class JsonDisplayPage extends StatelessWidget {
               child: ListView(
                 children: jsonData.entries.map((entry) {
                   return ListTile(
-                    title: Text(entry.key),
-                    subtitle: Text(entry.value.toString()),
+                    title: Text(entry.key, style: TextStyle(color: Colors.black)),
+                    subtitle: Text(entry.value.toString(), style: TextStyle(color: Colors.black)),
                   );
                 }).toList(),
               ),
