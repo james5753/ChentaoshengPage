@@ -1,4 +1,5 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
-    "dart.lineLength": 120
+    "dart.lineLength": 120,
+    "cmake.sourceDirectory": "E:/Codes/github file/flutter-wonderous-app/windows"
 }

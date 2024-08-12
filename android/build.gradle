@@ -3,23 +3,32 @@ buildscript {
     ext.maps_version = '18.1.0'
 
     repositories {
+        maven { url "https://jitpack.io" }
+        maven { url 'https://maven.aliyun.com/repository/releases' }
         maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url 'https://maven.aliyun.com/repository/jcenter' }
-        maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        google()
+        mavenCentral()
+        gradlePluginPortal()
     }
-
+    
     dependencies {
-        /* When bumping, also update ndkVersion above. */
-        classpath 'com.android.tools.build:gradle:4.2.2'// 更新到4.2.2或更高版本
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" // 添加这一行
+        classpath 'com.android.tools.build:gradle:8.4.1' 
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
+}
 
+plugins {
+    id 'com.android.application' version '8.4.1' apply false
+    id 'org.jetbrains.kotlin.android' version '1.9.10' apply false
 }
 
 allprojects {
     repositories {
         google()
-//        mavenCentral()
+        mavenCentral()
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
         maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
@@ -37,3 +46,4 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+

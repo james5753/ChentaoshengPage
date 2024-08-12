@@ -1,44 +1,47 @@
-
-
-
-buildscript {
-    ext.kotlin_version = '1.5.31' // 确保使用最新的Kotlin版本
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
+    id 'org.jetbrains.kotlin.android' // 如果使用 Kotlin
+    // id 'com.google.gms.google-services' // 如果使用 Google 服务
 }
+
+// Load local.properties file
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withInputStream { stream ->
+        localProperties.load(stream)
+    }
+} else {
+    throw new GradleException("local.properties file not found. Please create it at: ${localPropertiesFile.path}")
+}
+
+// Define flutterRoot
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+def keystorePropertiesFile = rootProject.file("key.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     compileSdkVersion 34
 
-    defaultConfig {
-        configurations.all {
-            resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
-        }
-        applicationId "com.gskinner.flutter.wonders"
-        minSdkVersion 23
-        targetSdkVersion flutter.targetSdkVersion
-        multiDexEnabled true
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+    lintOptions {
+        disable 'InvalidPackage'
     }
 
-   buildTypes {
-       release {
-           signingConfig signingConfigs.debug
-       }
-   }
+    defaultConfig {
+    applicationId "com.example.flutter_app1"
+    minSdkVersion 21 // 确保这个值不高于目标设备的 Android 版本
+    targetSdkVersion 34
+    versionCode localProperties.getProperty('flutter.versionCode').toInteger()
+    versionName localProperties.getProperty('flutter.versionName')
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+}
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -46,54 +49,27 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "1.8"
+    }
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            v1SigningEnabled true  //打包时默认勾选 V1（Jar Signature）
+            v2SigningEnabled true  //打包时默认勾选 V2（Full APK Signature）
+        }
     }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
     }
 
-    lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
-    }
-}
-
-flutter {
-    source '../..'
-}
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "com.google.android.gms:play-services-maps:$maps_version"
-}
-
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
-}
-
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
-}
-
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
-}
-
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
-}
-
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
-if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
+    namespace 'com.example.flutter_app1' // 确保添加了这一行
 }
