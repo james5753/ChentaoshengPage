@@ -4,7 +4,7 @@ import 'package:wonders/common_libs.dart';
 //这个文件可以修改tabbar
 class WonderDetailsTabMenu extends StatelessWidget {
   static const double buttonInset = 12;
-  static const double homeBtnSize = 74;
+  static const double homeBtnSize = 60;
   static const double minTabSize = 25;
   static const double maxTabSize = 100;
 
@@ -115,7 +115,7 @@ class WonderDetailsTabMenu extends StatelessWidget {
                             _TabBtn(
                               1,
                               tabController,
-                              iconImg: 'photos',
+                              iconImg: 'search',
                               label: $strings.wonderDetailsTabLabelImages,
                               color: iconColor,
                               axis: axis,
@@ -146,7 +146,7 @@ class WonderDetailsTabMenu extends StatelessWidget {
                             _TabBtn(
                               4,
                               tabController,
-                              iconImg: 'ai-chat',
+                              iconImg: 'aichat',
                               label:'ChatBox',
                               color: iconColor,
                               axis: axis,
@@ -172,7 +172,7 @@ class WonderDetailsTabMenu extends StatelessWidget {
                             _TabBtn(
                               6,
                               tabController,
-                              iconImg: 'map',
+                              iconImg: 'photo',
                               label:'Map',
                               color: iconColor,
                               axis: axis,
@@ -182,8 +182,8 @@ class WonderDetailsTabMenu extends StatelessWidget {
                             _TabBtn(
                               7,
                               tabController,
-                              iconImg: 'map',
-                              label:'Map',
+                              iconImg: 'contact',
+                              label:'Contact',
                               color: iconColor,
                               axis: axis,
                               mainAxisSize: tabBtnSize,

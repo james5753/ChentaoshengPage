@@ -99,13 +99,13 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
             LazyIndexedStack(
               index: _tabController.index,
               children: [
-                Center(child: Text('')),
+                Center(child: Text('')),//首页
                 MyHomePage(),//检索
                 Center(child: Text('资源IIIF')),
-                TimelineScreen(),//图谱
+                TimelineScreen(),//年表
                 ChatPage(),//chat
                 MapScreen(),//gis
-                Center(child: Text('年表')),
+                Center(child: Text('图谱')),
                 Center(child: Text('介绍')),//团队介绍
               ],
             ),
