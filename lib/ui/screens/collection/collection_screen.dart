@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:wonders/ui/screens/webview_screen/webview_screen.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -96,12 +97,19 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
   @override
   void initState() {
     super.initState();
+
     _controller = AnimationController(
       duration: Duration(seconds: 1),
       vsync: this,
     );
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
     _controller.forward();
+
+    // Generate all paths on init
+    for (int i = 1; i < _events.length; i++) {
+      final newPath = _getCurvedPath(_events[i - 1]['location'], _events[i]['location']);
+      _allPaths.add(newPath);
+    }
   }
 
   @override
@@ -164,7 +172,7 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
                       subdomains: ['1', '2', '3', '4'],
                     ),
                     MarkerLayer(
-                      markers: _events.sublist(0, _currentStep + 1).map((event) {
+                      markers: _events.map((event) {
                         return Marker(
                           width: 80.0,
                           height: 80.0,
@@ -193,7 +201,7 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
                                   );
                                 },
                                 child: Container(
-                                  child: Icon(Icons.location_on, color: Colors.red, size: 40),
+                                  child: Icon(Icons.location_on, color: Colors.red, size: 30),
                                 ),
                               ),
                             ),
@@ -202,104 +210,48 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
                       }).toList(),
                     ),
                     PolylineLayer(
-                      polylines: _allPaths.isNotEmpty
-                          ? _allPaths.map((path) {
-                              return Polyline(
-                                points: path,
-                                strokeWidth: 2.0,
-                                color: Colors.blue,
-                              );
-                            }).toList()
-                          : [],
-                    ),
-                    AnimatedBuilder(
-                      animation: _animation,
-                      builder: (context, child) {
-                        if (_currentStep > 0) {
-                          final newPath = _getCurvedPath(
-                            _events[_currentStep - 1]['location'],
-                            _events[_currentStep]['location'],
-                          );
-
-                          if (!_allPaths.contains(newPath)) {
-                            _allPaths.add(newPath);
-                          }
-
-                          return PolylineLayer(
-                            polylines: [
-                              Polyline(
-                                points: newPath,
-                                strokeWidth: 2.0,
-                                color: Colors.blue.withOpacity(_animation.value),
-                                isDotted: false,
-                              ),
-                            ],
-                          );
-                        }
-                        return SizedBox.shrink();
-                      },
+                      polylines: _allPaths.map((path) {
+                        return Polyline(
+                          points: path,
+                          strokeWidth: 2.0,
+                          color: Colors.blue,
+                        );
+                      }).toList(),
                     ),
                   ],
                 ),
               ),
             ],
           ),
+          Expanded(
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 16.0, top: 16.0),
+                    child: SizedBox(
+                      width: 150, // 调整按钮宽度
+                      height: 50, // 调整按钮高度
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => WebViewPage()),
+                          );
+                        },
+                        child: Text('故事模式'),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           Positioned(
             bottom: 30.0,
-            left: 120.0,
-            right: 120.0,
+            left: 60.0,
+            right: 20.0,
             child: Container(
               height: 60.0,
               child: Row(
                 children: [
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: List.generate(_events.length, (index) {
-                        return GestureDetector(
-                          onTap: () {
-                            if (_currentStep >= index) {
-                              showDialog(
-                                context: context,
-                                builder: (ctx) => AlertDialog(
-                                  title: Text(_events[index]['time']),
-                                  content: Text(_events[index]['event']),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(ctx).pop();
-                                      },
-                                      child: Text('关闭'),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }
-                          },
-                          child: Column(
-                            children: [
-                              CircleAvatar(
-                                radius: 15,
-                                backgroundColor: index <= _currentStep ? Colors.blue : Colors.grey,
-                                child: Text(
-                                  '${index + 1}',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                _events[index]['time'],
-                                style: TextStyle(
-                                  color: index <= _currentStep ? Colors.blue : Colors.grey,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                    ),
-                  ),
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.blue,
@@ -310,19 +262,77 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
                       color: Colors.white,
                       iconSize: 36,
                       padding: EdgeInsets.all(0),
-                      onPressed: _currentStep < _events.length - 1 ? () {
-                        setState(() {
-                          _currentStep++;
-                          _animatedMoveToCurrentLocation(); // 每次点击右箭头时聚焦到当前地点
-                          _controller.reset();
-                          _controller.forward();
-                        });
-                      } : null,
+                      onPressed: _currentStep < _events.length - 1
+                          ? () {
+                              setState(() {
+                                _currentStep++;
+                                _animatedMoveToCurrentLocation(); // 每次点击右箭头时聚焦到当前地点
+                                _controller.reset();
+                                _controller.forward();
+                              });
+                            }
+                          : null,
                       highlightColor: Colors.transparent,
                       splashColor: Colors.transparent,
                       disabledColor: Colors.grey,
                     ),
                   ),
+                  Expanded(
+                    child: Center(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: List.generate(_events.length, (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                if (_currentStep >= index) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                      title: Text(_events[index]['time']),
+                                      content: Text(_events[index]['event']),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(ctx).pop();
+                                          },
+                                          child: Text('关闭'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10.0), // 增加按钮之间的间距
+                                child: Column(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 15,
+                                      backgroundColor: index <= _currentStep ? Colors.blue : Colors.grey,
+                                      child: Text(
+                                        '${index + 1}',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Text(
+                                      _events[index]['time'],
+                                      style: TextStyle(
+                                        color: index <= _currentStep ? Colors.blue : Colors.grey,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -332,34 +342,3 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
     );
   }
 }
-
-
-
-
-  // Container(
-  //   decoration: BoxDecoration(
-  //     color: Colors.blue, // 背景色
-  //     shape: BoxShape.circle,
-  //   ),
-  //   child: IconButton(
-  //     icon: Icon(Icons.arrow_back),
-  //     color: Colors.white,
-  //     iconSize: 36,
-  //     padding: EdgeInsets.all(0),
-  //     onPressed: _currentStep > 0 ? () {
-  //       setState(() {
-  //         _currentStep--;
-  //         // 删除对应的路径
-  //         if (_allPaths.isNotEmpty) {
-  //           _allPaths.removeLast();
-  //         }
-  //         // 重新开始动画
-  //         _controller.reset();
-  //         _controller.forward();
-  //       });
-  //     } : null,
-  //     highlightColor: Colors.transparent,
-  //     splashColor: Colors.transparent,
-  //     disabledColor: Colors.grey,
-  //   ),
-  // ),

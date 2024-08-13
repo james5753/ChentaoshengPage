@@ -15,9 +15,9 @@ import 'package:wonders/ui/common/app_shortcuts.dart';
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // Keep native splash screen up until app is finished bootstrapping
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   GoRouter.optionURLReflectsImperativeAPIs = true;
-
+  
   // Start app
   registerSingletons();
 
@@ -25,7 +25,7 @@ void main() async {
   await appLogic.bootstrap();
 
   // Remove splash screen when bootstrap is complete
-  FlutterNativeSplash.remove();
+  //FlutterNativeSplash.remove();
 }
 
 /// Creates an app using the [MaterialApp.router] constructor and the global `appRouter`, an instance of [GoRouter].
