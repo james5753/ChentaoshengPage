@@ -10,6 +10,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMixin {
   int _currentStep = 0;
+  bool _isSmoothMove=false; //默认使用瞬移
   List<List<LatLng>> _allPaths = [];
   MapController _mapController = MapController();  // 初始化MapController
 
@@ -115,6 +116,7 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
   @override
   void dispose() {
     _controller.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -137,10 +139,35 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
     return path;
   }
 
-  void _animatedMoveToCurrentLocation() {
+    void _smoothMoveToCurrentLocation() async {   //平滑移动
+    LatLng targetLocation = _events[_currentStep]['location'];
+    LatLng currentLocation = _mapController.center;
+    int steps = 10; // 定义平滑移动的步数
+    double latStep = (targetLocation.latitude - currentLocation.latitude) / steps;
+    double lngStep = (targetLocation.longitude - currentLocation.longitude) / steps;
+
+    for (int i = 0; i < steps; i++) {
+      await Future.delayed(Duration(milliseconds: 10), () {
+        double newLat = currentLocation.latitude + latStep * i;
+        double newLng = currentLocation.longitude + lngStep * i;
+        _mapController.move(LatLng(newLat, newLng), 6.0); // 6.0 是缩放级别，可以根据需求调整
+      });
+    }
+  }
+
+  void _animatedMoveToCurrentLocation() {   //瞬移
     LatLng targetLocation = _events[_currentStep]['location'];
     _mapController.move(targetLocation, _mapController.zoom);
   }
+
+  void _toggleMoveMode() {    //切换移动方式
+    setState(() {
+      _isSmoothMove = !_isSmoothMove;
+    });
+  }
+
+  ScrollController _scrollController = ScrollController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -224,13 +251,15 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
             ],
           ),
           Expanded(
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 16.0, top: 16.0),
-                    child: SizedBox(
-                      width: 150, // 调整按钮宽度
-                      height: 50, // 调整按钮高度
+              child: Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: EdgeInsets.only(right: 16.0, top: 16.0),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 140, // 调整按钮宽度
+                      height: 40, // 调整按钮高度
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(
@@ -238,12 +267,36 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
                             MaterialPageRoute(builder: (context) => WebViewPage()),
                           );
                         },
-                        child: Text('故事模式'),
+                        child: Text('进入故事模式'),
                       ),
                     ),
-                  ),
+                    SizedBox(height: 20), // 按钮之间的间距
+                    SizedBox(
+                      width: 140, // 调整按钮宽度
+                      height: 40, // 调整按钮高度
+                      child: ElevatedButton(
+                        onPressed: _toggleMoveMode,
+                        child: Text(_isSmoothMove ? '切换动画移动' : '切换平滑移动'),
+                      ),
+                    ),
+                    SizedBox(height: 20), // 按钮之间的间距
+                    SizedBox(
+                      width: 140, // 调整按钮宽度
+                      height: 40, // 调整按钮高度
+                      child: ElevatedButton(
+                        onPressed: (){
+                          setState(() {
+                            _currentStep=0;
+                          });
+                        },
+                        child: Text('返回时间起点'),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+            ),
+          ),
           Positioned(
             bottom: 30.0,
             left: 60.0,
@@ -266,7 +319,7 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
                           ? () {
                               setState(() {
                                 _currentStep++;
-                                _animatedMoveToCurrentLocation(); // 每次点击右箭头时聚焦到当前地点
+                                _isSmoothMove?_animatedMoveToCurrentLocation():_smoothMoveToCurrentLocation(); // 根据移动方式调用不同的方法
                                 _controller.reset();
                                 _controller.forward();
                               });
@@ -279,56 +332,60 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
                   ),
                   Expanded(
                     child: Center(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: List.generate(_events.length, (index) {
-                            return GestureDetector(
-                              onTap: () {
-                                if (_currentStep >= index) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (ctx) => AlertDialog(
-                                      title: Text(_events[index]['time']),
-                                      content: Text(_events[index]['event']),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(ctx).pop();
-                                          },
-                                          child: Text('关闭'),
+                      child:Scrollbar(
+                        controller: _scrollController,
+                        thumbVisibility: true,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: List.generate(_events.length, (index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  if (_currentStep >= index) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (ctx) => AlertDialog(
+                                        title: Text(_events[index]['time']),
+                                        content: Text(_events[index]['event']),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(ctx).pop();
+                                            },
+                                            child: Text('关闭'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12.0), // 增加按钮之间的间距
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor: index <= _currentStep ? Colors.blue : Colors.grey,
+                                        child: Text(
+                                          '${index + 1}',
+                                          style: TextStyle(color: Colors.white),
                                         ),
-                                      ],
-                                    ),
-                                  );
-                                }
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10.0), // 增加按钮之间的间距
-                                child: Column(
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 15,
-                                      backgroundColor: index <= _currentStep ? Colors.blue : Colors.grey,
-                                      child: Text(
-                                        '${index + 1}',
-                                        style: TextStyle(color: Colors.white),
                                       ),
-                                    ),
-                                    SizedBox(height: 5),
-                                    Text(
-                                      _events[index]['time'],
-                                      style: TextStyle(
-                                        color: index <= _currentStep ? Colors.blue : Colors.grey,
-                                        fontSize: 12,
+                                      SizedBox(height: 5),
+                                      Text(
+                                        _events[index]['time'],
+                                        style: TextStyle(
+                                          color: index <= _currentStep ? Colors.blue : Colors.grey,
+                                          fontSize: 12,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            );
-                          }),
+                              );
+                            }),
+                          ),
                         ),
                       ),
                     ),
