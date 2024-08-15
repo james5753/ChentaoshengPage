@@ -51,7 +51,8 @@ Widget build(BuildContext context) {
 
   // 根据文本尺寸设置宽度和高度
   final width = $styles.sizes.maxContentWidth1;
-  final height = 50 +textPainter.size.height*2 + $styles.insets.md * 3;
+  final height = 50 +textPainter.size.height*2.2 + $styles.insets.md * 3;
+  //final height=250.0;
 
   return TopCenter(
     child: ClipRect(

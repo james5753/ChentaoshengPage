@@ -117,74 +117,79 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: Center(
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.8, // 设置聊天框宽度为屏幕宽度的80%
-          height: MediaQuery.of(context).size.height * 0.8, // 设置聊天框高度为屏幕高度的80%
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15.0), // 设置Container的圆角
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(0, 8), // 阴影偏移量
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(26.0),
-            child: Column(
-              children: [
-                SizedBox(height: 20.0),
-                Expanded(
-                  child: Chat(
-                    messages: _messages,
-                    onSendPressed: _handleSendPressed,
-                    user: _user,
-                    theme: DefaultChatTheme(
-                      primaryColor: Colors.blue,
-                      secondaryColor: Color.fromARGB(255, 231, 231, 231),
-                      backgroundColor: Colors.white,
-                      messageBorderRadius: 15.0, // 设置消息气泡的圆角半径
-                      inputBackgroundColor: Colors.white, // 输入框背景颜色
-                      inputTextColor: Colors.black, // 输入框文字颜色
-                      inputBorderRadius: BorderRadius.circular(15.0), // 输入框圆角
-                      inputTextStyle: TextStyle(fontSize: 16.0), // 输入框文字样式
-                      inputContainerDecoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15.0),
-                        border: Border.all(color: Color.fromARGB(136, 136, 126, 138), width: 1.0), // 输入框边框颜色和宽度
-                      ),
-                      messageMaxWidth: MediaQuery.of(context).size.width * 0.6, // 设置消息气泡的最大宽度为屏幕宽度的60%
-                    ),
-                    showUserAvatars: true,
-                    showUserNames: true,
+          child: Transform.translate(
+            offset: Offset(50.0, 0), // 向右偏移50个像素
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8, // 设置聊天框宽度为屏幕宽度的80%
+              height: MediaQuery.of(context).size.height * 0.8, // 设置聊天框高度为屏幕高度的80%
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15.0), // 设置Container的圆角
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 8), // 阴影偏移量
                   ),
-                ),
-                SizedBox(height: 20.0),
-                Wrap(
-                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  alignment: WrapAlignment.start,
-                  spacing:5.0,
-                  runSpacing: 5.0,
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(26.0),
+                child: Column(
                   children: [
-                    ElevatedButton(
-                      onPressed: () => _sendSuggestedMessage('陈騊声是谁？'),
-                      child: Text('陈騊声是谁？'),
+                    SizedBox(height: 20.0),
+                    Expanded(
+                      child: Chat(
+                        messages: _messages,
+                        onSendPressed: _handleSendPressed,
+                        user: _user,
+                        theme: DefaultChatTheme(
+                          primaryColor: Colors.blue,
+                          secondaryColor: Color.fromARGB(255, 231, 231, 231),
+                          backgroundColor: Colors.white,
+                          messageBorderRadius: 15.0, // 设置消息气泡的圆角半径
+                          inputBackgroundColor: Colors.white, // 输入框背景颜色
+                          inputTextColor: Colors.black, // 输入框文字颜色
+                          inputBorderRadius: BorderRadius.circular(15.0), // 输入框圆角
+                          inputTextStyle: TextStyle(fontSize: 16.0), // 输入框文字样式
+                          inputContainerDecoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15.0),
+                            border: Border.all(color: Color.fromARGB(136, 136, 126, 138), width: 1.0), // 输入框边框颜色和宽度
+                          ),
+                          messageMaxWidth: MediaQuery.of(context).size.width * 0.6, // 设置消息气泡的最大宽度为屏幕宽度的60%
+                        ),
+                        showUserAvatars: true,
+                        showUserNames: true,
+                      ),
                     ),
-                    //SizedBox(width: 5.0),
-                    ElevatedButton(
-                      onPressed: () => _sendSuggestedMessage('简述中国工业的发展。'),
-                      child: Text('简述中国工业的发展。'),
+                    SizedBox(height: 20.0),
+                    Wrap(
+                      //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      alignment: WrapAlignment.start,
+                      spacing: 5.0,
+                      runSpacing: 5.0,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () => _sendSuggestedMessage('陈騊声是谁？'),
+                          child: Text('陈騊声是谁？'),
+                        ),
+                        //SizedBox(width: 5.0),
+                        ElevatedButton(
+                          onPressed: () => _sendSuggestedMessage('简述中国工业的发展。'),
+                          child: Text('简述中国工业的发展。'),
+                        ),
+                        //SizedBox(width: 5.0),
+                        // ElevatedButton(
+                        //   onPressed: () => _sendSuggestedMessage('陈騊声对于中国工业的发展有什么影响？'),
+                        //   child: Text('陈騊声对于中国工业的发展有什么影响？'),
+                        // ),
+                      ],
                     ),
-                    //SizedBox(width: 5.0),
-                    // ElevatedButton(
-                    //   onPressed: () => _sendSuggestedMessage('陈騊声对于中国工业的发展有什么影响？'),
-                    //   child: Text('陈騊声对于中国工业的发展有什么影响？'),
-                    // ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
         ),

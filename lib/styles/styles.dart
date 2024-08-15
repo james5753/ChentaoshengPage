@@ -102,8 +102,9 @@ class _Text {
 
   late final TextStyle body = _createFont(contentFont, sizePx: 16, heightPx: 26);
   late final TextStyle bodyBold = _createFont(contentFont, sizePx: 16, heightPx: 26, weight: FontWeight.w600);
-  late final TextStyle bodySmall = _createFont(contentFont, sizePx: 14, heightPx: 23);
+  late final TextStyle bodySmall = _createFont(contentFont, sizePx: 12, heightPx: 23);
   late final TextStyle bodySmallBold = _createFont(contentFont, sizePx: 14, heightPx: 23, weight: FontWeight.w600);
+  late final TextStyle bodySoSmall = _createFont(contentFont, sizePx: 10, heightPx: 20);
 
   late final TextStyle quote1 =
       _createFont(quoteFont, sizePx: 32, heightPx: 40, weight: FontWeight.w600, spacingPc: -3);
@@ -161,6 +162,7 @@ class _Insets {
 
   late final double xxs = 4 * _scale;
   late final double xs = 8 * _scale;
+  late final double s = 12 * _scale;
   late final double sm = 16 * _scale;
   late final double md = 24 * _scale;
   late final double lg = 32 * _scale;
