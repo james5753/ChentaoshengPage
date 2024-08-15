@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:wonders/ui/screens/webview_screen/webview_screen.dart';
+import 'package:wonders/styles/styles.dart';
+import 'package:wonders/ui/wonder_illustrations/common/wonder_title_text.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -10,7 +12,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMixin {
   int _currentStep = 0;
-  bool _isSmoothMove=false; //默认使用瞬移
+  bool _isSmoothMove=true; //默认使用瞬移
   List<List<LatLng>> _allPaths = [];
   MapController _mapController = MapController();  // 初始化MapController
 
@@ -175,11 +177,12 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
       appBar: AppBar(
         title: Text('GIS地图'),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 221, 160, 160),
+        backgroundColor: Color.fromARGB(255, 228, 206, 206),
         titleTextStyle: TextStyle(
-          color: Color.fromARGB(168, 0, 0, 0),
+          fontFamily: 'Tenor',
+          color: Color.fromARGB(255, 113,84,79),
           fontSize: 20.0,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.normal,
         ),
       ),
       body: Stack(
@@ -307,7 +310,7 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: Colors.lightBlue[200],
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
@@ -322,6 +325,46 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
                                 _isSmoothMove?_animatedMoveToCurrentLocation():_smoothMoveToCurrentLocation(); // 根据移动方式调用不同的方法
                                 _controller.reset();
                                 _controller.forward();
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (ctx) {
+                                    // 在弹窗显示后两秒钟自动关闭
+                                    Future.delayed(Duration(seconds: 2), () {
+                                      if (Navigator.of(ctx).canPop()) {
+                                        Navigator.of(ctx).pop();
+                                      }
+                                    });
+                                    return Container(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            _events[_currentStep]['time'],
+                                            style: TextStyle(
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(height: 8.0),
+                                          Text(
+                                            _events[_currentStep]['event'],
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                            ),
+                                          ),
+                                          SizedBox(height: 16.0),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(ctx).pop();
+                                            },
+                                            child: Text('关闭'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
                               });
                             }
                           : null,
@@ -366,7 +409,7 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
                                     children: [
                                       CircleAvatar(
                                         radius: 15,
-                                        backgroundColor: index <= _currentStep ? Colors.blue : Colors.grey,
+                                        backgroundColor: index <= _currentStep ? Colors.lightBlue[200] : Colors.grey,
                                         child: Text(
                                           '${index + 1}',
                                           style: TextStyle(color: Colors.white),
@@ -376,7 +419,7 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
                                       Text(
                                         _events[index]['time'],
                                         style: TextStyle(
-                                          color: index <= _currentStep ? Colors.blue : Colors.grey,
+                                          color: index <= _currentStep ? Colors.lightBlue[400] : Colors.grey,
                                           fontSize: 12,
                                         ),
                                       ),

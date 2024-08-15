@@ -1,13 +1,15 @@
-
 import 'package:wonders/common_libs.dart';
+import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform;
 
-//这个文件可以修改tabbar
+// 这个文件可以修改tabbar
 class WonderDetailsTabMenu extends StatelessWidget {
+  // 定义了几个静态常量，用于按钮的各种尺寸设置
   static const double buttonInset = 12;
   static const double homeBtnSize = 60;
   static const double minTabSize = 25;
   static const double maxTabSize = 100;
 
+  // 构造函数，初始化类的各个属性
   const WonderDetailsTabMenu({
     super.key,
     required this.tabController,
@@ -17,191 +19,191 @@ class WonderDetailsTabMenu extends StatelessWidget {
     required this.onTap,
   });
 
+  // tabController 控制tab的切换
   final TabController tabController;
+  // showBg 控制是否显示背景
   final bool showBg;
 //  final WonderType wonderType;
+  // axis 决定排列方向，水平还是垂直
   final Axis axis;
+  // 判断是否为垂直布局
   bool get isVertical => axis == Axis.vertical;
 
+  // 定义一个函数类型的属性 onTap，供外部传入点击tab后的处理逻辑
   final void Function(int index) onTap;
 
   @override
   Widget build(BuildContext context) {
+    // 根据 showBg 值设置图标颜色
     Color iconColor = showBg ? $styles.colors.black : $styles.colors.white;
-    // Measure available size after subtracting the home button size and insets
+    // 计算可用空间大小
     final availableSize = ((isVertical ? context.heightPx : context.widthPx) - homeBtnSize - $styles.insets.md);
-    // Calculate tabBtnSize based on availableSize
+    // 根据可用空间大小计算tab按钮大小，将其限制在minTabSize和maxTabSize之间
     final double tabBtnSize = (availableSize / 8).clamp(minTabSize, maxTabSize);
-    // Figure out some extra gap, in the case that the tabBtns are wider than the homeBtn
+    // 计算额外的间隙量，如果tab按钮比home按钮宽
     final double gapAmt = max(0, tabBtnSize - homeBtnSize);
-    // Store off safe areas which we will need to respect in the layout below
+    // 获取安全区域的填充
     final double safeAreaBtm = context.mq.padding.bottom, safeAreaTop = context.mq.padding.top;
-    // Insets the bg from the rounded wonder icon making it appear offset. The tab btns will use the same padding.
+    // 设置按钮内部填充
     final buttonInsetPadding = isVertical ? EdgeInsets.only(right: buttonInset) : EdgeInsets.only(top: buttonInset);
+    
+    // 返回一个Padding布局
     return Padding(
       padding: isVertical ? EdgeInsets.only(top: safeAreaTop) : EdgeInsets.zero,
-      child: Stack(
-        children: [
-          /// Background, animates in and out based on `showBg`,
-          /// has padding along the inside edge which makes the home-btn appear to hang over the edge.
-          Positioned.fill(
-            child: Padding(
-              padding: buttonInsetPadding,
-              child: AnimatedOpacity(
-                duration: $styles.times.fast,
-                opacity: showBg ? 1 : 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: $styles.colors.white,
-                    borderRadius: isVertical ? BorderRadius.only(topRight: Radius.circular(32)) : null,
+      child: Container(
+        width: defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS?50.0:60.0,
+        child: Stack(
+          children: [
+            // 背景，基于 showBg 属性的变换动画
+            Positioned.fill(
+              child: Padding(
+                padding: buttonInsetPadding,
+                child: AnimatedOpacity(
+                  duration: $styles.times.fast,
+                  opacity: showBg ? 1 : 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: $styles.colors.white,
+                      borderRadius: isVertical ? BorderRadius.only(topRight: Radius.circular(32)) : null,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
 
-          /// Buttons
-          /// A centered row / column of tabButtons w/ an wonder home button
-          Padding(
-            /// When in hz mode add safeArea bottom padding, vertical layout should not need it
-            padding: EdgeInsets.only(bottom: isVertical ? 0 : safeAreaBtm),
-            child: SizedBox(
-              width: isVertical ? null : double.infinity,
-              height: isVertical ? double.infinity : null,
-              child: FocusTraversalGroup(
-                child: Flex(
-                  direction: axis,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    /// Home btn
-                    Padding(
-                      /// Small amt of padding for home-btn
-                      padding: isVertical
-                          ? EdgeInsets.only(left: $styles.insets.xs)
-                          : EdgeInsets.only(bottom: $styles.insets.xs),
-//                      child: _WonderHomeBtn(
-//                        size: homeBtnSize,
-//                        wonderType: wonderType,
-//                        borderSize: showBg ? 6 : 2,
-//                      ),
-                    ),
-                    Gap(gapAmt),
+            // 按钮部分，包括home按钮和tab按钮
+            Padding(
+              // 水平模式添加安全区域底部填充，垂直布局则不需要
+              padding: EdgeInsets.only(bottom: isVertical ? 0 : safeAreaBtm),
+              child: SizedBox(
+                width: isVertical ? null : double.infinity,
+                height: isVertical ? double.infinity : null,
+                child: FocusTraversalGroup(
+                  child: Flex(
+                    direction: axis,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Home 按钮，暂时注释掉
+                      Padding(
+                        // Home按钮的填充
+                        padding: isVertical
+                            ? EdgeInsets.only(left: $styles.insets.xs)
+                            : EdgeInsets.only(bottom: $styles.insets.xs),
+  //                      child: _WonderHomeBtn(
+  //                        size: homeBtnSize,
+  //                        wonderType: wonderType,
+  //                        borderSize: showBg ? 6 : 2,
+  //                      ),
+                      ),
+                      Gap(gapAmt),
 
-                    /// A second Row / Col holding tab buttons
-                    /// Add the btn inset padding so they will be centered on the colored background
-                    Padding(
-                      padding: buttonInsetPadding,
-                      child: Flex(
-                          direction: axis,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            /// Tabs
-                            //ToDo：修改顺序&外观
-                            /// (返回首页，检索、六类资源IIIF展示、年表、Chat功能、知识图谱可视化、GIS、团队介绍)顺序待修改
-                            _TabBtn(
-                              0,
-                              tabController,
-                              iconImg: 'editorial',
-                              label: $strings.wonderDetailsTabLabelInformation,
-                              color: iconColor,
-                              axis: axis,
-                              mainAxisSize: tabBtnSize,
-                              onTap: onTap,
-                            ),
-                            _TabBtn(
-                              1,
-                              tabController,
-                              iconImg: 'search',
-                              label: $strings.wonderDetailsTabLabelImages,
-                              color: iconColor,
-                              axis: axis,
-                              mainAxisSize: tabBtnSize,
-                              onTap: onTap,
-                            ),
-                            _TabBtn(
-                              2,
-                              tabController,
-                              iconImg: 'artifacts',
-                              label: $strings.wonderDetailsTabLabelArtifacts,
-                              color: iconColor,
-                              axis: axis,
-                              mainAxisSize: tabBtnSize,
-                              onTap: onTap,
-                            ),
-                            _TabBtn(
-                              3,
-                              tabController,
-                              iconImg: 'timeline',
-                              label: $strings.wonderDetailsTabLabelEvents,
-                              color: iconColor,
-                              axis: axis,
-                              mainAxisSize: tabBtnSize,
-                              onTap: onTap,
-                            ),
-              /* *********************增加chatbox的tabbar******************** */ 
-                            _TabBtn(
-                              4,
-                              tabController,
-                              iconImg: 'aichat',
-                              label:'ChatBox',
-                              color: iconColor,
-                              axis: axis,
-                              mainAxisSize: tabBtnSize,
-                              // onTap: (index) {//定义按钮方法
-                              //   Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(builder: (context) => ChatPage()),
-                              //   );
-                              // },
-                              onTap: onTap,
-                            ),
-                            _TabBtn(
-                              5,
-                              tabController,
-                              iconImg: 'map',
-                              label:'Map',
-                              color: iconColor,
-                              axis: axis,
-                              mainAxisSize: tabBtnSize,
-                              onTap: onTap,
-                            ),
-                            _TabBtn(
-                              6,
-                              tabController,
-                              iconImg: 'photo',
-                              label:'Map',
-                              color: iconColor,
-                              axis: axis,
-                              mainAxisSize: tabBtnSize,
-                              onTap: onTap,
-                            ),
-                            _TabBtn(
-                              7,
-                              tabController,
-                              iconImg: 'contact',
-                              label:'Contact',
-                              color: iconColor,
-                              axis: axis,
-                              mainAxisSize: tabBtnSize,
-                              onTap: onTap,
-                            ),
-                          ]),
-                    ),
-                  ],
+                      // Tab 按钮部分，设置填充以确保它们在有色背景上居中
+                      Padding(
+                        padding: buttonInsetPadding,
+                        child: Flex(
+                            direction: axis,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // 定义每个Tab按钮
+                              _TabBtn(
+                                0,
+                                tabController,
+                                iconImg: 'editorial',
+                                label: $strings.wonderDetailsTabLabelInformation,
+                                color: iconColor,
+                                axis: axis,
+                                mainAxisSize: tabBtnSize,
+                                onTap: onTap,
+                              ),
+                              _TabBtn(
+                                1,
+                                tabController,
+                                iconImg: 'search',
+                                label: $strings.wonderDetailsTabLabelImages,
+                                color: iconColor,
+                                axis: axis,
+                                mainAxisSize: tabBtnSize,
+                                onTap: onTap,
+                              ),
+                              _TabBtn(
+                                2,
+                                tabController,
+                                iconImg: 'artifacts',
+                                label: $strings.wonderDetailsTabLabelArtifacts,
+                                color: iconColor,
+                                axis: axis,
+                                mainAxisSize: tabBtnSize,
+                                onTap: onTap,
+                              ),
+                              _TabBtn(
+                                3,
+                                tabController,
+                                iconImg: 'timeline',
+                                label: $strings.wonderDetailsTabLabelEvents,
+                                color: iconColor,
+                                axis: axis,
+                                mainAxisSize: tabBtnSize,
+                                onTap: onTap,
+                              ),
+                              _TabBtn(
+                                4,
+                                tabController,
+                                iconImg: 'aichat',
+                                label:'ChatBox',
+                                color: iconColor,
+                                axis: axis,
+                                mainAxisSize: tabBtnSize,
+                                onTap: onTap,
+                              ),
+                              _TabBtn(
+                                5,
+                                tabController,
+                                iconImg: 'map',
+                                label:'Map',
+                                color: iconColor,
+                                axis: axis,
+                                mainAxisSize: tabBtnSize,
+                                onTap: onTap,
+                              ),
+                              _TabBtn(
+                                6,
+                                tabController,
+                                iconImg: 'photo',
+                                label:'Map',
+                                color: iconColor,
+                                axis: axis,
+                                mainAxisSize: tabBtnSize,
+                                onTap: onTap,
+                              ),
+                              _TabBtn(
+                                7,
+                                tabController,
+                                iconImg: 'contact',
+                                label:'Contact',
+                                color: iconColor,
+                                axis: axis,
+                                mainAxisSize: tabBtnSize,
+                                onTap: onTap,
+                              ),
+                            ]),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
+// Home 按钮部件，已注释掉未使用
 class _WonderHomeBtn extends StatelessWidget {
   const _WonderHomeBtn({required this.size, required this.wonderType, required this.borderSize});
 
@@ -231,6 +233,7 @@ class _WonderHomeBtn extends StatelessWidget {
   }
 }
 
+// Tab 按钮部件
 class _TabBtn extends StatelessWidget {
   const _TabBtn(
     this.index,
@@ -254,13 +257,17 @@ class _TabBtn extends StatelessWidget {
   final double mainAxisSize;
   final void Function(int index) onTap;//length
 
+  // 判断是否为垂直布局
   bool get _isVertical => axis == Axis.vertical;
 
   @override
   Widget build(BuildContext context) {
+    // 判断当前tab是否被选中
     bool selected = tabController.index == index;
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+    // 根据选中状态设置不同的图标路径
     final iconImgPath = '${ImagePaths.common}/tab-$iconImg${selected ? '-active' : ''}.png';
+    // 设置tab标签
     String tabLabel = localizations.tabLabel(tabIndex: index + 1, tabCount: tabController.length);
     tabLabel = '$label: $tabLabel';
 
@@ -275,7 +282,7 @@ class _TabBtn extends StatelessWidget {
             onPressed: () => onTap(index),
             semanticLabel: label,
             minimumSize: _isVertical ? Size(crossBtnSize, mainAxisSize) : Size(mainAxisSize, crossBtnSize),
-            // Image icon
+            // 图标
             child: Image.asset(
               iconImgPath,
               height: iconSize,

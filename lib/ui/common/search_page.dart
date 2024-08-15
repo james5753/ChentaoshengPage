@@ -205,12 +205,12 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('API查询应用'),
         centerTitle: true,
-        automaticallyImplyLeading: false, // 取消按钮回退的功能
-        backgroundColor: Color.fromARGB(255, 221, 160, 160), // 设置AppBar的背景颜色
+        backgroundColor: Color.fromARGB(255, 228, 206, 206),
         titleTextStyle: TextStyle(
-          color: Color.fromARGB(168, 0, 0, 0), // 设置标题文字颜色
-          fontSize: 20.0, // 设置标题文字大小
-          fontWeight: FontWeight.bold, // 设置标题文字粗细
+          fontFamily: 'Tenor',
+          color: Color.fromARGB(255, 113,84,79),
+          fontSize: 20.0,
+          fontWeight: FontWeight.normal,
         ),
       ),
       body: Padding(

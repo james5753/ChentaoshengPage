@@ -55,16 +55,22 @@ class _TimelineScreenState extends State<TimelineScreen> {
           padding: EdgeInsets.only(bottom: 0),
           child: Column(
             children: [
-              AppHeader(title: $strings.timelineTitleGlobalTimeline),
+              AppHeader(
+                title: $strings.timelineTitleGlobalTimeline,
+                ),
 
               /// Vertically scrolling timeline, manages a ScrollController.
+              
               Expanded(
-                child: _ScrollingViewport(
-                  scroller: _scroller,
-                  minSize: maxSize,
-                  maxSize: maxSize,
-//                  selectedWonder: widget.type,
-                  onYearChanged: _handleViewportYearChanged,
+                child: Transform.translate(
+                  offset: Offset(17, 0), // 设置偏移量
+                  child: _ScrollingViewport(
+                    scroller: _scroller,
+                    minSize: maxSize,
+                    maxSize: maxSize,
+                    // selectedWonder: widget.type,
+                    onYearChanged: _handleViewportYearChanged,
+                  ),
                 ),
               ),
               ///目前不需要年代信息
@@ -77,15 +83,18 @@ class _TimelineScreenState extends State<TimelineScreen> {
 
               /// Mini Horizontal timeline, reacts to the state of the larger scrolling timeline,
               /// and changes the timelines scroll position on Hz drag
-              CenteredBox(
-                width: $styles.sizes.maxContentWidth1,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: $styles.insets.lg),
-                  child: _BottomScrubber(
-                    _scroller,
-                    size: scrubberSize,
-                    timelineMinSize: minSize,
-//                    selectedWonder: widget.type,
+              Transform.translate(
+                offset: Offset(20, 0), // 设置偏移量，(20, 0) 表示向右偏移 20 像素
+                child: CenteredBox(
+                  width: $styles.sizes.maxContentWidth1,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: $styles.insets.lg),
+                    child: _BottomScrubber(
+                      _scroller,
+                      size: scrubberSize,
+                      timelineMinSize: minSize,
+                      // selectedWonder: widget.type,
+                    ),
                   ),
                 ),
               ),

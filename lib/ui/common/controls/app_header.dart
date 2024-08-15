@@ -6,7 +6,7 @@ class AppHeader extends StatelessWidget {
       {super.key,
       this.title,
       this.subtitle,
-      this.showBackBtn = true,
+      this.showBackBtn = false,
       this.isTransparent = false,
       this.onBack,
       this.trailing,

@@ -107,18 +107,18 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         title: Text('AI聊天'),
         centerTitle: true,
-        automaticallyImplyLeading: false, // 取消按钮回退的功能
-        backgroundColor: Color.fromARGB(255, 221, 160, 160), // 设置AppBar的背景颜色
+        backgroundColor: Color.fromARGB(255, 228, 206, 206),
         titleTextStyle: TextStyle(
-          color: Color.fromARGB(168, 0, 0, 0), // 设置标题文字颜色
-          fontSize: 20.0, // 设置标题文字大小
-          fontWeight: FontWeight.bold, // 设置标题文字粗细
+          fontFamily: 'Tenor',
+          color: Color.fromARGB(255, 113,84,79),
+          fontSize: 20.0,
+          fontWeight: FontWeight.normal,
         ),
       ),
       body: Center(
         child: Container(
           child: Transform.translate(
-            offset: Offset(50.0, 0), // 向右偏移50个像素
+            offset: Offset(20.0, 0), // 向右偏移
             child: Container(
               width: MediaQuery.of(context).size.width * 0.8, // 设置聊天框宽度为屏幕宽度的80%
               height: MediaQuery.of(context).size.height * 0.8, // 设置聊天框高度为屏幕高度的80%

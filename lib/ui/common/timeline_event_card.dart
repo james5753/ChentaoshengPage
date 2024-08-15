@@ -28,35 +28,21 @@ class TimelineEventCard extends StatelessWidget {
                     text: TextSpan(text: text, style: $styles.text.body),
                     maxLines: null,
                     textDirection: TextDirection.ltr,
-                  )..layout(maxWidth: constraints.maxWidth - 70 - $styles.insets.sm - 1);
+                  )..layout(maxWidth: constraints.maxWidth - 60 - $styles.insets.sm - 1);
 
                   return Row(
                     children: [
                       /// Date
                       SizedBox(
-                        width: 70,
+                        width: 60,
                         child: Padding(
-                          padding: EdgeInsets.only(left: defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS?12.0:0.0), // 增加左侧填充
+                          padding: EdgeInsets.only(left: defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS?0.0:0.0), // 增加左侧填充
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
                                 child: Center(
-                                  child: (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS)
-                                      ? Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            for (int i = 0; i < year.abs().toString().length; i += 2)
-                                              Text(
-                                                year.abs().toString().substring(i, i + 2),
-                                                style: $styles.text.h3.copyWith(
-                                                  fontWeight: FontWeight.w400,
-                                                  height: 0.8,
-                                                ),
-                                              ),
-                                          ],
-                                        )
-                                      : Text(
+                                  child: Text(
                                           '${year.abs()}',
                                           style: $styles.text.h3.copyWith(
                                             fontWeight: FontWeight.w400,
