@@ -36,7 +36,7 @@ class HomeScreen extends StatefulWidget with GetItStatefulWidgetMixin {
 
 class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTickerProviderStateMixin {
   late final TabController _tabController = TabController(
-    length: 8,
+    length: 7,
     vsync: this,
     initialIndex: _clampIndex(widget.tabIndex),
   )..addListener(_handleTabChanged);
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
               children: [
                 Center(child: Text('')),//首页
                 MyHomePage(),//检索
-                Center(child: Text('资源IIIF')),
+//                Center(child: Text('资源IIIF')),
                 TimelineScreen(),//年表
                 ChatPage(),//chat
                 MapScreen(),//gis
