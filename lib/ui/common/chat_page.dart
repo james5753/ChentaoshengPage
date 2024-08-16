@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -12,6 +13,28 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final List<types.Message> _messages = [];
+
+  final List<String> questions = [
+    '陈騊声曾在哪里求学',
+    '陈騊声曾在哪里工作',
+    '陈騊声从事过哪方面的工作',
+    '陈騊声如何推动我国相关教育事业的发展',
+    '陈騊声先生曾出版过什么书',
+    '为什么陈騊声说自己是编书而不是著书',
+    '陈騊声是否参加过政治活动，参加过哪些',
+    '整风运动后陈騊声先生思想上有哪些转变',
+    '请列举出陈騊声先生受过的奖励', 
+    '陈騊声在发酵工业方面有哪些成果和建树',
+    '简述一下陈騊声在酿酒，酱油制造，制糖方面的贡献',
+    '在制糖厂，陈騊声是如何战胜渡边改善了酒精酿造技术',
+    '对于酱油酿造技术、谷氨酸发酵陈騊声先生有什么贡献',
+    '陈騊声先生的自我评价',
+    '陈騊声对于理论研究和应用研究的看法',
+    '解放对于陈騊声先生有什么影响',
+    '我国发酵工业在解放前后有什么改变，有什么影响',
+    '陈騊声作为一个酷爱诗文的科学家，举一些他创作的诗句'
+  ];
+
   final types.User _user = types.User(id: 'user-id');
 
   Future<void> _handleSendPressed(types.PartialText message) async {
@@ -96,9 +119,31 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  String currentQuestion1='陈騊声曾在哪里求学';
+  String currentQuestion2='陈騊声曾在哪里工作';
+
+  String getRandomQuestion() {
+    final random = Random();
+    int index = random.nextInt(questions.length);
+    return questions[index];
+  }
+
+  void updateQuestion() {
+    setState(() {
+      currentQuestion1 = getRandomQuestion();
+      currentQuestion2 = getRandomQuestion();
+      if (currentQuestion1.length < currentQuestion2.length) {
+        String temp = currentQuestion1;
+        currentQuestion1 = currentQuestion2;
+        currentQuestion2 = temp;
+      }
+    });
+  }
+
   void _sendSuggestedMessage(String text) {// 发送建议的消息
       final message = types.PartialText(text: text);
       _handleSendPressed(message);
+      print(message);
     }
 
   @override
@@ -171,20 +216,27 @@ class _ChatPageState extends State<ChatPage> {
                       spacing: 5.0,
                       runSpacing: 5.0,
                       children: [
-                        ElevatedButton(
-                          onPressed: () => _sendSuggestedMessage('陈騊声是谁？'),
-                          child: Text('陈騊声是谁？'),
+                        Container(
+                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
+                          child: ElevatedButton(
+                            onPressed: () => _sendSuggestedMessage(currentQuestion1),
+                            child: Text(currentQuestion1),
+                          ),
                         ),
-                        //SizedBox(width: 5.0),
-                        ElevatedButton(
-                          onPressed: () => _sendSuggestedMessage('简述中国工业的发展。'),
-                          child: Text('简述中国工业的发展。'),
+                        Container(
+                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
+                          child: ElevatedButton(
+                            onPressed: () => _sendSuggestedMessage(currentQuestion2),
+                            child: Text(currentQuestion2),
+                          ),
                         ),
-                        //SizedBox(width: 5.0),
-                        // ElevatedButton(
-                        //   onPressed: () => _sendSuggestedMessage('陈騊声对于中国工业的发展有什么影响？'),
-                        //   child: Text('陈騊声对于中国工业的发展有什么影响？'),
-                        // ),
+                        IconButton(
+                          onPressed: updateQuestion,
+                          icon: Icon(Icons.refresh),
+                          tooltip: '换一个问题',
+                          color: Colors.lightBlue[200],
+                          iconSize: 30.0,
+                        ),
                       ],
                     ),
                   ],
