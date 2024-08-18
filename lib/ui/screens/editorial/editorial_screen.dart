@@ -25,6 +25,7 @@ import 'package:wonders/ui/common/utils/context_utils.dart';
 import 'package:wonders/ui/wonder_illustrations/common/wonder_illustration.dart';
 import 'package:wonders/ui/wonder_illustrations/common/wonder_illustration_config.dart';
 import 'package:wonders/ui/wonder_illustrations/common/wonder_title_text.dart';
+import 'package:wonders/ui/screens/home/wonders_home_screen.dart';
 
 part 'widgets/_app_bar.dart';
 part 'widgets/_callout.dart';
@@ -40,7 +41,6 @@ part 'widgets/_top_illustration.dart';
 class WonderEditorialScreen extends StatefulWidget {
   const WonderEditorialScreen(this.data, {super.key, required this.contentPadding});
   final WonderData data;
-  //final void Function(double scrollPos) onScroll;
   final EdgeInsets contentPadding;
 
   @override
@@ -63,7 +63,9 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
     _scrollPos.value = _scroller.position.pixels;
   }
 
-  void _handleBackPressed() => context.go(ScreenPaths.home);
+  void _handleBackPressed() => Navigator.of(context).push(
+    MaterialPageRoute(builder: (context) => HomeScreen()),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -71,10 +73,8 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
       bool shortMode = constraints.biggest.height < 700;
       double illustrationHeight = shortMode ? 250 : 280;
       double minAppBarHeight = shortMode ? 80 : 150;
-
-      /// Attempt to maintain a similar aspect ratio for the image within the app-bar
       double maxAppBarHeight = min(context.widthPx, $styles.sizes.maxContentWidth1) * 1.2;
-      final backBtnAlign = appLogic.shouldUseNavRail() ? Alignment.topRight : Alignment.topLeft;
+
       return PopRouterOnOverScroll(
         controller: _scroller,
         child: ColoredBox(
@@ -86,28 +86,25 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
                 child: ColoredBox(color: widget.data.type.bgColor),
               ),
 
-              /// Top Illustration - Sits underneath the scrolling content, fades out as it scrolls
+              /// Top Illustration - Sits underneath the scrolling content
               SizedBox(
                 height: illustrationHeight,
                 child: ValueListenableBuilder<double>(
                   valueListenable: _scrollPos,
                   builder: (_, value, child) {
-                    // get some value between 0 and 1, based on the amt scrolled
                     double opacity = (1 - value / 700).clamp(0, 1);
                     return Opacity(opacity: opacity, child: child);
                   },
-                  // This is due to a bug: https://github.com/flutter/flutter/issues/101872
                   child: RepaintBoundary(
-                      child: _TopIllustration(
-                    widget.data.type,
-                    // Polish: Inject the content padding into the illustration as an offset, so it can center itself relative to the content
-                    // this allows the background to extend underneath the vertical side nav when it has rounded corners.
-                    fgOffset: Offset(widget.contentPadding.left / 2, 0),
-                  )),
+                    child: _TopIllustration(
+                      widget.data.type,
+                      fgOffset: Offset(widget.contentPadding.left / 2, 0),
+                    ),
+                  ),
                 ),
               ),
 
-              /// Scrolling content - Includes an invisible gap at the top, and then scrolls over the illustration
+              /// Scrolling content
               TopCenter(
                 child: Padding(
                   padding: widget.contentPadding,
@@ -120,12 +117,9 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
                           scrollBehavior: ScrollConfiguration.of(context).copyWith(),
                           key: PageStorageKey('editorial'),
                           slivers: [
-                            /// Invisible padding at the top of the list, so the illustration shows through the btm
                             SliverToBoxAdapter(
                               child: SizedBox(height: illustrationHeight),
                             ),
-
-                            /// Text content, animates itself to hide behind the app bar as it scrolls up
                             SliverToBoxAdapter(
                               child: ValueListenableBuilder<double>(
                                 valueListenable: _scrollPos,
@@ -140,8 +134,6 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
                                 child: _TitleText(widget.data, scroller: _scroller),
                               ),
                             ),
-
-                            /// Collapsing App bar, pins to the top of the list
                             SliverAppBar(
                               pinned: true,
                               collapsedHeight: minAppBarHeight,
@@ -158,8 +150,6 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
                                 ),
                               ),
                             ),
-
-                            /// Editorial content (text and images)
                             _ScrollingContent(widget.data, scrollPos: _scrollPos, sectionNotifier: _sectionIndex),
                           ],
                         ),
@@ -169,24 +159,14 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
                 ),
               ),
 
-              /// Home Btn
-              AnimatedBuilder(
-                animation: _scroller,
-                builder: (_, child) {
-                  return AnimatedOpacity(
-                    opacity: _scrollPos.value > 0 ? 0 : 1,
-                    duration: $styles.times.med,
-                    child: child,
-                  );
-                },
-                child: Align(
-                  alignment: backBtnAlign,
-                  child: Padding(
-                    padding: EdgeInsets.all($styles.insets.sm),
-                    child: BackBtn(icon: AppIcons.north, onPressed: _handleBackPressed),
-                  ),
+              /// Back Button - Always visible in the top left corner
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: EdgeInsets.all($styles.insets.sm),
+                  child: BackBtn(icon: AppIcons.north, onPressed: _handleBackPressed),
                 ),
-              )
+              ),
             ],
           ),
         ),

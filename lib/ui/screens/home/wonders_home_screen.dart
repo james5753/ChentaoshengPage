@@ -1,4 +1,5 @@
 import 'package:wonders/common_libs.dart';
+import 'package:wonders/logic/data/wonders_data/great_wall_data.dart';
 import 'package:wonders/ui/common/search_page.dart';
 import 'package:wonders/ui/common/lazy_indexed_stack.dart';
 import 'package:wonders/ui/common/measurable_widget.dart';
@@ -99,7 +100,7 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
             LazyIndexedStack(
               index: _tabController.index,
               children: [
-                Center(child: Text('')),//首页
+                FirstScreen(),//首页
                 MyHomePage(),//检索
 //                Center(child: Text('资源IIIF')),
                 TimelineScreen(),//年表
@@ -112,14 +113,14 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
 
             /// Tab menu
             Align(
-              alignment: _useNavRail ? Alignment.centerLeft : Alignment.bottomCenter,
+              alignment: _useNavRail ? Alignment.centerLeft : Alignment.centerLeft,
               child: MeasurableWidget(
                 onChange: _handleTabMenuSized,
                 child: WonderDetailsTabMenu(
                   tabController: _tabController,
                   onTap: _handleTabTapped,
                   showBg: true,
-                  axis: _useNavRail ? Axis.vertical : Axis.horizontal,
+                  axis: _useNavRail ? Axis.vertical : Axis.vertical,
                 ),
               ),
             ),
@@ -129,34 +130,35 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
     );
   }
 }
-/*
-class HomeScreen extends StatefulWidget with GetItStatefulWidgetMixin {
-  HomeScreen({super.key});
+
+
+class FirstScreen extends StatefulWidget with GetItStatefulWidgetMixin {
+  FirstScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<FirstScreen> createState() => _FirstScreenState();
 }
 
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Home')),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/chat');
-          },
-          child: Text('Go to Chat'),
-        ),
-      ),
-    );
-  }
-}
+// class FirstPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text('Home')),
+//       body: Center(
+//         child: ElevatedButton(
+//           onPressed: () {
+//             Navigator.pushNamed(context, '/chat');
+//           },
+//           child: Text('Go to Chat'),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 /// Shows a horizontally scrollable list PageView sandwiched between Foreground and Background layers
 /// arranged in a parallax style.
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _FirstScreenState extends State<FirstScreen> with SingleTickerProviderStateMixin {
   late final PageController _pageController;
   List<WonderData> get _wonders => wondersLogic.all;
   bool _isMenuOpen = false;
@@ -193,30 +195,30 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     _pageController = PageController(viewportFraction: 1, initialPage: initialPage);
   }
 
-  void _handlePageChanged(value) {
-    final newIndex = value % _numWonders;
-    if (newIndex == _wonderIndex) {
-      return; // Exit early if we're already on this page
-    }
-    setState(() {
-      _wonderIndex = newIndex;
-      settingsLogic.prevWonderIndex.value = _wonderIndex;
-    });
-    AppHaptics.lightImpact();
-  }
+  //void _handlePageChanged(value) {
+    // final newIndex = value % _numWonders;
+    // if (newIndex == _wonderIndex) {
+    //   return; // Exit early if we're already on this page
+    // }
+    // setState(() {
+    //   _wonderIndex = newIndex;
+    //   settingsLogic.prevWonderIndex.value = _wonderIndex;
+    // });
+    // AppHaptics.lightImpact();
+  //}
 
-  void _handleOpenMenuPressed() async {
-    setState(() => _isMenuOpen = true);
-    WonderType? pickedWonder = await appLogic.showFullscreenDialogRoute<WonderType>(
-      context,
-      HomeMenu(data: currentWonder),
-      transparent: true,
-    );
-    setState(() => _isMenuOpen = false);
-    if (pickedWonder != null) {
-      _setPageIndex(_wonders.indexWhere((w) => w.type == pickedWonder));
-    }
-  }
+  // void _handleOpenMenuPressed() async {
+  //   setState(() => _isMenuOpen = true);
+  //   WonderType? pickedWonder = await appLogic.showFullscreenDialogRoute<WonderType>(
+  //     context,
+  //     HomeMenu(data: currentWonder),
+  //     transparent: true,
+  //   );
+  //   setState(() => _isMenuOpen = false);
+  //   if (pickedWonder != null) {
+  //     _setPageIndex(_wonders.indexWhere((w) => w.type == pickedWonder));
+  //   }
+  // }
 
   void _handleFadeAnimInit(AnimationController controller) {
     _fadeAnims.add(controller);
@@ -225,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   void _handlePageIndicatorDotPressed(int index) => _setPageIndex(index);
 
-  void _handlePrevNext(int i) => _setPageIndex(_wonderIndex + i, animate: true);
+  //void _handlePrevNext(int i) => _setPageIndex(_wonderIndex + i, animate: true);
 
   void _setPageIndex(int index, {bool animate = false}) {
     if (index == _wonderIndex) return;
@@ -240,11 +242,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   void _showDetailsPage() async {
-    _swipeOverride = _swipeController.swipeAmt.value;
-    context.go(ScreenPaths.wonderDetails(currentWonder.type, tabIndex: 0));
-    await Future.delayed(100.ms);
-    _swipeOverride = null;
-    _fadeInOnNextBuild = true;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => WonderEditorialScreen(
+          GreatWallData(),
+          contentPadding: EdgeInsets.all(16.0), // 根据需要设置 contentPadding
+        ),
+      ),
+    );
   }
 
   void _startDelayedFgFade() async {
@@ -270,10 +275,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
     return _swipeController.wrapGestureDetector(Container(
       color: $styles.colors.black,
-      child: PreviousNextNavigation(
-        listenToMouseWheel: false,
-        onPreviousPressed: () => _handlePrevNext(-1),
-        onNextPressed: () => _handlePrevNext(1),
+      //child: PreviousNextNavigation(
+        //listenToMouseWheel: false,
+        //onPreviousPressed: () => _handlePrevNext(-1),
+        //onNextPressed: () => _handlePrevNext(1),
         child: Stack(
           children: [
             /// Background
@@ -289,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             _buildFloatingUi(),
           ],
         ).animate().fadeIn(),
-      ),
+      //),
     ));
   }
 
@@ -303,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     return ExcludeSemantics(
       child: PageView.builder(
         controller: _pageController,
-        onPageChanged: _handlePageChanged,
+        //onPageChanged: _handlePageChanged,
         itemBuilder: (_, index) {
           final wonder = _wonders[index % _wonders.length];
           final wonderType = wonder.type;
@@ -330,11 +335,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         return WonderIllustration(e.type, config: config);
       }),
       // Clouds
-      FractionallySizedBox(
-        widthFactor: 1,
-        heightFactor: .5,
-        child: AnimatedClouds(wonderType: currentWonder.type, opacity: 1),
-      )
+      // FractionallySizedBox(
+      //   widthFactor: 1,
+      //   heightFactor: .5,
+      //   child: AnimatedClouds(wonderType: currentWonder.type, opacity: 1),
+      // )
     ];
   }
 
@@ -366,7 +371,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     return Stack(children: [
       /// Foreground gradient-1, gets darker when swiping up
       BottomCenter(
-        child: buildSwipeableBgGradient(gradientColor.withOpacity(.65)),
+        child: buildSwipeableBgGradient(gradientColor.withOpacity(.5)),
       ),
 
       /// Foreground decorators
@@ -415,24 +420,34 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         child: Column(
                           children: [
                             Semantics(
-                              liveRegion: true,
+                              liveRegion: false,
                               button: true,
                               header: true,
-                              onIncrease: () => _setPageIndex(_wonderIndex + 1),
-                              onDecrease: () => _setPageIndex(_wonderIndex - 1),
-                              onTap: () => _showDetailsPage(),
+                              // onIncrease: () => _setPageIndex(_wonderIndex + 1),
+                              // onDecrease: () => _setPageIndex(_wonderIndex - 1),
+                              onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => WonderEditorialScreen(
+                                      GreatWallData(),
+                                      contentPadding: EdgeInsets.all(16.0), // 根据需要设置 contentPadding
+                                    ),
+                                  ),
+                                ),
                               // Hide the title when the menu is open for visual polish
-                              child: WonderTitleText(currentWonder, enableShadows: true),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 30.0), // 设置左边的填充
+                                child: WonderTitleText(currentWonder, enableShadows: true),
+                              ),
                             ),
                             Gap($styles.insets.md),
-                            AppPageIndicator(
-                              count: _numWonders,
-                              controller: _pageController,
-                              color: $styles.colors.white,
-                              dotSize: 8,
-                              onDotPressed: _handlePageIndicatorDotPressed,
-                              semanticPageTitle: $strings.homeSemanticWonder,
-                            ),
+                            // AppPageIndicator(
+                            //   count: _numWonders,
+                            //   controller: _pageController,
+                            //   color: $styles.colors.white,
+                            //   dotSize: 8,
+                            //   onDotPressed: _handlePageIndicatorDotPressed,
+                            //   semanticPageTitle: $strings.homeSemanticWonder,
+                            // ),
                             Gap($styles.insets.md),
                           ],
                         ),
@@ -451,22 +466,22 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     child: Stack(
                       children: [
                         /// Expanding rounded rect that grows in height as user swipes up
-                        Positioned.fill(
-                            child: _swipeController.buildListener(
-                          builder: (swipeAmt, _, child) {
-                            double heightFactor = .5 + .5 * (1 + swipeAmt * 4);
-                            return FractionallySizedBox(
-                              alignment: Alignment.bottomCenter,
-                              heightFactor: heightFactor,
-                              child: Opacity(opacity: swipeAmt * .5, child: child),
-                            );
-                          },
-                          child: VtGradient(
-                            [$styles.colors.white.withOpacity(0), $styles.colors.white.withOpacity(1)],
-                            const [.3, 1],
-                            borderRadius: BorderRadius.circular(99),
-                          ),
-                        )),
+                        // Positioned.fill(
+                        //     child: _swipeController.buildListener(
+                        //   builder: (swipeAmt, _, child) {
+                        //     double heightFactor = .5 + .5 * (1 + swipeAmt * 4);
+                        //     return FractionallySizedBox(
+                        //       alignment: Alignment.bottomCenter,
+                        //       heightFactor: heightFactor,
+                        //       child: Opacity(opacity: swipeAmt * .5, child: child),
+                        //     );
+                        //   },
+                        //   child: VtGradient(
+                        //     [$styles.colors.white.withOpacity(0), $styles.colors.white.withOpacity(1)],
+                        //     const [.3, 1],
+                        //     borderRadius: BorderRadius.circular(99),
+                        //   ),
+                        // )),
 
                         /// Arrow Btn that fades in and out
                         _AnimatedArrowButton(onTap: _showDetailsPage, semanticTitle: currentWonder.title),
@@ -482,19 +497,102 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ),
 
       /// Menu Btn
-      TopLeft(
-        child: AnimatedOpacity(
-          duration: $styles.times.fast,
-          opacity: _isMenuOpen ? 0 : 1,
-          child: AppHeader(
-            backIcon: AppIcons.menu,
-            backBtnSemantics: $strings.homeSemanticOpenMain,
-            onBack: _handleOpenMenuPressed,
-            isTransparent: true,
-          ),
-        ),
-      ),
+      // TopLeft(
+      //   child: AnimatedOpacity(
+      //     duration: $styles.times.fast,
+      //     opacity: _isMenuOpen ? 0 : 1,
+      //     child: AppHeader(
+      //       backIcon: AppIcons.menu,
+      //       backBtnSemantics: $strings.homeSemanticOpenMain,
+      //       onBack: _handleOpenMenuPressed,
+      //       isTransparent: true,
+      //     ),
+      //   ),
+      // ),
     ]);
   }
+//   Widget _buildFloatingUi() {
+//   return GestureDetector(
+//     onVerticalDragUpdate: (details) {
+//       if (details.primaryDelta! < -1) {
+//         // 向上滑动超过一定距离，导航到 WonderEditorialScreen 页面
+//         Navigator.of(context).push(
+//           MaterialPageRoute(
+//             builder: (context) => WonderEditorialScreen(
+//               GreatWallData(),
+//               contentPadding: EdgeInsets.all(16.0), // 根据需要设置 contentPadding
+//             ),
+//           ),
+//         );
+//       }
+//     },
+//     child: Stack(
+//       children: [
+//         /// Floating controls / UI
+//         AnimatedSwitcher(
+//           duration: $styles.times.fast,
+//           child: AnimatedOpacity(
+//             opacity: _isMenuOpen ? 0 : 1,
+//             duration: $styles.times.med,
+//             child: RepaintBoundary(
+//               child: OverflowBox(
+//                 child: Column(
+//                   mainAxisSize: MainAxisSize.min,
+//                   children: [
+//                     SizedBox(width: double.infinity),
+//                     const Spacer(),
+
+//                     /// Title Content
+//                     LightText(
+//                       child: IgnorePointer(
+//                         ignoringSemantics: false,
+//                         child: Transform.translate(
+//                           offset: Offset(0, 30),
+//                           child: Column(
+//                             children: [
+//                               Semantics(
+//                                 liveRegion: false,
+//                                 button: true,
+//                                 header: true,
+//                                 onTap: () => Navigator.of(context).push(
+//                                   MaterialPageRoute(
+//                                     builder: (context) => WonderEditorialScreen(
+//                                       GreatWallData(),
+//                                       contentPadding: EdgeInsets.all(16.0), // 根据需要设置 contentPadding
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ),
+//                               Gap($styles.insets.md),
+//                             ],
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+
+//                     /// Animated arrow and background
+//                     /// Wrap in a container that is full-width to make it easier to find for screen readers
+//                     Container(
+//                       width: double.infinity,
+//                       alignment: Alignment.center,
+//                       key: ValueKey(_wonderIndex),
+//                       child: Stack(
+//                         children: [
+//                           /// Arrow Btn that fades in and out
+//                           _AnimatedArrowButton(onTap: _showDetailsPage, semanticTitle: currentWonder.title),
+//                         ],
+//                       ),
+//                     ),
+//                     Gap($styles.insets.md),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ),
+//       ],
+//     ),
+//   );
+// }
 }
-*/
+

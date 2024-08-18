@@ -29,6 +29,7 @@ class ImagePaths {
 
   static String roller1 = '$textures/roller-1-white.gif';
   static String roller2 = '$textures/roller-2-white.gif';
+  static String roller3 = '$common/background.png';
 
   static String appLogo = '$common/app-logo.png';
   static String appLogoPlain = '$common/app-logo-plain.png';
