@@ -39,7 +39,7 @@ class WonderDetailsTabMenu extends StatelessWidget {
     // 计算可用空间大小
     final availableSize = ((isVertical ? context.heightPx : context.widthPx) - homeBtnSize - $styles.insets.md);
     // 根据可用空间大小计算tab按钮大小，将其限制在minTabSize和maxTabSize之间
-    final double tabBtnSize = (availableSize / 8).clamp(minTabSize, maxTabSize);
+    final double tabBtnSize = (availableSize / 7).clamp(minTabSize, maxTabSize);
     // 计算额外的间隙量，如果tab按钮比home按钮宽
     final double gapAmt = max(0, tabBtnSize - homeBtnSize);
     // 获取安全区域的填充
@@ -174,16 +174,6 @@ class WonderDetailsTabMenu extends StatelessWidget {
                                 tabController,
                                 iconImg: 'photo',
                                 label:'Map',
-                                color: iconColor,
-                                axis: axis,
-                                mainAxisSize: tabBtnSize,
-                                onTap: onTap,
-                              ),
-                              _TabBtn(
-                                7,
-                                tabController,
-                                iconImg: 'contact',
-                                label:'Contact',
                                 color: iconColor,
                                 axis: axis,
                                 mainAxisSize: tabBtnSize,

@@ -111,7 +111,7 @@ class _ScrollingContent extends StatelessWidget {
                     //Center(child: buildHiddenCollectible(slot: 2)),
                   ]),
                   Gap($styles.insets.md),
-                  //_YouTubeThumbnail(id: data.videoId, caption: data.videoCaption),
+                  //_YouTubeThumbnail(id: data.videoId, caption: data.videoCaption),//不要youtube
                   Gap($styles.insets.md),
                   ..._contentSection([
                     /// Callout2
@@ -124,15 +124,15 @@ class _ScrollingContent extends StatelessWidget {
                     _SectionDivider(scrollPos, sectionNotifier, index: 2),
 
                     /// Location
-                    buildDropCapText(data.locationInfo1),
-                    _LargeSimpleQuote(text: data.pullQuote2, author: data.pullQuote2Author),
-                    buildText(data.locationInfo2),
+                    //buildDropCapText(data.locationInfo1),
+                    //_LargeSimpleQuote(text: data.pullQuote2, author: data.pullQuote2Author),
+                    //buildText(data.locationInfo2),
                   ]),
                   Gap($styles.insets.md),
-                  _MapsThumbnail(data),
-                  Gap($styles.insets.md),
-                  //..._contentSection([Center(child: buildHiddenCollectible(slot: 3))]),
-                  Gap(150),
+                  //_MapsThumbnail(data),
+                  //Gap($styles.insets.md),
+                  //..._contentSection([Center(child: buildHiddenCollectible(slot: 3))]),//不要map
+                  //Gap(150),
                 ]),
               ),
             ),

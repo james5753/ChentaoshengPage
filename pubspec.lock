@@ -312,6 +312,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.4.0"
+  flython:
+    dependency: "direct main"
+    description:
+      name: flython
+      sha256: c315d960efe337e2dbc9bf4dffb9571ebcf8c3c281a5a8624a569aa8bc545bd8
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.0"
   functional_listener:
     dependency: transitive
     description:
@@ -576,6 +584,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.0"
+  mutex:
+    dependency: transitive
+    description:
+      name: mutex
+      sha256: "8827da25de792088eb33e572115a5eb0d61d61a3c01acbc8bcbe76ed78f1a1f2"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.1.0"
   nested:
     dependency: transitive
     description:

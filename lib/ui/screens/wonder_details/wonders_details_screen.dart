@@ -8,6 +8,33 @@ import 'package:wonders/ui/screens/photo_gallery/photo_gallery.dart';
 import 'package:wonders/ui/screens/wonder_details/wonder_details_tab_menu.dart';
 import 'package:wonders/ui/screens/wonder_events/wonder_events.dart';
 import 'package:wonders/ui/common/chat_page.dart';
+import 'package:wonders/common_libs.dart';
+import 'package:wonders/ui/common/search_page.dart';
+import 'package:wonders/ui/common/lazy_indexed_stack.dart';
+import 'package:wonders/ui/common/measurable_widget.dart';
+import 'package:wonders/ui/screens/artifact/artifact_carousel/artifact_carousel_screen.dart';
+import 'package:wonders/ui/screens/collection/collection_screen.dart';
+import 'package:wonders/ui/screens/editorial/editorial_screen.dart';
+import 'package:wonders/ui/screens/photo_gallery/photo_gallery.dart';
+import 'package:wonders/ui/screens/wonder_details/wonder_details_tab_menu.dart';
+import 'package:wonders/ui/screens/wonder_events/wonder_events.dart';
+import 'package:wonders/ui/screens/timeline/timeline_screen.dart';
+import 'package:wonders/ui/common/chat_page.dart';
+import 'package:wonders/logic/data/wonder_data.dart';
+import 'package:wonders/ui/common/app_icons.dart';
+import 'package:wonders/ui/common/controls/app_header.dart';
+import 'package:wonders/ui/common/controls/app_page_indicator.dart';
+import 'package:wonders/ui/common/gradient_container.dart';
+import 'package:wonders/ui/common/previous_next_navigation.dart';
+import 'package:wonders/ui/common/themed_text.dart';
+import 'package:wonders/ui/common/utils/app_haptics.dart';
+import 'package:wonders/ui/screens/home_menu/home_menu.dart';
+import 'package:wonders/ui/wonder_illustrations/common/animated_clouds.dart';
+import 'package:wonders/ui/wonder_illustrations/common/wonder_illustration.dart';
+import 'package:wonders/ui/wonder_illustrations/common/wonder_illustration_config.dart';
+import 'package:wonders/ui/wonder_illustrations/common/wonder_title_text.dart';
+import 'package:wonders/ui/screens/wonder_details/wonder_details_tab_menu.dart';
+import 'package:wonders/ui/screens/home/wonders_home_screen.dart';
 
 class WonderDetailsScreen extends StatefulWidget with GetItStatefulWidgetMixin {
   WonderDetailsScreen({super.key, required this.type, this.tabIndex = 0});
@@ -44,7 +71,7 @@ class _WonderDetailsScreenState extends State<WonderDetailsScreen>
     super.dispose();
   }
 
-  int _clampIndex(int index) => index.clamp(0, 5);
+  int _clampIndex(int index) => index.clamp(0, 7);
 
   void _handleTabChanged() {
     _fade?.forward(from: 0);
@@ -79,18 +106,19 @@ class _WonderDetailsScreenState extends State<WonderDetailsScreen>
           LazyIndexedStack(
             index: _tabController.index,
             children: [   //在这里绑定onTap
-              WonderEditorialScreen(wonder, contentPadding: menuPadding),
-              PhotoGallery(collectionId: wonder.unsplashCollectionId, wonderType: wonder.type),
-              ArtifactCarouselScreen(type: wonder.type, contentPadding: menuPadding),              
-              WonderEvents(type: widget.type, contentPadding: menuPadding),
-              ChatPage(),
-              MapScreen(),
+              FirstScreen(),//首页
+              MyHomePage(),//检索
+              Center(child: Text('资源IIIF')),
+              TimelineScreen(),//年表
+              ChatPage(),//chat
+              MapScreen(),//gis
+              Center(child: Text('知识图谱')),//知识图谱
             ],
           ),
 
           /// Tab menu
           Align(
-            alignment: _useNavRail ? Alignment.centerLeft : Alignment.bottomCenter,
+            alignment: _useNavRail ? Alignment.centerLeft : Alignment.centerLeft,
             child: MeasurableWidget(
               onChange: _handleTabMenuSized,
               child: WonderDetailsTabMenu(
@@ -98,7 +126,7 @@ class _WonderDetailsScreenState extends State<WonderDetailsScreen>
                   onTap: _handleTabTapped,
 //                  wonderType: wonder.type,
                   showBg: showTabBarBg,
-                  axis: _useNavRail ? Axis.vertical : Axis.horizontal),
+                  axis: _useNavRail ? Axis.vertical : Axis.vertical),
             ),
           ),
         ],
