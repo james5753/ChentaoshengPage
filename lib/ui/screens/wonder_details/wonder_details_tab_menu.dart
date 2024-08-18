@@ -173,7 +173,7 @@ class WonderDetailsTabMenu extends StatelessWidget {
                                 6,
                                 tabController,
                                 iconImg: 'photo',
-                                label:'Map',
+                                label:'Photo',
                                 color: iconColor,
                                 axis: axis,
                                 mainAxisSize: tabBtnSize,
