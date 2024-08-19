@@ -7,6 +7,7 @@ import 'package:wonders/ui/screens/artifact/artifact_carousel/artifact_carousel_
 import 'package:wonders/ui/screens/collection/collection_screen.dart';
 import 'package:wonders/ui/screens/editorial/editorial_screen.dart';
 import 'package:wonders/ui/screens/photo_gallery/photo_gallery.dart';
+import 'package:wonders/ui/screens/webview_screen/webview_screen.dart';
 import 'package:wonders/ui/screens/wonder_details/wonder_details_tab_menu.dart';
 import 'package:wonders/ui/screens/wonder_events/wonder_events.dart';
 import 'package:wonders/ui/screens/timeline/timeline_screen.dart';
@@ -25,6 +26,7 @@ import 'package:wonders/ui/wonder_illustrations/common/wonder_illustration.dart'
 import 'package:wonders/ui/wonder_illustrations/common/wonder_illustration_config.dart';
 import 'package:wonders/ui/wonder_illustrations/common/wonder_title_text.dart';
 import 'package:wonders/ui/screens/wonder_details/wonder_details_tab_menu.dart';
+import 'package:wonders/ui/screens/webview_screen/webpage.dart';
 part '_vertical_swipe_controller.dart';
 part 'widgets/_animated_arrow_button.dart';
 class HomeScreen extends StatefulWidget with GetItStatefulWidgetMixin {
@@ -106,8 +108,7 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
                 TimelineScreen(),//年表
                 ChatPage(),//chat
                 MapScreen(),//gis
-                Center(child: Text('图谱')),
-                Center(child: Text('介绍')),//团队介绍
+                WebPage(),
               ],
             ),
 

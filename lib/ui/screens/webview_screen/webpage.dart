@@ -2,12 +2,12 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class WebViewPage extends StatefulWidget {
+class WebPage extends StatefulWidget {
   @override
-  _WebViewPageState createState() => _WebViewPageState();
+  _WebPageState createState() => _WebPageState();
 }
 
-class _WebViewPageState extends State<WebViewPage> {
+class _WebPageState extends State<WebPage> {
   late final WebViewController _controller;
 
   @override
@@ -16,11 +16,17 @@ class _WebViewPageState extends State<WebViewPage> {
     if (kIsWeb) {
       _controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..loadHtmlString('<iframe src="https://uploads.knightlab.com/storymapjs/9225aae001d3e5974e45e6258b821782/chentaosheng-story-map/index.html" width="100%" height="100%" style="border:none; min-height: 100vh;"></iframe>');
+        ..loadHtmlString('''
+          <html>
+            <body style="margin:0;padding:0;">
+              <iframe src="http://47.120.56.163:7474/browser/"></iframe>
+            </body>
+          </html>
+        ''');
     } else {
       _controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..loadRequest(Uri.parse('https://uploads.knightlab.com/storymapjs/9225aae001d3e5974e45e6258b821782/chentaosheng-story-map/index.html'));
+        ..loadRequest(Uri.parse('http://47.120.56.163:7474/browser/'));
     }
   }
 
@@ -28,7 +34,7 @@ class _WebViewPageState extends State<WebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('故事模式'),
+        title: Text('知识图谱'),
         centerTitle: true,
         backgroundColor: Color.fromARGB(255, 221, 160, 160),
         titleTextStyle: TextStyle(
@@ -45,4 +51,3 @@ class _WebViewPageState extends State<WebViewPage> {
     );
   }
 }
-
