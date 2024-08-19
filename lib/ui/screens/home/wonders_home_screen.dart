@@ -161,7 +161,7 @@ class FirstScreen extends StatefulWidget with GetItStatefulWidgetMixin {
 /// arranged in a parallax style.
 class _FirstScreenState extends State<FirstScreen> with SingleTickerProviderStateMixin {
   late final PageController _pageController;
-  List<WonderData> get _wonders => wondersLogic.all;
+  List<WonderData> get _wonders => wondersLogic.wonder;
   bool _isMenuOpen = false;
 
   /// Set initial wonderIndex
