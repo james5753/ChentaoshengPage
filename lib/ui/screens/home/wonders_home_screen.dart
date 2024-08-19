@@ -82,7 +82,7 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
   @override
   Widget build(BuildContext context) {
     _useNavRail = true; // 设置为false以使用水平导航栏
-
+  
     final tabBarSize = _tabBarSize ?? 0;
     final menuPadding = _useNavRail ? EdgeInsets.only(left: tabBarSize) : EdgeInsets.only(bottom: tabBarSize);
     return Scaffold(
@@ -208,18 +208,18 @@ class _FirstScreenState extends State<FirstScreen> with SingleTickerProviderStat
     // AppHaptics.lightImpact();
   //}
 
-  // void _handleOpenMenuPressed() async {
-  //   setState(() => _isMenuOpen = true);
-  //   WonderType? pickedWonder = await appLogic.showFullscreenDialogRoute<WonderType>(
-  //     context,
-  //     HomeMenu(data: currentWonder),
-  //     transparent: true,
-  //   );
-  //   setState(() => _isMenuOpen = false);
-  //   if (pickedWonder != null) {
-  //     _setPageIndex(_wonders.indexWhere((w) => w.type == pickedWonder));
-  //   }
-  // }
+  void _handleOpenMenuPressed() async {
+    setState(() => _isMenuOpen = true);
+    WonderType? pickedWonder = await appLogic.showFullscreenDialogRoute<WonderType>(
+      context,
+      HomeMenu(data: currentWonder),
+      transparent: true,
+    );
+    setState(() => _isMenuOpen = false);
+    if (pickedWonder != null) {
+      _setPageIndex(_wonders.indexWhere((w) => w.type == pickedWonder));
+    }
+  }
 
   void _handleFadeAnimInit(AnimationController controller) {
     _fadeAnims.add(controller);
@@ -284,6 +284,7 @@ class _FirstScreenState extends State<FirstScreen> with SingleTickerProviderStat
           children: [
             /// Background
             ..._buildBgAndClouds(),
+            
 
             /// Wonders Illustrations (main content)
             _buildMgPageView(),
@@ -293,6 +294,13 @@ class _FirstScreenState extends State<FirstScreen> with SingleTickerProviderStat
 
             /// Controls that float on top of the various illustrations
             _buildFloatingUi(),
+
+            Positioned(
+              top: 16.0, // 调整这个值以设置按钮的垂直位置
+              right: 16.0, // 调整这个值以设置按钮的水平位置
+              child: buildButton(),
+            ),
+            
           ],
         ).animate().fadeIn(),
       //),
@@ -394,6 +402,21 @@ class _FirstScreenState extends State<FirstScreen> with SingleTickerProviderStat
         child: buildSwipeableBgGradient(gradientColor),
       ),
     ]);
+  }
+
+  Widget buildButton() {
+    return TopRight(
+      child: AnimatedOpacity(
+        duration: $styles.times.fast,
+        opacity: _isMenuOpen ? 0 : 1,
+        child: AppHeader(
+          backIcon: AppIcons.menu,
+          backBtnSemantics: $strings.homeSemanticOpenMain,
+          onBack: _handleOpenMenuPressed,
+          isTransparent: true,
+        ),
+      ),
+    );
   }
 
   Widget _buildFloatingUi() {
@@ -498,18 +521,18 @@ class _FirstScreenState extends State<FirstScreen> with SingleTickerProviderStat
       ),
 
       /// Menu Btn
-      // TopLeft(
-      //   child: AnimatedOpacity(
-      //     duration: $styles.times.fast,
-      //     opacity: _isMenuOpen ? 0 : 1,
-      //     child: AppHeader(
-      //       backIcon: AppIcons.menu,
-      //       backBtnSemantics: $strings.homeSemanticOpenMain,
-      //       onBack: _handleOpenMenuPressed,
-      //       isTransparent: true,
-      //     ),
-      //   ),
-      // ),
+      TopRight(
+        child: AnimatedOpacity(
+          duration: $styles.times.fast,
+          opacity: _isMenuOpen ? 0 : 1,
+          child: AppHeader(
+            backIcon: AppIcons.menu,
+            backBtnSemantics: $strings.homeSemanticOpenMain,
+            onBack: _handleOpenMenuPressed,
+            isTransparent: true,
+          ),
+        ),
+      ),
     ]);
   }
 //   Widget _buildFloatingUi() {
