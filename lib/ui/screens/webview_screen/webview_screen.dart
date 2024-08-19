@@ -30,11 +30,12 @@ class _WebViewPageState extends State<WebViewPage> {
       appBar: AppBar(
         title: Text('故事模式'),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 221, 160, 160),
+        backgroundColor: Color.fromARGB(255, 228, 206, 206),
         titleTextStyle: TextStyle(
-          color: Color.fromARGB(168, 0, 0, 0),
+          fontFamily: 'Tenor',
+          color: Color.fromARGB(255, 113, 84, 79),
           fontSize: 20.0,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.normal,
         ),
       ),
       body: SizedBox(

@@ -21,7 +21,7 @@ class PageNotFound extends StatelessWidget {
             WonderousLogo(),
             Gap(10),
             Text(
-              'Wonderous',
+              '“騊”声依旧',
               style: $styles.text.wonderTitle.copyWith(color: $styles.colors.accent1, fontSize: 28),
             ),
             Gap(70),

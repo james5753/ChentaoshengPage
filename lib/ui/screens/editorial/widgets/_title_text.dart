@@ -70,7 +70,7 @@ class _TitleText extends StatelessWidget {
                   /// Compass divider
                   ExcludeSemantics(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: $styles.insets.sm),
+                      padding: EdgeInsets.symmetric(horizontal: $styles.insets.xs),
                       child: AnimatedBuilder(
                         animation: scroller,
                         builder: (_, __) => CompassDivider(
@@ -81,15 +81,15 @@ class _TitleText extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Gap($styles.insets.sm),
+                  //Gap($styles.insets.sm),
 
                   /// Date
-                  Text(
-                    $strings.titleLabelDate(StringUtils.formatYr(data.startYr), StringUtils.formatYr(data.endYr)),
-                    style: $styles.text.h4,
-                    textAlign: TextAlign.center,
-                  ),
-                  Gap($styles.insets.sm),
+                  // Text(
+                  //   $strings.titleLabelDate(StringUtils.formatYr(data.startYr), StringUtils.formatYr(data.endYr)),
+                  //   style: $styles.text.h4,
+                  //   textAlign: TextAlign.center,
+                  // ),
+                  // Gap($styles.insets.sm),
                 ],
               ),
             ),
