@@ -133,6 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Expanded(
                           child: TextField(
                             controller: _controller,
+                            style: TextStyle(color: Colors.white),
                             decoration: InputDecoration(
                               labelText: '输入标题',
                               labelStyle: TextStyle(color: Colors.white),
