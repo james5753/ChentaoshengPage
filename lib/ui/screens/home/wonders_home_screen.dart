@@ -93,7 +93,7 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
             /// Background image
             Positioned.fill(
               child: Image.asset(
-                'assets/images/christ_the_redeemer/3.0x/photo-4.jpg', // 添加你的图片路径
+                'assets/images/great_wall_of_china/3.0x/all.jpg', // 添加你的图片路径
                 fit: BoxFit.none,//更改适配
               ),
             ),
