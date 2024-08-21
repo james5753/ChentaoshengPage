@@ -164,8 +164,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       double screenWidth = constraints.maxWidth;
-                      int crossAxisCount = (screenWidth / 300).floor();
-                      double itemWidth = screenWidth / crossAxisCount - 150;
+                      int crossAxisCount = (screenWidth / 200).floor();
+                      double itemWidth = screenWidth / crossAxisCount ;
 
                       return MasonryGridView.builder(
                         gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
