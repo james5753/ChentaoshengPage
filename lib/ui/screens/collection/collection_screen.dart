@@ -172,54 +172,194 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
 
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('GIS地图'),
-        centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 228, 206, 206),
-        titleTextStyle: TextStyle(
-          fontFamily: 'Tenor',
-          color: Color.fromARGB(255, 113,84,79),
-          fontSize: 20.0,
-          fontWeight: FontWeight.normal,
-        ),
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text('GIS地图'),
+      centerTitle: true,
+      backgroundColor: Color.fromARGB(255, 228, 206, 206),
+      titleTextStyle: TextStyle(
+        fontFamily: 'Tenor',
+        color: Color.fromARGB(255, 113, 84, 79),
+        fontSize: 20.0,
+        fontWeight: FontWeight.normal,
       ),
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              Expanded(
-                child: FlutterMap(
-                  mapController: _mapController, // 添加 MapController
-                  options: MapOptions(
-                    center: _events[_currentStep]['location'], // 初始化时的中心点
-                    zoom: 6.0,
+    ),
+    body: Stack(
+      children: [
+        Column(
+          children: [
+            Expanded(
+              child: FlutterMap(
+                mapController: _mapController, // 添加 MapController
+                options: MapOptions(
+                  center: _events[_currentStep]['location'], // 初始化时的中心点
+                  zoom: 6.0,
+                ),
+                children: [
+                  TileLayer(
+                    urlTemplate:
+                        'https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}',
+                    subdomains: ['1', '2', '3', '4'],
                   ),
-                  children: [
-                    TileLayer(
-                      urlTemplate: 'https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}',
-                      subdomains: ['1', '2', '3', '4'],
-                    ),
-                    MarkerLayer(
-                      markers: _events.map((event) {
-                        return Marker(
-                          width: 80.0,
-                          height: 80.0,
-                          point: event['location'],
-                          builder: (ctx) => Tooltip(
-                            message: event['time'],
-                            child: AnimatedOpacity(
-                              opacity: 1.0,
-                              duration: Duration(seconds: 1),
-                              child: GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (ctx) => AlertDialog(
-                                      title: Text(event['time']),
-                                      content: Text(event['event']),
-                                      actions: [
+                  MarkerLayer(
+                    markers: _events.map((event) {
+                      return Marker(
+                        width: 80.0,
+                        height: 80.0,
+                        point: event['location'],
+                        builder: (ctx) => Tooltip(
+                          message: event['time'],
+                          child: AnimatedOpacity(
+                            opacity: 1.0,
+                            duration: Duration(seconds: 1),
+                            child: GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (ctx) => AlertDialog(
+                                    title: Text(event['time']),
+                                    content: Text(event['event']),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(ctx).pop();
+                                        },
+                                        child: Text('关闭'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                child: Icon(Icons.location_on,
+                                    color: Colors.red, size: 30),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  PolylineLayer(
+                    polylines: _allPaths.map((path) {
+                      return Polyline(
+                        points: path,
+                        strokeWidth: 2.0,
+                        color: Colors.blue,
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        Align(
+          alignment: Alignment.topRight,
+          child: Padding(
+            padding: EdgeInsets.only(right: 16.0, top: 16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: 140, // 调整按钮宽度
+                  height: 40, // 调整按钮高度
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => WebViewPage()),
+                      );
+                    },
+                    child: Text('进入故事模式'),
+                  ),
+                ),
+                SizedBox(height: 20), // 按钮之间的间距
+                SizedBox(
+                  width: 140, // 调整按钮宽度
+                  height: 40, // 调整按钮高度
+                  child: ElevatedButton(
+                    onPressed: _toggleMoveMode,
+                    child: Text(
+                        _isSmoothMove ? '切换动画移动' : '切换平滑移动'),
+                  ),
+                ),
+                SizedBox(height: 20), // 按钮之间的间距
+                SizedBox(
+                  width: 140, // 调整按钮宽度
+                  height: 40, // 调整按钮高度
+                  child: ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        _currentStep = 0;
+                      });
+                    },
+                    child: Text('返回时间起点'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 30.0,
+          left: 60.0,
+          right: 20.0,
+          child: Container(
+            height: 60.0,
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.lightBlue[200],
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_forward),
+                    color: Colors.white,
+                    iconSize: 36,
+                    padding: EdgeInsets.all(0),
+                    onPressed: _currentStep < _events.length - 1
+                        ? () {
+                            setState(() {
+                              _currentStep++;
+                              _isSmoothMove
+                                  ? _animatedMoveToCurrentLocation()
+                                  : _smoothMoveToCurrentLocation(); // 根据移动方式调用不同的方法
+                              _controller.reset();
+                              _controller.forward();
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (ctx) {
+                                  // 在弹窗显示后两秒钟自动关闭
+                                  Future.delayed(Duration(seconds: 2), () {
+                                    if (Navigator.of(ctx).canPop()) {
+                                      Navigator.of(ctx).pop();
+                                    }
+                                  });
+                                  return Container(
+                                    padding: EdgeInsets.all(16.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          _events[_currentStep]['time'],
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight:
+                                                FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8.0),
+                                        Text(
+                                          _events[_currentStep]['event'],
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                        SizedBox(height: 16.0),
                                         TextButton(
                                           onPressed: () {
                                             Navigator.of(ctx).pop();
@@ -230,215 +370,91 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
                                     ),
                                   );
                                 },
-                                child: Container(
-                                  child: Icon(Icons.location_on, color: Colors.red, size: 30),
+                              );
+                            });
+                          }
+                        : null,
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    disabledColor: Colors.grey,
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Scrollbar(
+                      controller: _scrollController,
+                      thumbVisibility: true,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: List.generate(_events.length, (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                if (_currentStep >= index) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                      title: Text(
+                                          _events[index]['time']),
+                                      content: Text(
+                                          _events[index]['event']),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(ctx).pop();
+                                          },
+                                          child: Text('关闭'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12.0), // 增加按钮之间的间距
+                                child: Column(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 15,
+                                      backgroundColor: index <=
+                                              _currentStep
+                                          ? Colors.lightBlue[200]
+                                          : Colors.grey,
+                                      child: Text(
+                                        '${index + 1}',
+                                        style: TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Text(
+                                      _events[index]['time'],
+                                      style: TextStyle(
+                                        color: index <= _currentStep
+                                            ? Colors.lightBlue[400]
+                                            : Colors.grey,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                    PolylineLayer(
-                      polylines: _allPaths.map((path) {
-                        return Polyline(
-                          points: path,
-                          strokeWidth: 2.0,
-                          color: Colors.blue,
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Expanded(
-              child: Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: EdgeInsets.only(right: 16.0, top: 16.0),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: 140, // 调整按钮宽度
-                      height: 40, // 调整按钮高度
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => WebViewPage()),
-                          );
-                        },
-                        child: Text('进入故事模式'),
-                      ),
-                    ),
-                    SizedBox(height: 20), // 按钮之间的间距
-                    SizedBox(
-                      width: 140, // 调整按钮宽度
-                      height: 40, // 调整按钮高度
-                      child: ElevatedButton(
-                        onPressed: _toggleMoveMode,
-                        child: Text(_isSmoothMove ? '切换动画移动' : '切换平滑移动'),
-                      ),
-                    ),
-                    SizedBox(height: 20), // 按钮之间的间距
-                    SizedBox(
-                      width: 140, // 调整按钮宽度
-                      height: 40, // 调整按钮高度
-                      child: ElevatedButton(
-                        onPressed: (){
-                          setState(() {
-                            _currentStep=0;
-                          });
-                        },
-                        child: Text('返回时间起点'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 30.0,
-            left: 60.0,
-            right: 20.0,
-            child: Container(
-              height: 60.0,
-              child: Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.lightBlue[200],
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_forward),
-                      color: Colors.white,
-                      iconSize: 36,
-                      padding: EdgeInsets.all(0),
-                      onPressed: _currentStep < _events.length - 1
-                          ? () {
-                              setState(() {
-                                _currentStep++;
-                                _isSmoothMove?_animatedMoveToCurrentLocation():_smoothMoveToCurrentLocation(); // 根据移动方式调用不同的方法
-                                _controller.reset();
-                                _controller.forward();
-                                showModalBottomSheet(
-                                  context: context,
-                                  builder: (ctx) {
-                                    // 在弹窗显示后两秒钟自动关闭
-                                    Future.delayed(Duration(seconds: 2), () {
-                                      if (Navigator.of(ctx).canPop()) {
-                                        Navigator.of(ctx).pop();
-                                      }
-                                    });
-                                    return Container(
-                                      padding: EdgeInsets.all(16.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(
-                                            _events[_currentStep]['time'],
-                                            style: TextStyle(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          SizedBox(height: 8.0),
-                                          Text(
-                                            _events[_currentStep]['event'],
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                            ),
-                                          ),
-                                          SizedBox(height: 16.0),
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(ctx).pop();
-                                            },
-                                            child: Text('关闭'),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
-                              });
-                            }
-                          : null,
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                      disabledColor: Colors.grey,
-                    ),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child:Scrollbar(
-                        controller: _scrollController,
-                        thumbVisibility: true,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: List.generate(_events.length, (index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  if (_currentStep >= index) {
-                                    showDialog(
-                                      context: context,
-                                      builder: (ctx) => AlertDialog(
-                                        title: Text(_events[index]['time']),
-                                        content: Text(_events[index]['event']),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(ctx).pop();
-                                            },
-                                            child: Text('关闭'),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  }
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12.0), // 增加按钮之间的间距
-                                  child: Column(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 15,
-                                        backgroundColor: index <= _currentStep ? Colors.lightBlue[200] : Colors.grey,
-                                        child: Text(
-                                          '${index + 1}',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                      SizedBox(height: 5),
-                                      Text(
-                                        _events[index]['time'],
-                                        style: TextStyle(
-                                          color: index <= _currentStep ? Colors.lightBlue[400] : Colors.grey,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }),
-                          ),
+                            );
+                          }),
                         ),
                       ),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
             ),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
+
 }
