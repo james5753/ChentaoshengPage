@@ -7,14 +7,12 @@ import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
-
 class ChatPage extends StatefulWidget {
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
-  
   final List<types.Message> _messages = [];
   final List<String> questions = [
     '陈騊声曾在哪里求学',
@@ -25,7 +23,7 @@ class _ChatPageState extends State<ChatPage> {
     '为什么陈騊声说自己是编书而不是著书',
     '陈騊声是否参加过政治活动，参加过哪些',
     '整风运动后陈騊声先生思想上有哪些转变',
-    '请列举出陈騊声先生受过的奖励', 
+    '请列举出陈騊声先生受过的奖励',
     '陈騊声在发酵工业方面有哪些成果和建树',
     '简述一下陈騊声在酿酒，酱油制造，制糖方面的贡献',
     '在制糖厂，陈騊声是如何战胜渡边改善了酒精酿造技术',
@@ -81,14 +79,11 @@ class _ChatPageState extends State<ChatPage> {
           responseData = utf8Body;
         }
 
-        // 处理 ClassicRAG 响应
         String aiMessageText = '';
         if (_selectedApi == 'ClassicRAG' && responseData is Map) {
-          // 打印 answer
           if (responseData.containsKey('answer')) {
             aiMessageText += '回答: ${responseData['answer']}\n\n';
           }
-          // 打印图片的 title 和 body_urls
           if (responseData.containsKey('documents')) {
             final documents = responseData['documents'];
             for (var doc in documents) {
@@ -175,56 +170,65 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _handleMessageTap(BuildContext context, types.Message message) {
-  if (message is types.TextMessage) {
-    final urlPattern = RegExp(
-        r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+');
-    final match = urlPattern.firstMatch(message.text);
-    if (match != null) {
-      final url = match.group(0);
-      if (url != null) {
-        if (url.endsWith('.jpg') || url.endsWith('.png') || url.endsWith('.jpeg') || url.endsWith('.gif')) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return Dialog(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      '图片预览',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    Image.network(
-                      url,
-                      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child;
-                        } else {
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
-                                  : null,
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
+    if (message is types.TextMessage) {
+      final urlPattern = RegExp(
+          r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+');
+      final match = urlPattern.firstMatch(message.text);
+      if (match != null) {
+        final url = match.group(0);
+        if (url != null) {
+          if (url.endsWith('.jpg') || url.endsWith('.png') || url.endsWith('.jpeg') || url.endsWith('.gif')) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Dialog(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '图片预览',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Image.network(
+                        url,
+                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                    : null,
+                              ),
+                            );
+                          }
+                        },
+                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                          return const Text('图片加载失败');
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          } else {
+            _launchURL(url);
+          }
         }
       }
     }
   }
-}
 
   Future<void> _launchURL(String url) async {
-    final Uri uri = Uri.parse(url); 
+    final Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+        webViewConfiguration: const WebViewConfiguration(enableJavaScript: true),
+      );
     } else {
       throw 'Could not launch $uri';
     }
@@ -265,9 +269,10 @@ class _ChatPageState extends State<ChatPage> {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(26.0),
-                child: Column(
-                  children: [
-                    SizedBox(height: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 20.0),
                     DropdownButton<String>(
                       value: _selectedApi,
                       onChanged: (String? newValue) {
@@ -284,13 +289,16 @@ class _ChatPageState extends State<ChatPage> {
                       }).toList(),
                     ),
                     SizedBox(height: 20.0),
-                    Expanded(
-                      child: Chat(
-                        messages: _messages,
-                        onSendPressed: _handleSendPressed,
-                        //onMessageTap: _handleMessageTap, // 使用 onMessageTap 处理消息点击
-                        user: _user,
-                        theme: DefaultChatTheme(
+                Expanded(
+                  child: Chat(
+                    messages: _messages,
+                    onSendPressed: _handleSendPressed,
+                    user: _user,
+                    onMessageTap: _handleMessageTap, // 启用 onMessageTap 处理消息点击
+                    inputOptions: InputOptions(
+                      sendButtonVisibilityMode: SendButtonVisibilityMode.editing,
+                    ),
+                    theme: DefaultChatTheme(
                           primaryColor: Colors.blue,
                           secondaryColor: Color.fromARGB(255, 231, 231, 231),
                           backgroundColor: Colors.white,
@@ -308,9 +316,9 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                         showUserAvatars: true,
                         showUserNames: true,
-                      ),
-                    ),
-                    SizedBox(height: 20.0),
+                  ),
+                ),
+               SizedBox(height: 20.0),
                     Wrap(
                       alignment: WrapAlignment.start,
                       spacing: 5.0,
