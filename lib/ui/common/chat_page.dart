@@ -35,7 +35,7 @@ class _ChatPageState extends State<ChatPage> {
   ];
 
   final types.User _user = types.User(id: 'user-id');
-  String _selectedApi = 'GraphRAG API';
+  String _selectedApi = 'GraphRAG';
 
   Future<void> _handleSendPressed(types.PartialText message) async {
     final textMessage = types.TextMessage(
@@ -50,7 +50,7 @@ class _ChatPageState extends State<ChatPage> {
     });
 
     String apiUrl;
-    if (_selectedApi == 'GraphRAG API') {
+    if (_selectedApi == 'GraphRAG') {
       apiUrl = 'https://graphrag-adbjhlgvps.us-west-1.fcapp.run';
     } else {
       apiUrl = 'https://cts-rag-hfmcjjwges.cn-hangzhou.fcapp.run/query';
@@ -61,7 +61,7 @@ class _ChatPageState extends State<ChatPage> {
       headers: {'Content-Type': 'application/json', 'Accept-Charset': 'utf-8'},
       body: jsonEncode({
         'prompt': message.text,
-        if (_selectedApi == 'GraphRAG API') 'scope': 'local' else 'question': message.text,
+        if (_selectedApi == 'GraphRAG') 'scope': 'local' else 'question': message.text,
       }),
     );
 
@@ -194,7 +194,7 @@ class _ChatPageState extends State<ChatPage> {
                           _selectedApi = newValue!;
                         });
                       },
-                      items: <String>['GraphRAG API', 'CTSRAG API']
+                      items: <String>['GraphRAG', 'BaselineRAG']
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,

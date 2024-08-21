@@ -19,7 +19,12 @@ class _ScrollingContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget buildText(String value) => Focus(child: Text(_fixNewlines(value), style: $styles.text.body));
+    Widget buildText(String value) => Focus(
+      child: Text(
+        _fixNewlines(value),
+        style: $styles.text.body.copyWith(color: Colors.black),
+      ),
+    );
 
     Widget buildDropCapText(String value) {
       final TextStyle dropStyle = $styles.text.dropCase;
@@ -93,21 +98,22 @@ class _ScrollingContent extends StatelessWidget {
                     //Center(child: buildHiddenCollectible(slot: 0)),
 
                     /// History 1
-                    buildDropCapText(data.historyInfo1),
+                    buildText(data.historyInfo1),
 
                     /// Quote1
                     _CollapsingPullQuoteImage(data: data, scrollPos: scrollPos),
                     //Center(child: buildHiddenCollectible(slot: 1)),
 
                     /// Callout1
-                    _Callout(text: data.callout1),
+                    //_Callout(text: data.callout1),
 
                     /// History 2
-                    buildText(data.historyInfo2),
+                    
                     _SectionDivider(scrollPos, sectionNotifier, index: 1),
+                    buildText(data.historyInfo2),
 
                     /// Construction 1
-                    buildDropCapText(data.constructionInfo1),
+                    buildText(data.constructionInfo1),
                     //Center(child: buildHiddenCollectible(slot: 2)),
                   ]),
                   Gap($styles.insets.md),
@@ -115,8 +121,8 @@ class _ScrollingContent extends StatelessWidget {
                   Gap($styles.insets.md),
                   ..._contentSection([
                     /// Callout2
-                    Gap($styles.insets.xs),
-                    _Callout(text: data.callout2),
+                    //Gap($styles.insets.xs),
+                    //_Callout(text: data.callout2),
 
                     /// Construction 2
                     buildText(data.constructionInfo2),
@@ -124,9 +130,9 @@ class _ScrollingContent extends StatelessWidget {
                     _SectionDivider(scrollPos, sectionNotifier, index: 2),
 
                     /// Location
-                    //buildDropCapText(data.locationInfo1),
-                    //_LargeSimpleQuote(text: data.pullQuote2, author: data.pullQuote2Author),
-                    //buildText(data.locationInfo2),
+                    buildText(data.locationInfo1),
+                    _LargeSimpleQuote(text: data.pullQuote2, author: data.pullQuote2Author),
+                    buildText(data.locationInfo2),
                   ]),
                   Gap($styles.insets.md),
                   //_MapsThumbnail(data),

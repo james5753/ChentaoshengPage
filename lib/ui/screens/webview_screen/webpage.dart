@@ -36,18 +36,22 @@ class _WebPageState extends State<WebPage> {
       appBar: AppBar(
         title: Text('知识图谱'),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 221, 160, 160),
+        backgroundColor: Color.fromARGB(255, 228, 206, 206),
         titleTextStyle: TextStyle(
-          color: Color.fromARGB(168, 0, 0, 0),
+          fontFamily: 'Tenor',
+          color: Color.fromARGB(255, 113, 84, 79),
           fontSize: 20.0,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.normal,
         ),
       ),
-      body: SizedBox(
+      body: Padding(
+      padding: const EdgeInsets.only(left: 36.0), // 设置左边的 padding
+      child: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: WebViewWidget(controller: _controller),
       ),
+    ),
     );
   }
 }

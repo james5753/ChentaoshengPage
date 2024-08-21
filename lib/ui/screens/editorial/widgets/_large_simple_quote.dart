@@ -26,7 +26,7 @@ class _LargeSimpleQuote extends StatelessWidget {
             ),
             Text(
               text,
-              style: $styles.text.quote2,
+              style: $styles.text.quote2.copyWith(color: $styles.colors.black),
               textAlign: TextAlign.center,
             ),
             Gap($styles.insets.md),

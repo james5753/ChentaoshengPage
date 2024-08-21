@@ -11,6 +11,7 @@ import 'package:wonders/logic/data/wonders_data/taj_mahal_data.dart';
 
 class WondersLogic {
   List<WonderData> all = [];
+  List<WonderData> wonder = [];
 
   final int timelineStartYear = 1890;
   final int timelineEndYear = 2020;
@@ -32,5 +33,6 @@ class WondersLogic {
       ChristRedeemerData(),
       PyramidsGizaData(),
     ];
+    wonder = [GreatWallData()];
   }
 }
