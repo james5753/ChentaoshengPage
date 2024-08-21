@@ -108,6 +108,7 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
                 TimelineScreen(),//年表
                 ChatPage(),//chat
                 MapScreen(),//gis
+                PhotoGallery(collectionId: 'Kg_h04xvZEo', wonderType: WonderType.greatWall),
                 WebPage(),
               ],
             ),
