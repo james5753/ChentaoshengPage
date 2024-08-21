@@ -91,10 +91,11 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.8,
+              child: FractionallySizedBox(
+                widthFactor: 0.8,
                 child: Column(
                   children: [
                     Wrap(
@@ -155,65 +156,69 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-
             SizedBox(height: 16.0),
             Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  double screenWidth = constraints.maxWidth;
-                  int crossAxisCount = (screenWidth / 400).floor();
-                  double itemWidth = screenWidth / crossAxisCount - 100;
+              child: Center(
+                child: FractionallySizedBox(
+                  widthFactor: 0.8,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      double screenWidth = constraints.maxWidth;
+                      int crossAxisCount = (screenWidth / 300).floor();
+                      double itemWidth = screenWidth / crossAxisCount - 150;
 
-                  return MasonryGridView.builder(
-                    gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: crossAxisCount,
-                    ),
-                    crossAxisSpacing: 30.0,
-                    mainAxisSpacing: 30.0,
-                    itemCount: _results.length,
-                    itemBuilder: (context, index) {
-                      final item = _results[index];
-//                      double itemHeight = itemWidth * (1 + 0.5 + random.nextDouble() * 0.8); // 高度随机，确保不同
-                      return SizedBox(
-                        width: itemWidth,
-                        height: itemHeight[index]*itemWidth,
-                        child: Center(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(24.0), // 增大圆角范围
-                            child: Stack(
-                              children: [
-                                Container(
-                                  color: Colors.grey[300], // 设置背景颜色为灰色
-                                  child: Image.network(
-                                    item['cover_url'],
-                                    fit: BoxFit.cover,
-                                    width: double.infinity, // force image to fill area
-                                    height: double.infinity,
-                                  ),
-                                ),
-                                Positioned.fill(
-                                  child: GestureDetector(
-                                    onTap: () async {
-                                      final imageUrls = await fetchImageUrls(item['manifest_url']);
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => FullScreenDialog(item: item, imageUrls: imageUrls),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      color: Colors.transparent,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                      return MasonryGridView.builder(
+                        gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
                         ),
+                        crossAxisSpacing: 30.0,
+                        mainAxisSpacing: 30.0,
+                        itemCount: _results.length,
+                        itemBuilder: (context, index) {
+                          final item = _results[index];
+//                        double itemHeight = itemWidth * (1 + 0.5 + random.nextDouble() * 0.8); // 高度随机，确保不同
+                          return SizedBox(
+                            width: itemWidth,
+                            height: itemHeight[index] * itemWidth,
+                            child: Center(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(24.0), // 增大圆角范围
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      color: Colors.grey[300], // 设置背景颜色为灰色
+                                      child: Image.network(
+                                        item['cover_url'],
+                                        fit: BoxFit.cover,
+                                        width: double.infinity, // force image to fill area
+                                        height: double.infinity,
+                                      ),
+                                    ),
+                                    Positioned.fill(
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          final imageUrls = await fetchImageUrls(item['manifest_url']);
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) => FullScreenDialog(item: item, imageUrls: imageUrls),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          color: Colors.transparent,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       );
                     },
-                  );
-                },
+                  ),
+                ),
               ),
             ),
           ],
@@ -221,6 +226,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
 }
 
 class FullScreenDialog extends StatefulWidget {
