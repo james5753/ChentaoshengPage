@@ -109,10 +109,10 @@ packages:
     dependency: transitive
     description:
       name: diffutil_dart
-      sha256: "5e74883aedf87f3b703cb85e815bdc1ed9208b33501556e4a8a5572af9845c81"
+      sha256: e0297e4600b9797edff228ed60f4169a778ea357691ec98408fa3b72994c7d06
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.0.1"
+    version: "3.0.0"
   drop_cap_text:
     dependency: "direct main"
     description:
@@ -186,10 +186,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_chat_ui
-      sha256: "168a4231464ad00a17ea5f0813f1b58393bdd4035683ea4dc37bbe26be62891e"
+      sha256: c8580c85e2d29359ffc84147e643d08d883eb6e757208652377f0105ef58807f
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.6.15"
+    version: "1.6.12"
   flutter_circular_text:
     dependency: "direct main"
     description:
@@ -705,13 +705,13 @@ packages:
     source: hosted
     version: "6.0.2"
   photo_view:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: photo_view
-      sha256: "1fc3d970a91295fbd1364296575f854c9863f225505c28c46e0a03e48960c75e"
+      sha256: "8036802a00bae2a78fc197af8a158e3e2f7b500561ed23b4c458107685e645bb"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.15.0"
+    version: "0.14.0"
   platform:
     dependency: transitive
     description:
