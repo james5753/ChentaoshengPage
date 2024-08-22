@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_windows/webview_windows.dart';
+import 'dart:io' show Platform;
 
 class WebViewPage extends StatefulWidget {
   @override
@@ -8,7 +10,7 @@ class WebViewPage extends StatefulWidget {
 }
 
 class _WebViewPageState extends State<WebViewPage> {
-  late final WebViewController _controller;
+  late final dynamic _controller;
 
   @override
   void initState() {
@@ -16,12 +18,30 @@ class _WebViewPageState extends State<WebViewPage> {
     if (kIsWeb) {
       _controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..loadHtmlString('<iframe src="https://uploads.knightlab.com/storymapjs/9225aae001d3e5974e45e6258b821782/chentaosheng-story-map/index.html" width="100%" height="100%" style="border:none; min-height: 100vh;"></iframe>');
+        ..loadRequest(Uri.parse('https://uploads.knightlab.com/storymapjs/9225aae001d3e5974e45e6258b821782/chentaosheng-story-map/index.html'));
+    } else if (Platform.isWindows) {
+      _controller = WebviewController();
+      _initWindowsWebView();
     } else {
       _controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..loadRequest(Uri.parse('https://uploads.knightlab.com/storymapjs/9225aae001d3e5974e45e6258b821782/chentaosheng-story-map/index.html'));
     }
+  }
+
+  Future<void> _initWindowsWebView() async {
+    await _controller.initialize();
+    await _controller.loadUrl('https://uploads.knightlab.com/storymapjs/9225aae001d3e5974e45e6258b821782/chentaosheng-story-map/index.html');
+    // Inject JavaScript to enable scrolling with mouse wheel
+    await _controller.executeScript('''
+      window.addEventListener('wheel', function(event) {
+        if (event.deltaY < 0) {
+          window.scrollBy(0, -100); // Scroll up
+        } else {
+          window.scrollBy(0, 100); // Scroll down
+        }
+      });
+    ''');
   }
 
   @override
@@ -41,9 +61,16 @@ class _WebViewPageState extends State<WebViewPage> {
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: WebViewWidget(controller: _controller),
+        child: _buildWebView(),
       ),
     );
   }
-}
 
+  Widget _buildWebView() {
+    if (Platform.isWindows) {
+      return Webview(_controller);
+    } else {
+      return WebViewWidget(controller: _controller);
+    }
+  }
+}

@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_windows/webview_windows.dart';
+import 'dart:io' show Platform;
 
 class WebPage extends StatefulWidget {
   @override
@@ -8,7 +10,7 @@ class WebPage extends StatefulWidget {
 }
 
 class _WebPageState extends State<WebPage> {
-  late final WebViewController _controller;
+  late final dynamic _controller;
 
   @override
   void initState() {
@@ -23,11 +25,29 @@ class _WebPageState extends State<WebPage> {
             </body>
           </html>
         ''');
+    } else if (Platform.isWindows) {
+      _controller = WebviewController();
+      _initWindowsWebView();
     } else {
       _controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..loadRequest(Uri.parse('http://47.120.56.163:7474/browser/'));
     }
+  }
+
+  Future<void> _initWindowsWebView() async {
+    await _controller.initialize();
+    await _controller.loadUrl('http://47.120.56.163:7474/browser/');
+    // Inject JavaScript to enable scrolling with mouse wheel
+    await _controller.executeScript('''
+      window.addEventListener('wheel', function(event) {
+        if (event.deltaY < 0) {
+          window.scrollBy(0, -100); // Scroll up
+        } else {
+          window.scrollBy(0, 100); // Scroll down
+        }
+      });
+    ''');
   }
 
   @override
@@ -45,13 +65,21 @@ class _WebPageState extends State<WebPage> {
         ),
       ),
       body: Padding(
-      padding: const EdgeInsets.only(left: 36.0), // 设置左边的 padding
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: WebViewWidget(controller: _controller),
+        padding: const EdgeInsets.only(left: 36.0), // 设置左边的 padding
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: _buildWebView(),
+        ),
       ),
-    ),
     );
+  }
+
+  Widget _buildWebView() {
+    if (Platform.isWindows) {
+      return Webview(_controller);
+    } else {
+      return WebViewWidget(controller: _controller);
+    }
   }
 }

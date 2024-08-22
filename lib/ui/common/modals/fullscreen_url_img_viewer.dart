@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter/material.dart';
 import 'package:wonders/common_libs.dart';
 import 'package:wonders/ui/common/app_icons.dart';
 import 'package:wonders/ui/common/controls/app_header.dart';
@@ -64,7 +64,7 @@ class _FullscreenUrlImgViewerState extends State<FullscreenUrlImgViewer> {
       builder: (_, __) {
         final bool enableSwipe = !_isZoomed.value && widget.urls.length > 1;
         return PageView.builder(
-          physics: enableSwipe ? PageScrollPhysics() : NeverScrollableScrollPhysics(),
+          physics: enableSwipe ? const PageScrollPhysics() : const NeverScrollableScrollPhysics(),
           controller: _controller,
           itemCount: widget.urls.length,
           itemBuilder: (_, index) => _Viewer(widget.urls[index], _isZoomed),
@@ -82,13 +82,22 @@ class _FullscreenUrlImgViewerState extends State<FullscreenUrlImgViewer> {
 
     return FullscreenKeyboardListener(
       onKeyDown: _handleKeyDown,
-      child: Container(
-        color: $styles.colors.black,
-        child: Stack(
+      child: Scaffold(
+        backgroundColor: $styles.colors.black,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: _handleBackPressed,
+            color: Colors.white, // 设置返回按钮颜色为白色
+          ),
+        ),
+        body: Stack(
           children: [
             Positioned.fill(child: content),
             AppHeader(onBack: _handleBackPressed, isTransparent: true),
-            // Show next/previous btns if there are more than one image
+            // Show next/previous buttons if there are more than one image
             if (widget.urls.length > 1) ...{
               BottomCenter(
                 child: Padding(
