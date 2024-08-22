@@ -56,7 +56,7 @@ class _PhotoGalleryState extends State<PhotoGallery> {
       }
     }
     setState(() => _photoIds.value = ids ?? []);
-  }
+  }  
 
   void _setIndex(int value, {bool skipAnimation = false}) {
     if (value < 0 || value >= _imgCount) return;

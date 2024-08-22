@@ -37,13 +37,13 @@ class WonderDetailsTabMenu extends StatelessWidget {
     // 根据 showBg 值设置图标颜色
     Color iconColor = showBg ? $styles.colors.black : $styles.colors.white;
     // 计算可用空间大小
-    final availableSize = ((isVertical ? context.heightPx : context.widthPx) - homeBtnSize - $styles.insets.md);
+    final availableSize = ((isVertical ? context.heightPx : context.widthPx) - homeBtnSize - $styles.insets.md-58);
     // 根据可用空间大小计算tab按钮大小，将其限制在minTabSize和maxTabSize之间
     final double tabBtnSize = (availableSize / 7).clamp(minTabSize, maxTabSize);
     // 计算额外的间隙量，如果tab按钮比home按钮宽
     final double gapAmt = max(0, tabBtnSize - homeBtnSize);
     // 获取安全区域的填充
-    final double safeAreaBtm = context.mq.padding.bottom, safeAreaTop = context.mq.padding.top;
+    final double safeAreaBtm = context.mq.padding.bottom, safeAreaTop = context.mq.padding.top+56;
     // 设置按钮内部填充
     final buttonInsetPadding = isVertical ? EdgeInsets.only(right: buttonInset) : EdgeInsets.only(top: buttonInset);
     
@@ -122,7 +122,7 @@ class WonderDetailsTabMenu extends StatelessWidget {
                               _TabBtn(
                                 1,
                                 tabController,
-                                iconImg: 'search',
+                                iconImg: 'photo',
                                 label: $strings.wonderDetailsTabLabelImages,
                                 color: iconColor,
                                 axis: axis,
@@ -172,7 +172,7 @@ class WonderDetailsTabMenu extends StatelessWidget {
                               _TabBtn(
                                 5,
                                 tabController,
-                                iconImg: 'photo',
+                                iconImg: 'search',
                                 label:'Photo',
                                 color: iconColor,
                                 axis: axis,
