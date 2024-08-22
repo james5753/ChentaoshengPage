@@ -10,7 +10,7 @@ class WebPage extends StatefulWidget {
 }
 
 class _WebPageState extends State<WebPage> {
-  late final dynamic _controller;
+  dynamic _controller;
 
   @override
   void initState() {
@@ -21,10 +21,11 @@ class _WebPageState extends State<WebPage> {
         ..loadHtmlString('''
           <html>
             <body style="margin:0;padding:0;">
-              <iframe src="http://47.120.56.163:7474/browser/"></iframe>
+              <iframe src="http://47.120.56.163:7474/browser/" style="width:100%;height:100%;border:none;"></iframe>
             </body>
           </html>
         ''');
+      setState(() {});  // 更新状态以显示 WebView
     } else if (Platform.isWindows) {
       _controller = WebviewController();
       _initWindowsWebView();
@@ -32,6 +33,7 @@ class _WebPageState extends State<WebPage> {
       _controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..loadRequest(Uri.parse('http://47.120.56.163:7474/browser/'));
+      setState(() {});  // 更新状态以显示 WebView
     }
   }
 
@@ -48,18 +50,20 @@ class _WebPageState extends State<WebPage> {
         }
       });
     ''');
+    setState(() {});  // 初始化完成后更新状态以显示 WebView
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[900],
       appBar: AppBar(
         title: Text('知识图谱'),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 228, 206, 206),
+        backgroundColor: Colors.grey[800],
         titleTextStyle: TextStyle(
           fontFamily: 'Tenor',
-          color: Color.fromARGB(255, 113, 84, 79),
+          color: Colors.white,
           fontSize: 20.0,
           fontWeight: FontWeight.normal,
         ),
@@ -76,6 +80,11 @@ class _WebPageState extends State<WebPage> {
   }
 
   Widget _buildWebView() {
+    if (_controller == null) {
+      // 控制器未初始化完成时显示加载指示器
+      return Center(child: CircularProgressIndicator());
+    }
+
     if (Platform.isWindows) {
       return Webview(_controller);
     } else {

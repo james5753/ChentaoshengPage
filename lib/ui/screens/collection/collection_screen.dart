@@ -174,13 +174,14 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
   @override
 Widget build(BuildContext context) {
   return Scaffold(
+    backgroundColor: Colors.grey[900],
     appBar: AppBar(
       title: Text('GIS地图'),
       centerTitle: true,
-      backgroundColor: Color.fromARGB(255, 228, 206, 206),
+      backgroundColor: Colors.grey[800],
       titleTextStyle: TextStyle(
         fontFamily: 'Tenor',
-        color: Color.fromARGB(255, 113, 84, 79),
+        color: Colors.white,
         fontSize: 20.0,
         fontWeight: FontWeight.normal,
       ),
@@ -266,6 +267,10 @@ Widget build(BuildContext context) {
                   width: 140, // 调整按钮宽度
                   height: 40, // 调整按钮高度
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[700], // 深灰色背景
+                      foregroundColor: Colors.black, // 白色文字
+                    ),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -281,9 +286,13 @@ Widget build(BuildContext context) {
                   width: 140, // 调整按钮宽度
                   height: 40, // 调整按钮高度
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[700], // 深灰色背景
+                      foregroundColor: Colors.black, // 白色文字
+                    ),
                     onPressed: _toggleMoveMode,
                     child: Text(
-                        _isSmoothMove ? '切换动画移动' : '切换平滑移动'),
+                        _isSmoothMove ? '切换平滑移动' : '切换动画移动'),
                   ),
                 ),
                 SizedBox(height: 20), // 按钮之间的间距
@@ -291,6 +300,10 @@ Widget build(BuildContext context) {
                   width: 140, // 调整按钮宽度
                   height: 40, // 调整按钮高度
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[700], // 深灰色背景
+                      foregroundColor: Colors.black, // 白色文字
+                    ),
                     onPressed: () {
                       setState(() {
                         _currentStep = 0;

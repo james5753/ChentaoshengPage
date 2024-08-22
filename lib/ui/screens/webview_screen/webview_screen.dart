@@ -10,7 +10,7 @@ class WebViewPage extends StatefulWidget {
 }
 
 class _WebViewPageState extends State<WebViewPage> {
-  late final dynamic _controller;
+  dynamic _controller;
 
   @override
   void initState() {
@@ -19,6 +19,7 @@ class _WebViewPageState extends State<WebViewPage> {
       _controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..loadRequest(Uri.parse('https://uploads.knightlab.com/storymapjs/9225aae001d3e5974e45e6258b821782/chentaosheng-story-map/index.html'));
+      setState(() {});  // 更新状态以显示 WebView
     } else if (Platform.isWindows) {
       _controller = WebviewController();
       _initWindowsWebView();
@@ -26,13 +27,13 @@ class _WebViewPageState extends State<WebViewPage> {
       _controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..loadRequest(Uri.parse('https://uploads.knightlab.com/storymapjs/9225aae001d3e5974e45e6258b821782/chentaosheng-story-map/index.html'));
+      setState(() {});  // 更新状态以显示 WebView
     }
   }
 
   Future<void> _initWindowsWebView() async {
     await _controller.initialize();
     await _controller.loadUrl('https://uploads.knightlab.com/storymapjs/9225aae001d3e5974e45e6258b821782/chentaosheng-story-map/index.html');
-    // Inject JavaScript to enable scrolling with mouse wheel
     await _controller.executeScript('''
       window.addEventListener('wheel', function(event) {
         if (event.deltaY < 0) {
@@ -42,6 +43,7 @@ class _WebViewPageState extends State<WebViewPage> {
         }
       });
     ''');
+    setState(() {});  // 初始化完成后更新状态以显示 WebView
   }
 
   @override
@@ -67,6 +69,11 @@ class _WebViewPageState extends State<WebViewPage> {
   }
 
   Widget _buildWebView() {
+    if (_controller == null) {
+      // 控制器未初始化完成时显示加载指示器
+      return Center(child: CircularProgressIndicator());
+    }
+
     if (Platform.isWindows) {
       return Webview(_controller);
     } else {

@@ -237,13 +237,14 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[900],
       appBar: AppBar(
         title: Text('AI聊天'),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 228, 206, 206),
+        backgroundColor: Colors.grey[800],
         titleTextStyle: TextStyle(
           fontFamily: 'Tenor',
-          color: Color.fromARGB(255, 113, 84, 79),
+          color: Colors.white,
           fontSize: 20.0,
           fontWeight: FontWeight.normal,
         ),
@@ -327,6 +328,10 @@ class _ChatPageState extends State<ChatPage> {
                         Container(
                           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
                           child: ElevatedButton(
+                            // style: ElevatedButton.styleFrom(
+                            //   backgroundColor: Colors.grey[700], // 浅灰色背景
+                            //   foregroundColor: Colors.black, // 黑色文字
+                            // ),
                             onPressed: () => _sendSuggestedMessage(currentQuestion1),
                             child: Text(currentQuestion1),
                           ),
@@ -334,10 +339,15 @@ class _ChatPageState extends State<ChatPage> {
                         Container(
                           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
                           child: ElevatedButton(
+                            // style: ElevatedButton.styleFrom(
+                            //   backgroundColor: Colors.grey[700], // 浅灰色背景
+                            //   foregroundColor: Colors.black, // 黑色文字
+                            // ),
                             onPressed: () => _sendSuggestedMessage(currentQuestion2),
                             child: Text(currentQuestion2),
                           ),
                         ),
+
                         IconButton(
                           onPressed: updateQuestion,
                           icon: Icon(Icons.refresh),
