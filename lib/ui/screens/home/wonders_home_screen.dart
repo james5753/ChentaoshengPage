@@ -104,12 +104,11 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
               children: [
                 FirstScreen(),//首页
                 MyHomePage(),//检索
-//                Center(child: Text('资源IIIF')),
                 TimelineScreen(),//年表
                 ChatPage(),//chat
                 MapScreen(),//gis
-                PhotoGallery(collectionId: 'Kg_h04xvZEo', wonderType: WonderType.greatWall),
-                WebPage(),
+                PhotoGallery(collectionId: 'Kg_h04xvZEo', wonderType: WonderType.greatWall),//照片库
+                WebPage(),//知识图谱
               ],
             ),
 

@@ -6,6 +6,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/gestures.dart';
 
 class ChatPage extends StatefulWidget {
   @override
@@ -32,7 +33,8 @@ class _ChatPageState extends State<ChatPage> {
     '陈騊声对于理论研究和应用研究的看法',
     '解放对于陈騊声先生有什么影响',
     '我国发酵工业在解放前后有什么改变，有什么影响',
-    '陈騊声作为一个酷爱诗文的科学家，举一些他创作的诗句'
+    '陈騊声作为一个酷爱诗文的科学家，举一些他创作的诗句',
+    '陈騊声与林志钧之间是什么关系，有什么故事吗?',
   ];
 
   final types.User _user = types.User(id: 'user-id');
@@ -80,6 +82,7 @@ class _ChatPageState extends State<ChatPage> {
         }
 
         String aiMessageText = '';
+        List<InlineSpan> aiMessageSpans = [];
         if (_selectedApi == 'ClassicRAG' && responseData is Map) {
           if (responseData.containsKey('answer')) {
             aiMessageText += '回答: ${responseData['answer']}\n\n';
@@ -89,9 +92,9 @@ class _ChatPageState extends State<ChatPage> {
             for (var doc in documents) {
               final title = doc['title'] ?? 'No title';
               aiMessageText += '图片: $title\n';
-              final bodyUrls = doc['body_urls'] ?? [];
-              for (var url in bodyUrls) {
-                aiMessageText += '链接: $url\n';
+              final m3Url = doc['m3_url'] ?? '';
+              if (m3Url.isNotEmpty) {
+                aiMessageText += '链接: $m3Url\n';
               }
               aiMessageText += '\n';
             }
@@ -100,6 +103,23 @@ class _ChatPageState extends State<ChatPage> {
           aiMessageText = responseData is Map && responseData.containsKey('response')
               ? '${responseData['response']}'
               : '$responseData';
+        }
+
+        // 提取人名和链接
+        final nameRegex = RegExp(r'@([^@]+)@');
+        final linkRegex = RegExp(r'\$([^$]+)\$');
+
+        final names = nameRegex.allMatches(aiMessageText).map((match) => match.group(1)).toList();
+        final links = linkRegex.allMatches(aiMessageText).map((match) => match.group(1)).toList();
+
+        // 替换掉回答中的 @ 和 $ 符号，同时保留人名
+        aiMessageText = aiMessageText.replaceAllMapped(nameRegex, (match) => match.group(1) ?? '');
+        aiMessageText = aiMessageText.replaceAll(linkRegex, '');
+
+        // 添加相关人物和链接信息
+        if (names.isNotEmpty && links.isNotEmpty) {
+          aiMessageText += '\n相关人物：${names.join(', ')}\n';
+          aiMessageText += '链接：${links.join(', ')}\n';
         }
 
         final aiMessage = types.TextMessage(
@@ -313,9 +333,10 @@ class _ChatPageState extends State<ChatPage> {
                             borderRadius: BorderRadius.circular(15.0),
                             border: Border.all(color: Color.fromARGB(136, 136, 126, 138), width: 1.0),
                           ),
-                          messageMaxWidth: MediaQuery.of(context).size.width * 0.6,
+                          messageMaxWidth: MediaQuery.of(context).size.width * 0.7,
+                          //receivedMessageBodyTextStyle: TextStyle(color: _selectedApi == 'ClassicRAG'?Color(0xFF642828):Color(0xFF6C795B))
                         ),
-                        showUserAvatars: true,
+                        showUserAvatars: false,
                         showUserNames: true,
                   ),
                 ),
@@ -352,7 +373,7 @@ class _ChatPageState extends State<ChatPage> {
                           onPressed: updateQuestion,
                           icon: Icon(Icons.refresh),
                           tooltip: '换一些问题',
-                          color: Colors.lightBlue[200],
+                          color: Color(0xFF6C795B),
                           iconSize: 30.0,
                         ),
                       ],

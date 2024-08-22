@@ -326,7 +326,7 @@ Widget build(BuildContext context) {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.lightBlue[200],
+                    color: Color(0xFF6C795B),
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
@@ -433,7 +433,7 @@ Widget build(BuildContext context) {
                                       radius: 15,
                                       backgroundColor: index <=
                                               _currentStep
-                                          ? Colors.lightBlue[200]
+                                          ? Color(0xFF6C795B)
                                           : Colors.grey,
                                       child: Text(
                                         '${index + 1}',
@@ -446,7 +446,7 @@ Widget build(BuildContext context) {
                                       _events[index]['time'],
                                       style: TextStyle(
                                         color: index <= _currentStep
-                                            ? Colors.lightBlue[400]
+                                            ? Color(0xFF6C795B)
                                             : Colors.grey,
                                         fontSize: 12,
                                       ),

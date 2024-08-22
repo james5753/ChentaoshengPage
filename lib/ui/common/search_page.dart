@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: Color(0xFFF9ECE4), // 设置整体背景颜色为深灰色
       appBar: AppBar(
-        title: Text('API查询应用'),
+        title: Text('查询'),
         centerTitle: true,
         backgroundColor: Color(0xFF642828),
         titleTextStyle: TextStyle(
@@ -112,10 +112,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           ChoiceChip(
                             label: Text(
                               subject,
-                              style: TextStyle(color: Colors.black), // Set text color to deep color
+                              style: TextStyle(color: Colors.white), // Set text color to deep color
                             ),
-                            selectedColor: Colors.white, // Set the color when selected
-                            backgroundColor: Colors.grey[700], // Set the background color when not selected
+                            selectedColor: Color(0xFF642828), // Set the color when selected
+                            backgroundColor: Color(0xFF6C795B), // Set the background color when not selected
                             selected: _selectedSubject == subject,
                             onSelected: (bool selected) {
                               setState(() {
@@ -133,11 +133,19 @@ class _MyHomePageState extends State<MyHomePage> {
                         Expanded(
                           child: TextField(
                             controller: _controller,
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Color(0xFF642828)),
                             decoration: InputDecoration(
                               labelText: '输入标题',
-                              labelStyle: TextStyle(color: Colors.white),
-                              border: OutlineInputBorder(),
+                              labelStyle: TextStyle(color: Color(0xFF642828)),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xFF642828)), // 设置边框颜色
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xFF642828)), // 设置未选中时的边框颜色
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xFF642828)), // 设置选中时的边框颜色
+                              ),
                             ),
                           ),
                         ),
