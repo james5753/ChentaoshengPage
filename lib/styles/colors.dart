@@ -7,6 +7,9 @@ class AppColors {
   /// Common
   final Color accent1 = Color(0xFFE4935D);
   final Color accent2 = Color(0xFFBEABA1);
+  final Color title = Color(0xFF642828); // #642828
+  final Color backgd = Color(0xFFF9ECE4); // #f9ece4
+  final Color button = Color(0xFF6C795B); // #6c795b
   final Color type1 =Color(0xFF22FF66);
   final Color type2 =Color(0xFF0088FF);
   final Color type3 =Color(0xFFFF0088);

@@ -237,14 +237,14 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900],
+      backgroundColor: Color(0xFFF9ECE4),
       appBar: AppBar(
         title: Text('AI聊天'),
         centerTitle: true,
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Color(0xFF642828),
         titleTextStyle: TextStyle(
           fontFamily: 'Tenor',
-          color: Colors.white,
+          color: Color(0xFFFFFFFF),
           fontSize: 20.0,
           fontWeight: FontWeight.normal,
         ),
@@ -328,10 +328,10 @@ class _ChatPageState extends State<ChatPage> {
                         Container(
                           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
                           child: ElevatedButton(
-                            // style: ElevatedButton.styleFrom(
-                            //   backgroundColor: Colors.grey[700], // 浅灰色背景
-                            //   foregroundColor: Colors.black, // 黑色文字
-                            // ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF6C795B), // 浅灰色背景
+                              foregroundColor: Colors.white, // 黑色文字
+                            ),
                             onPressed: () => _sendSuggestedMessage(currentQuestion1),
                             child: Text(currentQuestion1),
                           ),
@@ -339,10 +339,10 @@ class _ChatPageState extends State<ChatPage> {
                         Container(
                           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
                           child: ElevatedButton(
-                            // style: ElevatedButton.styleFrom(
-                            //   backgroundColor: Colors.grey[700], // 浅灰色背景
-                            //   foregroundColor: Colors.black, // 黑色文字
-                            // ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF6C795B), // 浅灰色背景
+                              foregroundColor: Colors.white, // 黑色文字
+                            ),
                             onPressed: () => _sendSuggestedMessage(currentQuestion2),
                             child: Text(currentQuestion2),
                           ),

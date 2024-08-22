@@ -56,11 +56,11 @@ class _WebPageState extends State<WebPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900],
+      backgroundColor: Color(0xFFF9ECE4),
       appBar: AppBar(
         title: Text('知识图谱'),
         centerTitle: true,
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Color(0xFF642828),
         titleTextStyle: TextStyle(
           fontFamily: 'Tenor',
           color: Colors.white,

@@ -174,11 +174,11 @@ class _MapScreenState extends State<MapScreen> with SingleTickerProviderStateMix
   @override
 Widget build(BuildContext context) {
   return Scaffold(
-    backgroundColor: Colors.grey[900],
+    backgroundColor: Color(0xFFF9ECE4),
     appBar: AppBar(
       title: Text('GIS地图'),
       centerTitle: true,
-      backgroundColor: Colors.grey[800],
+      backgroundColor: Color(0xFF642828),
       titleTextStyle: TextStyle(
         fontFamily: 'Tenor',
         color: Colors.white,
@@ -268,8 +268,8 @@ Widget build(BuildContext context) {
                   height: 40, // 调整按钮高度
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[700], // 深灰色背景
-                      foregroundColor: Colors.black, // 白色文字
+                      backgroundColor: Color(0xFF6C795B), // 深灰色背景
+                      foregroundColor: Colors.white, // 白色文字
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -287,8 +287,8 @@ Widget build(BuildContext context) {
                   height: 40, // 调整按钮高度
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[700], // 深灰色背景
-                      foregroundColor: Colors.black, // 白色文字
+                      backgroundColor: Color(0xFF6C795B), // 深灰色背景
+                      foregroundColor: Colors.white, // 白色文字
                     ),
                     onPressed: _toggleMoveMode,
                     child: Text(
@@ -301,8 +301,8 @@ Widget build(BuildContext context) {
                   height: 40, // 调整按钮高度
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[700], // 深灰色背景
-                      foregroundColor: Colors.black, // 白色文字
+                      backgroundColor: Color(0xFF6C795B), // 深灰色背景
+                      foregroundColor: Colors.white, // 白色文字
                     ),
                     onPressed: () {
                       setState(() {

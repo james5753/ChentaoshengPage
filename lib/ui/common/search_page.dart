@@ -76,11 +76,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900], // 设置整体背景颜色为深灰色
+      backgroundColor: Color(0xFFF9ECE4), // 设置整体背景颜色为深灰色
       appBar: AppBar(
         title: Text('API查询应用'),
         centerTitle: true,
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Color(0xFF642828),
         titleTextStyle: TextStyle(
           fontFamily: 'Tenor',
           color: Colors.white,
@@ -145,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ElevatedButton(
                           onPressed: _fetchResults,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orange, // Button color
+                            backgroundColor: Color(0xFF6C795B), // Button color
                             foregroundColor: Colors.white, // Text color
                           ),
                           child: Text('搜索'),
