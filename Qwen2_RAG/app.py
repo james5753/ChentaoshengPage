@@ -6,8 +6,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough, RunnableParallel
 from langchain_community.llms import Tongyi
 import os
-from collections import defaultdict
-
+import re
 app = Flask(__name__)
 
 # 设置环境变量
@@ -44,6 +43,28 @@ rag_chain_with_source = RunnableParallel(
     {"context": retriever, "question": RunnablePassthrough()}
 ).assign(answer=rag_chain_from_docs)
 
+def load_name_links(file_path):
+    name_links = {}
+    with open(file_path, 'r', encoding='utf-8') as file:
+        for line in file:
+            name, link = line.strip().split('\t')
+            name_links[name] = link
+    return name_links
+
+def add_name_markers(text):
+    name_links = load_name_links("name_links.txt")
+    replaced_names = set()  # 用于跟踪已替换的名字
+    
+    for name, link in name_links.items():
+        if name not in replaced_names:
+            pattern = re.escape(name)
+            replacement = f'@{name}@${link}$'
+            if re.search(pattern, text):
+                text = re.sub(pattern, replacement, text, count=1)
+                replaced_names.add(name)
+    
+    return text
+
 @app.route('/query', methods=['POST'])
 def query():
     if not request.is_json:
@@ -61,28 +82,27 @@ def query():
         result = rag_chain_with_source.invoke(question)
 
         # 处理输出
-        merged_docs = defaultdict(lambda: {"body_urls": set(), "rendering_urls": set()})
-        for doc in result['context']:
-            title = doc.metadata.get('title', '无标题')
-            merged_docs[title]["body_urls"].update(doc.metadata.get('body_urls', []))
-            merged_docs[title]["rendering_urls"].update(doc.metadata.get('rendering_urls', []))
-
-        # 格式化文档信息
         formatted_docs = []
-        for i, (title, info) in enumerate(merged_docs.items(), 1):
-            doc_info = {
-                "title": title,
-                "body_urls": sorted(info["body_urls"]),
-                "rendering_urls": sorted(info["rendering_urls"])
-            }
-            formatted_docs.append(doc_info)
+        seen_urls = set()  # 用于跟踪已经添加的URL
+        for doc in result['context']:
+            m3_url = doc.metadata.get('m3_url', '')
+            if m3_url not in seen_urls:  # 检查是否已经添加过这个URL
+                doc_info = {
+                    "title": doc.metadata.get('title', 'header'),  # 使用'header'作为默认标题
+                    "m3_url": m3_url
+                }
+                formatted_docs.append(doc_info)
+                seen_urls.add(m3_url)  # 将URL添加到已见集合中
+            
+            if len(formatted_docs) == 2:  # 只保留前两个唯一的文档
+                break
 
         response = {
             "question": result['question'],
-            "answer": result['answer'],
+            "answer": add_name_markers(result['answer']),
             "documents": formatted_docs
         }
-
+        
         return jsonify(response)
 
     except Exception as e:
@@ -91,4 +111,4 @@ def query():
         return jsonify({"error": "An internal error occurred"}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8888)
