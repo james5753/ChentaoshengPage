@@ -6,10 +6,11 @@ import 'package:wonders/logic/data/unsplash_photo_data.dart';
 import 'package:wonders/ui/common/controls/app_loading_indicator.dart';
 import 'package:wonders/ui/common/controls/eight_way_swipe_detector.dart';
 import 'package:wonders/ui/common/fullscreen_keyboard_listener.dart';
-//import 'package:wonders/ui/common/hidden_collectible.dart';
 import 'package:wonders/ui/common/modals/fullscreen_url_img_viewer.dart';
 import 'package:wonders/ui/common/unsplash_photo.dart';
 import 'package:wonders/ui/common/utils/app_haptics.dart';
+import 'package:wonders/logic/data/wonders_data/great_wall_data.dart';
+import 'package:wonders/ui/screens/home_menu/home_menu.dart';
 
 part 'widgets/_animated_cutout_overlay.dart';
 
@@ -167,26 +168,28 @@ class _PhotoGalleryState extends State<PhotoGallery> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return FullscreenKeyboardListener(
-      onKeyDown: _handleKeyDown,
-      child: ValueListenableBuilder<List<String>>(
-          valueListenable: _photoIds,
-          builder: (_, value, __) {
-            if (value.isEmpty) {
-              return Center(child: AppLoadingIndicator());
-            }
-            Size imgSize = context.isLandscape
-                ? Size(context.widthPx * .5, context.heightPx * .66)
-                : Size(context.widthPx * .66, context.heightPx * .5);
-            imgSize = (widget.imageSize ?? imgSize) * _scale;
-            // Get transform offset for the current _index
-            final padding = $styles.insets.md;
-            var gridOffset = _calculateCurrentOffset(padding, imgSize);
-            gridOffset += Offset(0, -context.mq.padding.top / 2);
-            final offsetTweenDuration = _skipNextOffsetTween ? Duration.zero : swipeDuration;
-            final cutoutTweenDuration = _skipNextOffsetTween ? Duration.zero : swipeDuration * .5;
-            return _AnimatedCutoutOverlay(
+Widget build(BuildContext context) {
+  return FullscreenKeyboardListener(
+    onKeyDown: _handleKeyDown,
+    child: ValueListenableBuilder<List<String>>(
+      valueListenable: _photoIds,
+      builder: (_, value, __) {
+        if (value.isEmpty) {
+          return Center(child: AppLoadingIndicator());
+        }
+        Size imgSize = context.isLandscape
+            ? Size(context.widthPx * .5, context.heightPx * .66)
+            : Size(context.widthPx * .66, context.heightPx * .5);
+        imgSize = (widget.imageSize ?? imgSize) * _scale;
+        // Get transform offset for the current _index
+        final padding = $styles.insets.md;
+        var gridOffset = _calculateCurrentOffset(padding, imgSize);
+        gridOffset += Offset(0, -context.mq.padding.top / 2);
+        final offsetTweenDuration = _skipNextOffsetTween ? Duration.zero : swipeDuration;
+        final cutoutTweenDuration = _skipNextOffsetTween ? Duration.zero : swipeDuration * .5;
+        return Stack(
+          children: [
+            _AnimatedCutoutOverlay(
               animationKey: ValueKey(_index),
               cutoutSize: imgSize,
               swipeDir: _lastSwipeDir,
@@ -225,10 +228,29 @@ class _PhotoGalleryState extends State<PhotoGallery> {
                   ),
                 ),
               ),
-            );
-          }),
-    );
-  }
+            ),
+            Positioned(
+              right: 20,
+              top: 20,
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: IconButton(
+                  icon: Icon(Icons.menu),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => HomeMenu(data: GreatWallData()),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    ),
+  );
+}
 
   Widget _buildImage(int index, Duration swipeDuration, Size imgSize) {
     /// Bind to collectibles.statesById because we might need to rebuild if a collectible is found.

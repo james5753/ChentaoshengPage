@@ -26,6 +26,8 @@ import 'package:wonders/ui/wonder_illustrations/common/wonder_illustration.dart'
 import 'package:wonders/ui/wonder_illustrations/common/wonder_illustration_config.dart';
 import 'package:wonders/ui/wonder_illustrations/common/wonder_title_text.dart';
 import 'package:wonders/ui/screens/home/wonders_home_screen.dart';
+import 'package:wonders/ui/screens/home_menu/home_menu.dart';
+import 'package:wonders/logic/data/wonders_data/great_wall_data.dart';
 
 part 'widgets/_app_bar.dart';
 part 'widgets/_callout.dart';
@@ -167,6 +169,21 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
                   child: BackBtn(icon: AppIcons.north, onPressed: _handleBackPressed),
                 ),
               ),
+
+                Positioned(
+                  right: 30,
+                  top: 30,
+                  child: IconButton(
+                    icon: Icon(Icons.menu, color: Colors.black),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => HomeMenu(data: GreatWallData()),
+                      );
+                    },
+                  ),
+                ),
+              
             ],
           ),
         ),

@@ -297,11 +297,18 @@ class _FirstScreenState extends State<FirstScreen> with SingleTickerProviderStat
             _buildFloatingUi(),
 
             Positioned(
-              top: 16.0, // 调整这个值以设置按钮的垂直位置
-              right: 16.0, // 调整这个值以设置按钮的水平位置
-              child: buildButton(),
+              right: 30,
+              top: 30,
+              child: IconButton(
+                icon: Icon(Icons.menu, color: Colors.black),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => HomeMenu(data: GreatWallData()),
+                  );
+                },
+              ),
             ),
-            
           ],
         ).animate().fadeIn(),
       //),
@@ -460,7 +467,7 @@ class _FirstScreenState extends State<FirstScreen> with SingleTickerProviderStat
                                 ),
                               // Hide the title when the menu is open for visual polish
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 30.0), // 设置左边的填充
+                                padding: const EdgeInsets.only(left: 0.0), // 设置左边的填充
                                 child: WonderTitleText(currentWonder, enableShadows: true),
                               ),
                             ),

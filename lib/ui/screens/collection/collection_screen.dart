@@ -4,6 +4,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:wonders/ui/screens/webview_screen/webview_screen.dart';
 import 'package:wonders/styles/styles.dart';
 import 'package:wonders/ui/wonder_illustrations/common/wonder_title_text.dart';
+import 'package:wonders/ui/screens/home_menu/home_menu.dart';
+import 'package:wonders/logic/data/wonders_data/great_wall_data.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -185,6 +187,17 @@ Widget build(BuildContext context) {
         fontSize: 20.0,
         fontWeight: FontWeight.normal,
       ),
+      actions: [
+          IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => HomeMenu(data: GreatWallData()),
+              );
+            },
+          ),
+        ],
     ),
     body: Stack(
       children: [

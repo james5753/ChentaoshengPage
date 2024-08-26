@@ -6,7 +6,9 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/gestures.dart';
+import 'package:wonders/logic/data/wonder_data.dart';
+import 'package:wonders/logic/data/wonders_data/great_wall_data.dart';
+import 'package:wonders/ui/screens/home_menu/home_menu.dart';
 
 class ChatPage extends StatefulWidget {
   @override
@@ -268,6 +270,17 @@ class _ChatPageState extends State<ChatPage> {
           fontSize: 20.0,
           fontWeight: FontWeight.normal,
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => HomeMenu(data: GreatWallData()),
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Container(
