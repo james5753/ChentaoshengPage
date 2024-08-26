@@ -24,7 +24,7 @@ def load_jsonl(file_path):
     return documents
 
 print("开始加载文档...")
-documents = load_jsonl("preprocess_test/new_merged_jsonl.jsonl")
+documents = load_jsonl("new_merged_jsonl.jsonl")
 print(f"加载完成，共 {len(documents)} 条文档")
 
 print("开始创建 FAISS 索引...")
