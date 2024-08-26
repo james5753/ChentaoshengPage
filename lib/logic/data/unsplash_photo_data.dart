@@ -181,6 +181,8 @@ class UnsplashPhotoData {
       '4c79a516-10e3-42dd-9717-23d9f19cb1ca',
       '3dd9cf4d-5c5b-4f9b-acbf-36b736d78872',
       '7a614af7-7238-45a4-bf71-c90bd5bc5e8f',
+      '',
+      ''
     ],
     'wUhgZTyUnl8': [
       'UiUtIG0xLPM',

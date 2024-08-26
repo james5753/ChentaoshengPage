@@ -109,7 +109,6 @@ flutter:
     - assets/images/taj_mahal/
     - assets/images/collectibles/
     - assets/images/widget/
-    - assets/images/photo-4.jpg
 
   fonts:
     - family: Cinzel

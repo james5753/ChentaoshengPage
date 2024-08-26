@@ -93,7 +93,7 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
             /// Background image
             Positioned.fill(
               child: Image.asset(
-                'assets/images/photo-4.jpg', // 添加你的图片路径
+                'assets/images/christ_the_redeemer/3.0x/photo-4.jpg', // 添加你的图片路径
                 fit: BoxFit.none,//更改适配
               ),
             ),
@@ -103,12 +103,11 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
               index: _tabController.index,
               children: [
                 FirstScreen(),//首页
-                PhotoGallery(collectionId: 'Kg_h04xvZEo', wonderType: WonderType.greatWall),//照片库
+                MyHomePage(),//检索
                 TimelineScreen(),//年表
                 ChatPage(),//chat
                 MapScreen(),//gis
-                MyHomePage(),//检索
-                
+                PhotoGallery(collectionId: 'Kg_h04xvZEo', wonderType: WonderType.greatWall),//照片库
                 WebPage(),//知识图谱
               ],
             ),
@@ -180,7 +179,7 @@ class _FirstScreenState extends State<FirstScreen> with SingleTickerProviderStat
   /// Using individual tweens is more efficient than tween the entire parent
   final _fadeAnims = <AnimationController>[];
 
-  WonderData get currentWonder => _wonders[0];
+  WonderData get currentWonder => _wonders[_wonderIndex];
 
   late final _VerticalSwipeController _swipeController = _VerticalSwipeController(this, _showDetailsPage);
 
@@ -218,7 +217,7 @@ class _FirstScreenState extends State<FirstScreen> with SingleTickerProviderStat
     );
     setState(() => _isMenuOpen = false);
     if (pickedWonder != null) {
-      _setPageIndex(0);
+      _setPageIndex(_wonders.indexWhere((w) => w.type == pickedWonder));
     }
   }
 
