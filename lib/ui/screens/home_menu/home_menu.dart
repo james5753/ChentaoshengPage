@@ -74,21 +74,14 @@ Widget build(BuildContext context) {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Gap(50),
-                Text(
-                  '功能选择菜单',
-                  style: TextStyle(
-                    fontFamily: 'Tenor',
-                    color: Colors.white,
-                    fontSize: 32, // 可以根据需要调整字体大小
-                  ),
-                ),
+                
                 Gap($styles.insets.xl),
                 _buildIconGrid(context)
                     .animate()
                     .fade(duration: $styles.times.fast)
                     .scale(begin: Offset(.8, .8), curve: Curves.easeOut),
                 Gap($styles.insets.lg),
-                _buildBottomBtns(context),
+                //_buildBottomBtns(context),
                 //Spacer(),
                 Gap($styles.insets.md),
               ],
@@ -117,24 +110,24 @@ Widget build(BuildContext context) {
       child: SeparatedColumn(
         separatorBuilder: () => Gap($styles.insets.xs),
         mainAxisSize: MainAxisSize.min,
-        children: [
+         children: [
           buildRow([
-            _buildGridBtn(context, 0, wondersLogic.all[0], FirstScreen()),
-            _buildGridBtn(context, 1, wondersLogic.all[1], PhotoGallery(collectionId: 'Kg_h04xvZEo', wonderType: WonderType.greatWall)),
-            _buildGridBtn(context, 2, wondersLogic.all[2], TimelineScreen()),
+            _buildGridBtn(context, 0, wondersLogic.all[0], FirstScreen(), 'assets/images/_common/3.0x/tab-editorial.png'),
+            _buildGridBtn(context, 1, wondersLogic.all[1], PhotoGallery(collectionId: 'Kg_h04xvZEo', wonderType: WonderType.greatWall), 'assets/images/_common/3.0x/tab-photo.png'),
+            _buildGridBtn(context, 2, wondersLogic.all[2], TimelineScreen(), 'assets/images/_common/3.0x/tab-timeline.png'),
           ]),
           buildRow([
-            _buildGridBtn(context, 3, wondersLogic.all[3], ChatPage()),
+            _buildGridBtn(context, 3, wondersLogic.all[3], ChatPage(), 'assets/images/_common/3.0x/tab-aichat.png'),
             SizedBox(
               width: 96,
               child: SvgPicture.asset(SvgPaths.compassFull, colorFilter: $styles.colors.offWhite.colorFilter),
             ),
-            _buildGridBtn(context, 4, wondersLogic.all[4], MapScreen()),
+            _buildGridBtn(context, 4, wondersLogic.all[4], MapScreen(), 'assets/images/_common/3.0x/tab-map.png'),
           ]),
           buildRow([
-            _buildGridBtn(context, 5, wondersLogic.all[5], WebViewPage()),
-            _buildGridBtn(context, 6, wondersLogic.all[6], MyHomePage()),
-            _buildGridBtn(context, 7, wondersLogic.all[7], WebPage()),
+            _buildGridBtn(context, 5, wondersLogic.all[5], WebViewPage(), 'assets/images/_common/3.0x/tab-editorial.png'),
+            _buildGridBtn(context, 6, wondersLogic.all[6], MyHomePage(), 'assets/images/_common/3.0x/tab-search.png'),
+            _buildGridBtn(context, 7, wondersLogic.all[7], WebPage(), 'assets/images/_common/3.0x/tab-contact.png'),
           ]),
         ],
       ),
@@ -174,49 +167,32 @@ Widget build(BuildContext context) {
         });
   }
 
-  List<String> labels = [
-    '首页',
-    '照片墙',
-    '时间线',
-    'AI聊天',
-    '地图',
-    '故事模式',
-    '查询',
-    '知识图谱'
-  ];
-
-  Widget _buildGridBtn(BuildContext context, int index, WonderData btnData, Widget targetPage) {
-    return Stack(
+  Widget _buildGridBtn(BuildContext context, int index, WonderData buttondata, Widget screen, String imagePath) {
+   return GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => screen),
+      );
+    },
+    child: Column(
       children: [
-        Container(
-          width: 80,
-          height: 80,
-          margin: EdgeInsets.all(8.0),
+       Container(
+          width: 100,
+          height: 100,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            color: btnData.type.fgColor,
+            color: Colors.white.withOpacity(0.6), // 设置透明度
+            borderRadius: BorderRadius.circular(12), // 设置圆角
           ),
-          child: Center(
-            child: Text(
-              labels[index],
-              style: $styles.text.bodyBold.copyWith(height: 1),
-            ),
-          ),
-        ),
-        Positioned.fill(
-          child: GestureDetector(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => targetPage),
-            ),
-            child: Container(
-              color: Colors.transparent,
-            ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12), // 确保图片也有相同的圆角
+            child: Image.asset(imagePath),
           ),
         ),
       ],
-    );
-  }
+    ),
+  );
+}
 }
 
 class _MenuTextBtn extends StatelessWidget {

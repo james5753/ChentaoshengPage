@@ -46,7 +46,8 @@ class _TimelineScreenState extends State<TimelineScreen> {
 
   @override
 Widget build(BuildContext context) {
-  return LayoutBuilder(builder: (_, constraints) {
+  return Scaffold(
+    body:LayoutBuilder(builder: (_, constraints) {
     // Determine min and max size of the timeline based on the size available to this widget
     const double scrubberSize = 80;
     const double minSize = 1200;
@@ -112,6 +113,7 @@ Widget build(BuildContext context) {
         ),
       ),
     );
-  });
+  })
+  );
 }
 }

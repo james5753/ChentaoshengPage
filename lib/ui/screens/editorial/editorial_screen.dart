@@ -77,7 +77,8 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
       double minAppBarHeight = shortMode ? 80 : 150;
       double maxAppBarHeight = min(context.widthPx, $styles.sizes.maxContentWidth1) * 1.2;
 
-      return PopRouterOnOverScroll(
+      return Scaffold(
+      body:PopRouterOnOverScroll(
         controller: _scroller,
         child: ColoredBox(
           color: $styles.colors.offWhite,
@@ -187,6 +188,7 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
             ],
           ),
         ),
+      )
       );
     });
   }
