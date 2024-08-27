@@ -6,7 +6,6 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
-import 'package:wonders/logic/data/wonder_data.dart';
 import 'package:wonders/logic/data/wonders_data/great_wall_data.dart';
 import 'package:wonders/ui/screens/home_menu/home_menu.dart';
 
@@ -264,6 +263,7 @@ class _ChatPageState extends State<ChatPage> {
         title: Text('AI聊天'),
         centerTitle: true,
         backgroundColor: Color(0xFF642828),
+        automaticallyImplyLeading: false,
         titleTextStyle: TextStyle(
           fontFamily: 'Tenor',
           color: Color(0xFFFFFFFF),
@@ -271,21 +271,25 @@ class _ChatPageState extends State<ChatPage> {
           fontWeight: FontWeight.normal,
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => HomeMenu(data: GreatWallData()),
-              );
-            },
-          ),
+          Positioned(
+            right: 40,
+            top: 10,
+              child: IconButton(
+                icon: Icon(Icons.menu, color: Colors.white), // 设置图标颜色为白色以便在黑色背景上可见
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => HomeMenu(data: GreatWallData()),
+                  );
+                },
+              ),
+            ),
         ],
       ),
       body: Center(
         child: Container(
           child: Transform.translate(
-            offset: Offset(20.0, 0),
+            offset: Offset(0, 0),
             child: Container(
               width: MediaQuery.of(context).size.width * 0.8,
               height: MediaQuery.of(context).size.height * 0.8,

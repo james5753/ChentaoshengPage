@@ -64,6 +64,7 @@ class _WebPageState extends State<WebPage> {
         title: Text('知识图谱'),
         centerTitle: true,
         backgroundColor: Color(0xFF642828),
+        automaticallyImplyLeading: false,
         titleTextStyle: TextStyle(
           fontFamily: 'Tenor',
           color: Colors.white,
@@ -71,19 +72,23 @@ class _WebPageState extends State<WebPage> {
           fontWeight: FontWeight.normal,
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => HomeMenu(data: GreatWallData()),
-              );
-            },
-          ),
+           Positioned(
+            right: 40,
+            top: 10,
+              child: IconButton(
+                icon: Icon(Icons.menu, color: Colors.white), // 设置图标颜色为白色以便在黑色背景上可见
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => HomeMenu(data: GreatWallData()),
+                  );
+                },
+              ),
+            ),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 36.0), // 设置左边的 padding
+        padding: const EdgeInsets.only(left: 0.0), // 设置左边的 padding
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,

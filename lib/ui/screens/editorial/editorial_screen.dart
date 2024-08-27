@@ -163,19 +163,28 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
               ),
 
               /// Back Button - Always visible in the top left corner
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: EdgeInsets.all($styles.insets.sm),
+              Positioned(
+                left: 40,
+                top: 40,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.6), // 设置背景颜色和透明度
+                    shape: BoxShape.circle, // 设置圆形背景
+                  ),
                   child: BackBtn(icon: AppIcons.north, onPressed: _handleBackPressed),
                 ),
               ),
-
-                Positioned(
-                  right: 30,
-                  top: 30,
+                  
+              Positioned(
+                right: 40,
+                top: 40,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.6), // 设置背景颜色和透明度
+                    shape: BoxShape.circle, // 设置圆形背景
+                  ),
                   child: IconButton(
-                    icon: Icon(Icons.menu, color: Colors.black),
+                    icon: Icon(Icons.menu, color: Colors.white), // 设置图标颜色为白色以便在黑色背景上可见
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -184,7 +193,7 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
                     },
                   ),
                 ),
-              
+              ),
             ],
           ),
         ),

@@ -181,6 +181,7 @@ Widget build(BuildContext context) {
       title: Text('GIS地图'),
       centerTitle: true,
       backgroundColor: Color(0xFF642828),
+      automaticallyImplyLeading: false,
       titleTextStyle: TextStyle(
         fontFamily: 'Tenor',
         color: Colors.white,
@@ -188,15 +189,19 @@ Widget build(BuildContext context) {
         fontWeight: FontWeight.normal,
       ),
       actions: [
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => HomeMenu(data: GreatWallData()),
-              );
-            },
-          ),
+           Positioned(
+            right: 40,
+            top: 10,
+              child: IconButton(
+                icon: Icon(Icons.menu, color: Colors.white), // 设置图标颜色为白色以便在黑色背景上可见
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => HomeMenu(data: GreatWallData()),
+                  );
+                },
+              ),
+            ),
         ],
     ),
     body: Stack(
@@ -276,25 +281,26 @@ Widget build(BuildContext context) {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
-                  width: 140, // 调整按钮宽度
-                  height: 40, // 调整按钮高度
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF6C795B), // 深灰色背景
-                      foregroundColor: Colors.white, // 白色文字
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => WebViewPage()),
-                      );
-                    },
-                    child: Text('进入故事模式'),
-                  ),
-                ),
-                SizedBox(height: 20), // 按钮之间的间距
+                /*删除“进入故事模式”按钮*/ 
+                // SizedBox(
+                //   width: 140, // 调整按钮宽度
+                //   height: 40, // 调整按钮高度
+                //   child: ElevatedButton(
+                //     style: ElevatedButton.styleFrom(
+                //       backgroundColor: Color(0xFF6C795B), // 深灰色背景
+                //       foregroundColor: Colors.white, // 白色文字
+                //     ),
+                //     onPressed: () {
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (context) => WebViewPage()),
+                //       );
+                //     },
+                //     child: Text('进入故事模式'),
+                //   ),
+                // ),
+                // SizedBox(height: 20), // 按钮之间的间距
                 SizedBox(
                   width: 140, // 调整按钮宽度
                   height: 40, // 调整按钮高度
@@ -331,7 +337,7 @@ Widget build(BuildContext context) {
         ),
         Positioned(
           bottom: 30.0,
-          left: 60.0,
+          left: 20.0,
           right: 20.0,
           child: Container(
             height: 60.0,

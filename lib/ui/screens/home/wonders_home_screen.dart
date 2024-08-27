@@ -108,7 +108,6 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
                 ChatPage(),//chat
                 MapScreen(),//gis
                 MyHomePage(),//检索
-                
                 WebPage(),//知识图谱
               ],
             ),
@@ -297,16 +296,22 @@ class _FirstScreenState extends State<FirstScreen> with SingleTickerProviderStat
             _buildFloatingUi(),
 
             Positioned(
-              right: 30,
-              top: 30,
-              child: IconButton(
-                icon: Icon(Icons.menu, color: Colors.black),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => HomeMenu(data: GreatWallData()),
-                  );
-                },
+              right: 40,
+              top: 40,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.6), // 设置背景颜色和透明度
+                  shape: BoxShape.circle, // 设置圆形背景
+                ),
+                child: IconButton(
+                  icon: Icon(Icons.menu, color: Colors.white), // 设置图标颜色为白色以便在黑色背景上可见
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => HomeMenu(data: GreatWallData()),
+                    );
+                  },
+                ),
               ),
             ),
           ],

@@ -125,7 +125,7 @@ Widget build(BuildContext context) {
             _buildGridBtn(context, 4, wondersLogic.all[4], MapScreen(), 'assets/images/_common/3.0x/tab-map.png'),
           ]),
           buildRow([
-            _buildGridBtn(context, 5, wondersLogic.all[5], WebViewPage(), 'assets/images/_common/3.0x/tab-editorial.png'),
+            _buildGridBtn(context, 5, wondersLogic.all[5], WebViewPage(), 'assets/images/_common/3.0x/tab-story.png'),
             _buildGridBtn(context, 6, wondersLogic.all[6], MyHomePage(), 'assets/images/_common/3.0x/tab-search.png'),
             _buildGridBtn(context, 7, wondersLogic.all[7], WebPage(), 'assets/images/_common/3.0x/tab-contact.png'),
           ]),

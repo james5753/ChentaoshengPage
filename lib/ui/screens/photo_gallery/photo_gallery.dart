@@ -229,22 +229,25 @@ Widget build(BuildContext context) {
                 ),
               ),
             ),
-            Positioned(
-              right: 20,
-              top: 20,
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: IconButton(
-                  icon: Icon(Icons.menu),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => HomeMenu(data: GreatWallData()),
-                    );
-                  },
+             Positioned(
+                right: 40,
+                top: 40,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.6), // 设置背景颜色和透明度
+                    shape: BoxShape.circle, // 设置圆形背景
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.menu, color: Colors.black), // 设置图标颜色为白色以便在黑色背景上可见
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => HomeMenu(data: GreatWallData()),
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
           ],
         );
       },
