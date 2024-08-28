@@ -102,13 +102,13 @@ Widget build(BuildContext context) {
   Widget _buildIconGrid(BuildContext context) {
   Widget buildRow(List<Widget> children) => SeparatedRow(
         mainAxisAlignment: MainAxisAlignment.center,
-        separatorBuilder: () => Gap($styles.insets.xs),
+        separatorBuilder: () => Gap($styles.insets.sm),
         children: children.map((child) => Flexible(child: child)).toList(),
       );
   return SingleChildScrollView(
     child: Center(
       child: SeparatedColumn(
-        separatorBuilder: () => Gap($styles.insets.xs),
+        separatorBuilder: () => Gap($styles.insets.sm),
         mainAxisSize: MainAxisSize.min,
          children: [
           buildRow([
@@ -178,15 +178,15 @@ Widget build(BuildContext context) {
     child: Column(
       children: [
        Container(
-          width: 100,
-          height: 100,
+          width: 90,
+          height: 90,
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.6), // 设置透明度
             borderRadius: BorderRadius.circular(12), // 设置圆角
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12), // 确保图片也有相同的圆角
-            child: Image.asset(imagePath),
+            child: Image.asset(imagePath,fit: BoxFit.cover),
           ),
         ),
       ],
