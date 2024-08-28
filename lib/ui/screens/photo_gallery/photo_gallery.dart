@@ -189,6 +189,14 @@ Widget build(BuildContext context) {
         final cutoutTweenDuration = _skipNextOffsetTween ? Duration.zero : swipeDuration * .5;
         return Stack(
           children: [
+             Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/photo-4.jpg'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
             _AnimatedCutoutOverlay(
               animationKey: ValueKey(_index),
               cutoutSize: imgSize,
