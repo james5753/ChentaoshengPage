@@ -26,6 +26,8 @@ import 'package:wonders/ui/wonder_illustrations/common/wonder_illustration.dart'
 import 'package:wonders/ui/wonder_illustrations/common/wonder_illustration_config.dart';
 import 'package:wonders/ui/wonder_illustrations/common/wonder_title_text.dart';
 import 'package:wonders/ui/screens/home/wonders_home_screen.dart';
+import 'package:wonders/ui/screens/home_menu/home_menu.dart';
+import 'package:wonders/logic/data/wonders_data/great_wall_data.dart';
 
 part 'widgets/_app_bar.dart';
 part 'widgets/_callout.dart';
@@ -75,7 +77,8 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
       double minAppBarHeight = shortMode ? 80 : 150;
       double maxAppBarHeight = min(context.widthPx, $styles.sizes.maxContentWidth1) * 1.2;
 
-      return PopRouterOnOverScroll(
+      return Scaffold(
+      body:PopRouterOnOverScroll(
         controller: _scroller,
         child: ColoredBox(
           color: $styles.colors.offWhite,
@@ -160,16 +163,41 @@ class _WonderEditorialScreenState extends State<WonderEditorialScreen> {
               ),
 
               /// Back Button - Always visible in the top left corner
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: EdgeInsets.all($styles.insets.sm),
+              Positioned(
+                left: 40,
+                top: 40,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.6), // 设置背景颜色和透明度
+                    shape: BoxShape.circle, // 设置圆形背景
+                  ),
                   child: BackBtn(icon: AppIcons.north, onPressed: _handleBackPressed),
+                ),
+              ),
+                  
+              Positioned(
+                right: 40,
+                top: 40,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.6), // 设置背景颜色和透明度
+                    shape: BoxShape.circle, // 设置圆形背景
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.menu, color: Colors.white), // 设置图标颜色为白色以便在黑色背景上可见
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => HomeMenu(data: GreatWallData()),
+                      );
+                    },
+                  ),
                 ),
               ),
             ],
           ),
         ),
+      )
       );
     });
   }

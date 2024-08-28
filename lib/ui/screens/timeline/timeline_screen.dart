@@ -15,6 +15,8 @@ import 'package:wonders/ui/common/list_gradient.dart';
 import 'package:wonders/ui/common/timeline_event_card.dart';
 import 'package:wonders/ui/common/utils/app_haptics.dart';
 import 'package:wonders/ui/common/wonders_timeline_builder.dart';
+import 'package:wonders/ui/screens/home_menu/home_menu.dart';
+import 'package:wonders/logic/data/wonders_data/great_wall_data.dart';
 
 part 'widgets/_animated_era_text.dart';
 part 'widgets/_bottom_scrubber.dart';
@@ -43,66 +45,81 @@ class _TimelineScreenState extends State<TimelineScreen> {
   void _handleViewportYearChanged(int value) => _year.value = value;
 
   @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (_, constraints) {
-      // Determine min and max size of the timeline based on the size available to this widget
-      const double scrubberSize = 80;
-      const double minSize = 1200;
-      const double maxSize = 5500;
-      return Container(
-        color: $styles.colors.black,
-        child: Padding(
-          padding: EdgeInsets.only(bottom: 0),
-          child: Column(
-            children: [
-              AppHeader(
-                title: $strings.timelineTitleGlobalTimeline,
+Widget build(BuildContext context) {
+  return Scaffold(
+    body:LayoutBuilder(builder: (_, constraints) {
+    // Determine min and max size of the timeline based on the size available to this widget
+    const double scrubberSize = 80;
+    const double minSize = 1200;
+    const double maxSize = 5500;
+    return Container(
+      color: $styles.colors.black,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 0),
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                AppHeader(
+                  title: $strings.timelineTitleGlobalTimeline,
                 ),
+                 Positioned(
+                right: 40,
+                top: 40,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2), // 设置背景颜色和透明度
+                    shape: BoxShape.circle, // 设置圆形背景
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.menu, color: Colors.white), // 设置图标颜色为白色以便在黑色背景上可见
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => HomeMenu(data: GreatWallData()),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              ],
+            ),
 
-              /// Vertically scrolling timeline, manages a ScrollController.
-              
-              Expanded(
-                child: Transform.translate(
-                  offset: Offset(17, 0), // 设置偏移量
-                  child: _ScrollingViewport(
-                    scroller: _scroller,
-                    minSize: maxSize,
-                    maxSize: maxSize,
+            /// Vertically scrolling timeline, manages a ScrollController.
+            
+            Expanded(
+              child: _ScrollingViewport(
+                scroller: _scroller,
+                minSize: maxSize,
+                maxSize: maxSize,
+                // selectedWonder: widget.type,
+                onYearChanged: _handleViewportYearChanged,
+              ),
+            ),
+
+            /// Mini Horizontal timeline, reacts to the state of the larger scrolling timeline,
+            /// and changes the timelines scroll position on Hz drag
+            Transform.translate(
+              offset: Offset(0, 0), // 设置偏移量，(20, 0) 表示向右偏移 20 像素
+              child: CenteredBox(
+                width: $styles.sizes.maxContentWidth1,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: $styles.insets.lg),
+                  child: _BottomScrubber(
+                    _scroller,
+                    size: scrubberSize,
+                    timelineMinSize: minSize,
                     // selectedWonder: widget.type,
-                    onYearChanged: _handleViewportYearChanged,
                   ),
                 ),
               ),
-              ///目前不需要年代信息
-              // /// Era Text (classical, modern etc)
-              // ValueListenableBuilder<int>(
-              //   valueListenable: _year,
-              //   builder: (_, value, __) => _AnimatedEraText(value),
-              // ),
-              // Gap($styles.insets.xs),
-
-              /// Mini Horizontal timeline, reacts to the state of the larger scrolling timeline,
-              /// and changes the timelines scroll position on Hz drag
-              Transform.translate(
-                offset: Offset(20, 0), // 设置偏移量，(20, 0) 表示向右偏移 20 像素
-                child: CenteredBox(
-                  width: $styles.sizes.maxContentWidth1,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: $styles.insets.lg),
-                    child: _BottomScrubber(
-                      _scroller,
-                      size: scrubberSize,
-                      timelineMinSize: minSize,
-                      // selectedWonder: widget.type,
-                    ),
-                  ),
-                ),
-              ),
-              Gap($styles.insets.lg),
-            ],
-          ),
+            ),
+            Gap($styles.insets.lg),
+          ],
         ),
-      );
-    });
-  }
+      ),
+    );
+  })
+  );
+}
 }

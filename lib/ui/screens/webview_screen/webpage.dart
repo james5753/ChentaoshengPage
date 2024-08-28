@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_windows/webview_windows.dart';
 import 'dart:io' show Platform;
+import 'package:wonders/logic/data/wonders_data/great_wall_data.dart';
+import 'package:wonders/ui/screens/home_menu/home_menu.dart';
+
 
 class WebPage extends StatefulWidget {
   @override
@@ -61,15 +64,31 @@ class _WebPageState extends State<WebPage> {
         title: Text('知识图谱'),
         centerTitle: true,
         backgroundColor: Color(0xFF642828),
+        automaticallyImplyLeading: false,
         titleTextStyle: TextStyle(
           fontFamily: 'Tenor',
           color: Colors.white,
           fontSize: 20.0,
           fontWeight: FontWeight.normal,
         ),
+        actions: [
+           Positioned(
+            right: 40,
+            top: 10,
+              child: IconButton(
+                icon: Icon(Icons.menu, color: Colors.white), // 设置图标颜色为白色以便在黑色背景上可见
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => HomeMenu(data: GreatWallData()),
+                  );
+                },
+              ),
+            ),
+        ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 36.0), // 设置左边的 padding
+        padding: const EdgeInsets.only(left: 0.0), // 设置左边的 padding
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,

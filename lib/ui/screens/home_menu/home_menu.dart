@@ -9,6 +9,14 @@ import 'package:wonders/ui/common/controls/locale_switcher.dart';
 import 'package:wonders/ui/common/pop_navigator_underlay.dart';
 import 'package:wonders/ui/common/wonderous_logo.dart';
 import 'package:wonders/ui/screens/home_menu/about_dialog_content.dart';
+import 'package:wonders/ui/common/search_page.dart';
+import 'package:wonders/ui/screens/collection/collection_screen.dart';
+import 'package:wonders/ui/screens/photo_gallery/photo_gallery.dart';
+import 'package:wonders/ui/common/chat_page.dart';
+import 'package:wonders/ui/screens/webview_screen/webpage.dart';
+import 'package:wonders/ui/screens/webview_screen/webview_screen.dart';
+import 'package:wonders/ui/screens/timeline/timeline_screen.dart';
+import 'package:wonders/ui/screens/home/wonders_home_screen.dart';
 
 class HomeMenu extends StatefulWidget {
   const HomeMenu({super.key, required this.data});
@@ -44,83 +52,88 @@ class _HomeMenuState extends State<HomeMenu> {
 
   void _handleWonderPressed(BuildContext context, WonderData data) => Navigator.pop(context, data.type);
 
-  @override
-  Widget build(BuildContext context) {
-    final double gridWidth = _btnSize(context) * 3 * 1.2;
-    return Stack(
-      children: [
-        /// Backdrop / Underlay
-        AppBackdrop(
-          strength: .5,
-          child: Container(color: $styles.colors.greyStrong.withOpacity(.5)),
-        ),
+ @override
+Widget build(BuildContext context) {
+  final double gridWidth = _btnSize(context) * 3 * 1.2;
+  return Stack(
+    children: [
+      /// Backdrop / Underlay
+      AppBackdrop(
+        strength: .5,
+        child: Container(color: $styles.colors.greyStrong.withOpacity(.5)),
+      ),
 
-        PopNavigatorUnderlay(),
+      PopNavigatorUnderlay(),
 
-        /// Content
-        SafeArea(
-          child: Center(
-            child: SizedBox(
-              width: gridWidth,
-              child: ExpandedScrollingColumn(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Gap(50),
-                  Gap($styles.insets.md),
-                  _buildIconGrid(context)
-                      .animate()
-                      .fade(duration: $styles.times.fast)
-                      .scale(begin: Offset(.8, .8), curve: Curves.easeOut),
-                  Gap($styles.insets.lg),
-                  _buildBottomBtns(context),
-                  //Spacer(),
-                  Gap($styles.insets.md),
-                ],
-              ),
+      /// Content
+      SafeArea(
+        child: Center(
+          child: SizedBox(
+            width: gridWidth,
+            child: ExpandedScrollingColumn(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Gap(50),
+                
+                Gap($styles.insets.xl),
+                _buildIconGrid(context)
+                    .animate()
+                    .fade(duration: $styles.times.fast)
+                    .scale(begin: Offset(.8, .8), curve: Curves.easeOut),
+                Gap($styles.insets.lg),
+                //_buildBottomBtns(context),
+                //Spacer(),
+                Gap($styles.insets.md),
+              ],
             ),
           ),
         ),
+      ),
 
-        AppHeader(
-          isTransparent: true,
-          backIcon: AppIcons.close,
-          trailing: (_) => LocaleSwitcher(),
-        ),
-      ],
-    );
-  }
+      AppHeader(
+        isTransparent: true,
+        backIcon: AppIcons.close,
+        trailing: (_) => LocaleSwitcher(),
+      ),
+    ],
+  );
+}
 
   Widget _buildIconGrid(BuildContext context) {
-    Widget buildRow(List<Widget> children) => SeparatedRow(
-          mainAxisAlignment: MainAxisAlignment.center,
-          separatorBuilder: () => Gap($styles.insets.sm),
-          children: children,
-        );
-    return SeparatedColumn(
-      separatorBuilder: () => Gap($styles.insets.sm),
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        buildRow([
-          _buildGridBtn(context, wondersLogic.all[0]),
-          _buildGridBtn(context, wondersLogic.all[1]),
-          _buildGridBtn(context, wondersLogic.all[2]),
-        ]),
-        buildRow([
-          _buildGridBtn(context, wondersLogic.all[3]),
-          SizedBox(
-            width: _btnSize(context),
-            child: SvgPicture.asset(SvgPaths.compassFull, colorFilter: $styles.colors.offWhite.colorFilter),
-          ),
-          _buildGridBtn(context, wondersLogic.all[4]),
-        ]),
-        buildRow([
-          _buildGridBtn(context, wondersLogic.all[5]),
-          _buildGridBtn(context, wondersLogic.all[6]),
-          _buildGridBtn(context, wondersLogic.all[7]),
-        ]),
-      ],
-    );
-  }
+  Widget buildRow(List<Widget> children) => SeparatedRow(
+        mainAxisAlignment: MainAxisAlignment.center,
+        separatorBuilder: () => Gap($styles.insets.xs),
+        children: children.map((child) => Flexible(child: child)).toList(),
+      );
+  return SingleChildScrollView(
+    child: Center(
+      child: SeparatedColumn(
+        separatorBuilder: () => Gap($styles.insets.xs),
+        mainAxisSize: MainAxisSize.min,
+         children: [
+          buildRow([
+            _buildGridBtn(context, 0, wondersLogic.all[0], FirstScreen(), 'assets/images/_common/3.0x/tab-editorial.png'),
+            _buildGridBtn(context, 1, wondersLogic.all[1], PhotoGallery(collectionId: 'Kg_h04xvZEo', wonderType: WonderType.greatWall), 'assets/images/_common/3.0x/tab-photo.png'),
+            _buildGridBtn(context, 2, wondersLogic.all[2], TimelineScreen(), 'assets/images/_common/3.0x/tab-timeline.png'),
+          ]),
+          buildRow([
+            _buildGridBtn(context, 3, wondersLogic.all[3], ChatPage(), 'assets/images/_common/3.0x/tab-aichat.png'),
+            SizedBox(
+              width: 96,
+              child: SvgPicture.asset(SvgPaths.compassFull, colorFilter: $styles.colors.offWhite.colorFilter),
+            ),
+            _buildGridBtn(context, 4, wondersLogic.all[4], MapScreen(), 'assets/images/_common/3.0x/tab-map.png'),
+          ]),
+          buildRow([
+            _buildGridBtn(context, 5, wondersLogic.all[5], WebViewPage(), 'assets/images/_common/3.0x/tab-story.png'),
+            _buildGridBtn(context, 6, wondersLogic.all[6], MyHomePage(), 'assets/images/_common/3.0x/tab-search.png'),
+            _buildGridBtn(context, 7, wondersLogic.all[7], WebPage(), 'assets/images/_common/3.0x/tab-contact.png'),
+          ]),
+        ],
+      ),
+    ),
+  );
+}
 
   Widget _buildBottomBtns(BuildContext context) {
     return ValueListenableBuilder(
@@ -154,37 +167,32 @@ class _HomeMenuState extends State<HomeMenu> {
         });
   }
 
-  Widget _buildGridBtn(BuildContext context, WonderData btnData) {
-    bool isSelected = btnData == widget.data;
-    return Container(
-      width: _btnSize(context),
-      height: _btnSize(context),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular($styles.corners.md),
-        boxShadow: !isSelected
-            ? null
-            : [
-                BoxShadow(
-                  color: Colors.black.withOpacity(.3),
-                  blurRadius: 3,
-                  spreadRadius: 3,
-                  offset: Offset(0, 2),
-                ),
-              ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular($styles.corners.md),
-        child: AppBtn(
-          border: !isSelected ? null : BorderSide(color: $styles.colors.offWhite, width: 5),
-          bgColor: btnData.type.fgColor,
-          onPressed: () => _handleWonderPressed(context, btnData),
-          padding: EdgeInsets.zero,
-          semanticLabel: btnData.title,
-          child: SizedBox.expand(child: Image.asset(btnData.type.homeBtn, fit: BoxFit.cover)),
+  Widget _buildGridBtn(BuildContext context, int index, WonderData buttondata, Widget screen, String imagePath) {
+   return GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => screen),
+      );
+    },
+    child: Column(
+      children: [
+       Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.6), // 设置透明度
+            borderRadius: BorderRadius.circular(12), // 设置圆角
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12), // 确保图片也有相同的圆角
+            child: Image.asset(imagePath),
+          ),
         ),
-      ),
-    );
-  }
+      ],
+    ),
+  );
+}
 }
 
 class _MenuTextBtn extends StatelessWidget {
@@ -206,7 +214,7 @@ class _MenuTextBtn extends StatelessWidget {
         children: [
           AppIcon(icon, color: $styles.colors.offWhite),
           Gap($styles.insets.xs),
-          Text(label, style: $styles.text.bodyBold.copyWith(height: 1)),
+          Text(label, style: $styles.text.bodyBold.copyWith(height: 1,color: Colors.white)),
         ],
       ),
     );

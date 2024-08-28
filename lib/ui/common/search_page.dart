@@ -4,6 +4,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart'; // 导入 flutter_staggered_grid_view 包
+import 'package:wonders/logic/data/wonders_data/great_wall_data.dart';
+import 'package:wonders/ui/screens/home_menu/home_menu.dart';
+
+
 double getRandomWidth(int index) {
   Random random = Random(index);
   return 1.5 + random.nextDouble() * 0.8;
@@ -81,12 +85,28 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text('查询'),
         centerTitle: true,
         backgroundColor: Color(0xFF642828),
+        automaticallyImplyLeading: false,
         titleTextStyle: TextStyle(
           fontFamily: 'Tenor',
           color: Colors.white,
           fontSize: 20.0,
           fontWeight: FontWeight.normal,
         ),
+        actions: [
+           Positioned(
+            right: 40,
+            top: 10,
+              child: IconButton(
+                icon: Icon(Icons.menu, color: Colors.white), // 设置图标颜色为白色以便在黑色背景上可见
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => HomeMenu(data: GreatWallData()),
+                  );
+                },
+              ),
+            ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

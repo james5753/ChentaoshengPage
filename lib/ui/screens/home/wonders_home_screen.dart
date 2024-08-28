@@ -107,7 +107,7 @@ class _HomePageState extends State<HomeScreen> with GetItStateMixin, SingleTicke
                 TimelineScreen(),//年表
                 ChatPage(),//chat
                 MapScreen(),//gis
-                PhotoGallery(collectionId: 'Kg_h04xvZEo', wonderType: WonderType.greatWall),//照片库
+                MyHomePage(),//检索
                 WebPage(),//知识图谱
               ],
             ),
@@ -296,11 +296,24 @@ class _FirstScreenState extends State<FirstScreen> with SingleTickerProviderStat
             _buildFloatingUi(),
 
             Positioned(
-              top: 16.0, // 调整这个值以设置按钮的垂直位置
-              right: 16.0, // 调整这个值以设置按钮的水平位置
-              child: buildButton(),
+              right: 40,
+              top: 40,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.6), // 设置背景颜色和透明度
+                  shape: BoxShape.circle, // 设置圆形背景
+                ),
+                child: IconButton(
+                  icon: Icon(Icons.menu, color: Colors.white), // 设置图标颜色为白色以便在黑色背景上可见
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => HomeMenu(data: GreatWallData()),
+                    );
+                  },
+                ),
+              ),
             ),
-            
           ],
         ).animate().fadeIn(),
       //),
@@ -459,7 +472,7 @@ class _FirstScreenState extends State<FirstScreen> with SingleTickerProviderStat
                                 ),
                               // Hide the title when the menu is open for visual polish
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 30.0), // 设置左边的填充
+                                padding: const EdgeInsets.only(left: 0.0), // 设置左边的填充
                                 child: WonderTitleText(currentWonder, enableShadows: true),
                               ),
                             ),

@@ -50,155 +50,155 @@ class WonderDetailsTabMenu extends StatelessWidget {
     // 返回一个Padding布局
     return Padding(
       padding: isVertical ? EdgeInsets.only(top: safeAreaTop) : EdgeInsets.zero,
-      child: Container(
-        width: defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS?50.0:60.0,
-        child: Stack(
-          children: [
-            // 背景，基于 showBg 属性的变换动画
-            Positioned.fill(
-              child: Padding(
-                padding: buttonInsetPadding,
-                child: AnimatedOpacity(
-                  duration: $styles.times.fast,
-                  opacity: showBg ? 1 : 0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: $styles.colors.white,
-                      borderRadius: isVertical ? BorderRadius.only(topRight: Radius.circular(32)) : null,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+  //     child: Container(
+  //       width: defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS?50.0:60.0,
+  //       child: Stack(
+  //         children: [
+  //           // 背景，基于 showBg 属性的变换动画
+  //           Positioned.fill(
+  //             child: Padding(
+  //               padding: buttonInsetPadding,
+  //               child: AnimatedOpacity(
+  //                 duration: $styles.times.fast,
+  //                 opacity: showBg ? 1 : 0,
+  //                 child: Container(
+  //                   decoration: BoxDecoration(
+  //                     color: $styles.colors.white,
+  //                     borderRadius: isVertical ? BorderRadius.only(topRight: Radius.circular(32)) : null,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
 
-            // 按钮部分，包括home按钮和tab按钮
-            Padding(
-              // 水平模式添加安全区域底部填充，垂直布局则不需要
-              padding: EdgeInsets.only(bottom: isVertical ? 0 : safeAreaBtm),
-              child: SizedBox(
-                width: isVertical ? null : double.infinity,
-                height: isVertical ? double.infinity : null,
-                child: FocusTraversalGroup(
-                  child: Flex(
-                    direction: axis,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Home 按钮，暂时注释掉
-                      Padding(
-                        // Home按钮的填充
-                        padding: isVertical
-                            ? EdgeInsets.only(left: $styles.insets.xs)
-                            : EdgeInsets.only(bottom: $styles.insets.xs),
-  //                      child: _WonderHomeBtn(
-  //                        size: homeBtnSize,
-  //                        wonderType: wonderType,
-  //                        borderSize: showBg ? 6 : 2,
-  //                      ),
-                      ),
-                      Gap(gapAmt),
+  //           // 按钮部分，包括home按钮和tab按钮
+  //           Padding(
+  //             // 水平模式添加安全区域底部填充，垂直布局则不需要
+  //             padding: EdgeInsets.only(bottom: isVertical ? 0 : safeAreaBtm),
+  //             child: SizedBox(
+  //               width: isVertical ? null : double.infinity,
+  //               height: isVertical ? double.infinity : null,
+  //               child: FocusTraversalGroup(
+  //                 child: Flex(
+  //                   direction: axis,
+  //                   mainAxisAlignment: MainAxisAlignment.center,
+  //                   crossAxisAlignment: CrossAxisAlignment.center,
+  //                   mainAxisSize: MainAxisSize.min,
+  //                   children: [
+  //                     // Home 按钮，暂时注释掉
+  //                     Padding(
+  //                       // Home按钮的填充
+  //                       padding: isVertical
+  //                           ? EdgeInsets.only(left: $styles.insets.xs)
+  //                           : EdgeInsets.only(bottom: $styles.insets.xs),
+  // //                      child: _WonderHomeBtn(
+  // //                        size: homeBtnSize,
+  // //                        wonderType: wonderType,
+  // //                        borderSize: showBg ? 6 : 2,
+  // //                      ),
+  //                     ),
+  //                     Gap(gapAmt),
 
-                      // Tab 按钮部分，设置填充以确保它们在有色背景上居中
-                      Padding(
-                        padding: buttonInsetPadding,
-                        child: Flex(
-                            direction: axis,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // 定义每个Tab按钮
-                              _TabBtn(
-                                0,
-                                tabController,
-                                iconImg: 'editorial',
-                                label: $strings.wonderDetailsTabLabelInformation,
-                                color: iconColor,
-                                axis: axis,
-                                mainAxisSize: tabBtnSize,
-                                onTap: onTap,
-                              ),
-                              _TabBtn(
-                                1,
-                                tabController,
-                                iconImg: 'search',
-                                label: $strings.wonderDetailsTabLabelImages,
-                                color: iconColor,
-                                axis: axis,
-                                mainAxisSize: tabBtnSize,
-                                onTap: onTap,
-                              ),
-                              // _TabBtn(
-                              //   2,
-                              //   tabController,
-                              //   iconImg: 'artifacts',
-                              //   label: $strings.wonderDetailsTabLabelArtifacts,
-                              //   color: iconColor,
-                              //   axis: axis,
-                              //   mainAxisSize: tabBtnSize,
-                              //   onTap: onTap,
-                              //),
-                              _TabBtn(
-                                2,
-                                tabController,
-                                iconImg: 'timeline',
-                                label: $strings.wonderDetailsTabLabelEvents,
-                                color: iconColor,
-                                axis: axis,
-                                mainAxisSize: tabBtnSize,
-                                onTap: onTap,
-                              ),
-                              _TabBtn(
-                                3,
-                                tabController,
-                                iconImg: 'aichat',
-                                label:'ChatBox',
-                                color: iconColor,
-                                axis: axis,
-                                mainAxisSize: tabBtnSize,
-                                onTap: onTap,
-                              ),
-                              _TabBtn(
-                                4,
-                                tabController,
-                                iconImg: 'map',
-                                label:'Map',
-                                color: iconColor,
-                                axis: axis,
-                                mainAxisSize: tabBtnSize,
-                                onTap: onTap,
-                              ),
-                              _TabBtn(
-                                5,
-                                tabController,
-                                iconImg: 'photo',
-                                label:'Photo',
-                                color: iconColor,
-                                axis: axis,
-                                mainAxisSize: tabBtnSize,
-                                onTap: onTap,
-                              ),
-                              _TabBtn(
-                                6,
-                                tabController,
-                                iconImg: 'contact',
-                                label:'Contact',
-                                color: iconColor,
-                                axis: axis,
-                                mainAxisSize: tabBtnSize,
-                                onTap: onTap,
-                              ),
-                            ]),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+  //                     // Tab 按钮部分，设置填充以确保它们在有色背景上居中
+  //                     Padding(
+  //                       padding: buttonInsetPadding,
+  //                       child: Flex(
+  //                           direction: axis,
+  //                           mainAxisAlignment: MainAxisAlignment.center,
+  //                           crossAxisAlignment: CrossAxisAlignment.center,
+  //                           mainAxisSize: MainAxisSize.min,
+  //                           children: [
+  //                             // 定义每个Tab按钮
+  //                             _TabBtn(
+  //                               0,
+  //                               tabController,
+  //                               iconImg: 'editorial',
+  //                               label: $strings.wonderDetailsTabLabelInformation,
+  //                               color: iconColor,
+  //                               axis: axis,
+  //                               mainAxisSize: tabBtnSize,
+  //                               onTap: onTap,
+  //                             ),
+  //                             _TabBtn(
+  //                               1,
+  //                               tabController,
+  //                               iconImg: 'photo',
+  //                               label: $strings.wonderDetailsTabLabelImages,
+  //                               color: iconColor,
+  //                               axis: axis,
+  //                               mainAxisSize: tabBtnSize,
+  //                               onTap: onTap,
+  //                             ),
+  //                             // _TabBtn(
+  //                             //   2,
+  //                             //   tabController,
+  //                             //   iconImg: 'artifacts',
+  //                             //   label: $strings.wonderDetailsTabLabelArtifacts,
+  //                             //   color: iconColor,
+  //                             //   axis: axis,
+  //                             //   mainAxisSize: tabBtnSize,
+  //                             //   onTap: onTap,
+  //                             //),
+  //                             _TabBtn(
+  //                               2,
+  //                               tabController,
+  //                               iconImg: 'timeline',
+  //                               label: $strings.wonderDetailsTabLabelEvents,
+  //                               color: iconColor,
+  //                               axis: axis,
+  //                               mainAxisSize: tabBtnSize,
+  //                               onTap: onTap,
+  //                             ),
+  //                             _TabBtn(
+  //                               3,
+  //                               tabController,
+  //                               iconImg: 'aichat',
+  //                               label:'ChatBox',
+  //                               color: iconColor,
+  //                               axis: axis,
+  //                               mainAxisSize: tabBtnSize,
+  //                               onTap: onTap,
+  //                             ),
+  //                             _TabBtn(
+  //                               4,
+  //                               tabController,
+  //                               iconImg: 'map',
+  //                               label:'Map',
+  //                               color: iconColor,
+  //                               axis: axis,
+  //                               mainAxisSize: tabBtnSize,
+  //                               onTap: onTap,
+  //                             ),
+  //                             _TabBtn(
+  //                               5,
+  //                               tabController,
+  //                               iconImg: 'search',
+  //                               label:'Photo',
+  //                               color: iconColor,
+  //                               axis: axis,
+  //                               mainAxisSize: tabBtnSize,
+  //                               onTap: onTap,
+  //                             ),
+  //                             _TabBtn(
+  //                               6,
+  //                               tabController,
+  //                               iconImg: 'contact',
+  //                               label:'Contact',
+  //                               color: iconColor,
+  //                               axis: axis,
+  //                               mainAxisSize: tabBtnSize,
+  //                               onTap: onTap,
+  //                             ),
+  //                           ]),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
     );
   }
 }
