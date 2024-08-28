@@ -217,7 +217,7 @@ class _FirstScreenState extends State<FirstScreen> with SingleTickerProviderStat
     );
     setState(() => _isMenuOpen = false);
     if (pickedWonder != null) {
-      _setPageIndex(0);
+            _setPageIndex(0);
     }
   }
 
