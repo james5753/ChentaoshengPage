@@ -103,11 +103,11 @@ flutter:
     - assets/images/christ_the_redeemer/
     - assets/images/colosseum/
     - assets/images/great_wall_of_china/
-    - assets/images/machu_picchu/
-    - assets/images/petra/
-    - assets/images/pyramids/
-    - assets/images/taj_mahal/
-    - assets/images/collectibles/
+    # - assets/images/machu_picchu/
+    # - assets/images/petra/
+    # - assets/images/pyramids/
+    # - assets/images/taj_mahal/
+    # - assets/images/collectibles/
     - assets/images/widget/
 
   fonts:
