@@ -65,6 +65,12 @@ class _MyHomePageState extends State<MyHomePage> {
     '照片',
     '文集'
   ];
+  @override
+  void initState() {
+    super.initState();
+    _selectedSubject = '杂志文稿';
+    _fetchResults();
+  }
 
   Future<void> _fetchResults() async {
     String subjectQuery = _selectedSubject ?? '';
@@ -91,11 +97,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[800], // 设置整体背景颜色为深灰色
+      backgroundColor: Color.fromARGB(255,39,38,37), // 设置整体背景颜色为深灰色
       appBar: AppBar(
         title: Text('文档查询'),
         centerTitle: true,
-        backgroundColor: Colors.black87,
+        backgroundColor: Color.fromARGB(255,30,27,24),
         automaticallyImplyLeading: false,
         titleTextStyle: TextStyle(
           fontFamily: 'Tenor',
@@ -107,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(
             margin: EdgeInsets.only(right: 16), // 调整位置
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.6), // 设置背景颜色和透明度
+              color: Color.fromARGB(255,30,27,24), // 设置背景颜色和透明度
               shape: BoxShape.circle, // 设置圆形背景
             ),
             child: IconButton(
@@ -132,11 +138,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 value: _selectedSubject,
                 hint: Text(
                   '请选择主题',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Color.fromARGB(255,225,147,96)),
                 ),
-                dropdownColor: Colors.grey[800], // 设置下拉菜单背景颜色
+                dropdownColor: Color.fromARGB(255,30,27,24), // 设置下拉菜单背景颜色
                 elevation: 24,
-                icon: Icon(Icons.arrow_drop_down, color: Colors.white),
+                icon: Icon(Icons.arrow_drop_down, color: Color.fromARGB(255,225,147,96)),
                 isExpanded: true,
                 borderRadius: BorderRadius.circular(8.0),
                 items: _subjects.map((String subject) {
@@ -145,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     value: subject,
                     child: Text(
                       subject,
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Color.fromARGB(255,225,147,96)),
                     ),
                   );
                 }).toList(),
@@ -167,7 +173,10 @@ class _MyHomePageState extends State<MyHomePage> {
             height: 20.0, // 设置渐变色容器的高度
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.black87, Colors.grey[800]!],
+                colors: [
+                  Color.fromARGB(255, 30, 27, 24), // 起始颜色
+                  Color.fromARGB(255, 39, 38, 37), // 结束颜色
+                ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
