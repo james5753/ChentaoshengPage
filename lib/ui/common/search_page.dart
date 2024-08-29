@@ -104,19 +104,22 @@ class _MyHomePageState extends State<MyHomePage> {
           fontWeight: FontWeight.normal,
         ),
         actions: [
-          Positioned(
-            right: 40,
-            top: 10,
-              child: IconButton(
-                icon: Icon(Icons.menu, color: Colors.white), // 设置图标颜色为白色以便在黑色背景上可见
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => HomeMenu(data: GreatWallData()),
-                  );
-                },
-              ),
+          Container(
+            margin: EdgeInsets.only(right: 16), // 调整位置
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.6), // 设置背景颜色和透明度
+              shape: BoxShape.circle, // 设置圆形背景
             ),
+            child: IconButton(
+              icon: Icon(Icons.menu, color: Colors.white), // 设置图标颜色为白色以便在黑色背景上可见
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => HomeMenu(data: GreatWallData()),
+                );
+              },
+            ),
+          ),
         ],
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(40.0),
@@ -158,123 +161,138 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: FractionallySizedBox(
-                widthFactor: 0.8,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: _controller,
-                            style: TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              labelText: '输入标题',
-                              labelStyle: TextStyle(color: Colors.white),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white), // 设置边框颜色
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white), // 设置未选中时的边框颜色
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white), // 设置选中时的边框颜色
-                              ),
-                              suffixIcon: IconButton(
-                                icon: Icon(Icons.clear, color: Colors.white,size:16),
-                                onPressed: () {
-                                  _controller.clear();
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 8.0), // Add space between the TextField and ElevatedButton
-                        IconButton(
-                          onPressed: _fetchResults,
-                          icon: Icon(Icons.search),
-                          color: Colors.white, // Icon color
-                          tooltip: '搜索',
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 8.0),
-                  ],
-                ),
+      body: Column(
+        children: [
+          Container(
+            height: 20.0, // 设置渐变色容器的高度
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.black87, Colors.grey[800]!],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
             ),
-            SizedBox(height: 8.0),
-            Expanded(
-              child: Center(
-                child: FractionallySizedBox(
-                  widthFactor: 0.8,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      double screenWidth = constraints.maxWidth;
-                      int crossAxisCount = (screenWidth / 200).ceil();
-                      double itemWidth = screenWidth / crossAxisCount +40;
-
-                      return MasonryGridView.builder(
-                        gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: crossAxisCount,
-                        ),
-                        crossAxisSpacing: 15.0,
-                        mainAxisSpacing: 15.0,
-                        itemCount: _results.length,
-                        itemBuilder: (context, index) {
-                          final item = _results[index];
-                          return SizedBox(
-                            width: itemWidth,
-                            height: itemHeight[index] * itemWidth,
-                            child: Center(
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(24.0), // 增大圆角范围
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      color: Colors.grey[300], // 设置背景颜色为灰色
-                                      child: Image.network(
-                                        item['cover_url'],
-                                        fit: BoxFit.cover,
-                                        width: double.infinity, // force image to fill area
-                                        height: double.infinity,
-                                      ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: FractionallySizedBox(
+                      widthFactor: 0.8,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _controller,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                    labelText: '输入标题',
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.white), // 设置边框颜色
                                     ),
-                                    Positioned.fill(
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          final imageUrls = await fetchImageUrls(item['manifest_url']);
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) => FullScreenDialog(item: item, imageUrls: imageUrls),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          color: Colors.transparent,
-                                        ),
-                                      ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.white), // 设置未选中时的边框颜色
                                     ),
-                                  ],
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.white), // 设置选中时的边框颜色
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(Icons.clear, color: Colors.white, size: 16),
+                                      onPressed: () {
+                                        _controller.clear();
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                      );
-                    },
+                              SizedBox(width: 8.0), // Add space between the TextField and ElevatedButton
+                              IconButton(
+                                onPressed: _fetchResults,
+                                icon: Icon(Icons.search),
+                                color: Colors.white, // Icon color
+                                tooltip: '搜索',
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 8.0),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                  SizedBox(height: 8.0),
+                  Expanded(
+                    child: Center(
+                      child: FractionallySizedBox(
+                        widthFactor: 0.8,
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            double screenWidth = constraints.maxWidth;
+                            int crossAxisCount = (screenWidth / 200).ceil();
+                            double itemWidth = screenWidth / crossAxisCount + 40;
+                            return MasonryGridView.builder(
+                              gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: crossAxisCount,
+                              ),
+                              crossAxisSpacing: 15.0,
+                              mainAxisSpacing: 15.0,
+                              itemCount: _results.length,
+                              itemBuilder: (context, index) {
+                                final item = _results[index];
+                                return SizedBox(
+                                  width: itemWidth,
+                                  height: itemHeight[index] * itemWidth,
+                                  child: Center(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(24.0), // 增大圆角范围
+                                      child: Stack(
+                                        children: [
+                                          Container(
+                                            color: Colors.grey[300], // 设置背景颜色为灰色
+                                            child: Image.network(
+                                              item['cover_url'],
+                                              fit: BoxFit.cover,
+                                              width: double.infinity, // force image to fill area
+                                              height: double.infinity,
+                                            ),
+                                          ),
+                                          Positioned.fill(
+                                            child: GestureDetector(
+                                              onTap: () async {
+                                                final imageUrls = await fetchImageUrls(item['manifest_url']);
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) => FullScreenDialog(item: item, imageUrls: imageUrls),
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                color: Colors.transparent,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

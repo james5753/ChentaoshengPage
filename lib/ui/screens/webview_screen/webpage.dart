@@ -72,19 +72,22 @@ class _WebPageState extends State<WebPage> {
           fontWeight: FontWeight.normal,
         ),
         actions: [
-           Positioned(
-            right: 40,
-            top: 10,
-              child: IconButton(
-                icon: Icon(Icons.menu, color: Colors.white), // 设置图标颜色为白色以便在黑色背景上可见
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => HomeMenu(data: GreatWallData()),
-                  );
-                },
-              ),
+           Container(
+            margin: EdgeInsets.only(right: 16), // 调整位置
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.6), // 设置背景颜色和透明度
+              shape: BoxShape.circle, // 设置圆形背景
             ),
+            child: IconButton(
+              icon: Icon(Icons.menu, color: Colors.white), // 设置图标颜色为白色以便在黑色背景上可见
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => HomeMenu(data: GreatWallData()),
+                );
+              },
+            ),
+          ),
         ],
       ),
       body: Padding(
