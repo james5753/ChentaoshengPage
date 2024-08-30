@@ -22,7 +22,7 @@ class UnsplashPhotoData {
     if (PlatformInfo.pixelRatio >= 1.5 || PlatformInfo.isDesktop) {
       size *= 2;
     }
-    return 'https://viewers-dev.etu.wiki/i/$id.jpg';
+    return 'https://api.etu.wiki/image/$id/full/max/0/default.jpg';
   }
 
   /// List of image ids by collection. This can be generated with the [UnsplashDownloadService].generateUnsplashCollectionsClass().

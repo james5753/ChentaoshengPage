@@ -65,7 +65,7 @@ Widget build(BuildContext context) {
                 ),
                  Positioned(
                 right: 40,
-                top: 40,
+                top: 20,
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.2), // 设置背景颜色和透明度

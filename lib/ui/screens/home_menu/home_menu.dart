@@ -35,7 +35,6 @@ class _HomeMenuState extends State<HomeMenu> {
   void initState() {
     super.initState();
     _loadSelectedIndex();
-    _selectedIndex=0;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _precacheImages();
     });
@@ -43,9 +42,18 @@ class _HomeMenuState extends State<HomeMenu> {
 
   void _loadSelectedIndex() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _selectedIndex = prefs.getInt('selected_index') ?? 0;
-    });
+    bool shouldResetIndex = prefs.getBool('should_reset_index') ?? true;
+
+    if (shouldResetIndex) {
+      setState(() {
+        _selectedIndex = 0;
+      });
+      await prefs.setBool('should_reset_index', false);
+    } else {
+      setState(() {
+        _selectedIndex = prefs.getInt('selected_index') ?? 0;
+      });
+    }
   }
 
   void _onPageSelected(int index) async {
