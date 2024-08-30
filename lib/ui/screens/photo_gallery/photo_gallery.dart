@@ -139,7 +139,7 @@ class _PhotoGalleryState extends State<PhotoGallery> {
   }
 
   Future<void> _handleImageTapped(int index, bool isSelected) async {
-    if (_checkCollectibleIndex(index) && isSelected) return;
+    //if (_checkCollectibleIndex(index) && isSelected) return;
     if (_index == index) {
       final urls = _photoIds.value.map((e) {
         return UnsplashPhotoData.getSelfHostedUrl(e, UnsplashPhotoSize.xl);
@@ -305,12 +305,7 @@ Widget build(BuildContext context) {
                 liveRegion: isSelected,
                 onIncrease: () => _handleImageTapped(_index + 1, false),
                 onDecrease: () => _handleImageTapped(_index - 1, false),
-                child: _checkCollectibleIndex(index)
-                    ? Center(
-                        //child: HiddenCollectible(widget.wonderType, index: 1, size: 100, focus: _focusNodes[index]),
-                      )
-                    : 
-                    AppBtn.basic(
+                child: AppBtn.basic(
                         semanticLabel: semanticLbl,
                         focusNode: _focusNodes[index],
                         onFocusChanged: (isFocused) => _handleImageFocusChanged(index, isFocused),
